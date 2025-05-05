@@ -1,1 +1,12 @@
-{"pages":{"/administration/main-management":[],"/administration/reports":[],"/administration/settings":[],"/conditions-generals-de-vente":[],"/events/management":[],"/events/statistics":[],"/login":[],"/register":[],"/regulations/aml":[],"/regulations/kyc":[],"/regulations/pci-dss":[],"/risk-management/accounting":[],"/risk-management/cashback":[],"/success":[]},"app":{},"appUsingSizeAdjust":false,"pagesUsingSizeAdjust":false}
+{
+  "app": {
+    "[project]/app/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.7b3669ea.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {
+    "/login": []
+  },
+  "pagesUsingSizeAdjust": false
+}

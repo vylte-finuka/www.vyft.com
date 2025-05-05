@@ -103,6 +103,8 @@ useEffect(() => {
   };
 
   fetchStoreNameAndMetrics(); // Appel initial
+  const interval = setInterval(fetchStoreNameAndMetrics, 4000); // Actualisation toutes les 4 secondes
+  return () => clearInterval(interval); // Nettoyage de l'intervalle
 }, []); // Exécuté une seule fois après le premier rendu
 
   const openTransak = () => {
