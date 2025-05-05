@@ -371,7 +371,7 @@ export default function Home() {
                   );
                 })
               ) : (
-                <p className={styles.date}>Pas de visiteurs pour l'instant.</p>
+                <p className={styles.date}>Pas de visiteurs pour l&apos;instant.</p>
               )}
               <button
                 className={styles.ActionEbutton}
@@ -393,7 +393,7 @@ export default function Home() {
           <div className={styles.modalContent}>
             <h2 className={styles.modalHeader}>Contactez le support</h2>
             <p className={styles.modalBody}>
-              Pour annuler votre abonnement, veuillez contacter notre support à l'adresse suivante :{" "}
+              Pour annuler votre abonnement, veuillez contacter notre support à l&apos;adresse suivante :{" "}
               <a href="mailto:support@vylte-finuka.com" className={styles.modalLink}>
                 support@vylte-finuka.com
               </a>.

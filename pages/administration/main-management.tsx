@@ -311,7 +311,7 @@ useEffect(() => {
                   className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
                   style={{ marginTop: "2rem" }}
                 >
-                  QR Code d'arrivée :
+                  QR Code d&apos;arrivée :
                 </h2>
                 {storeName && (
                   <div className={styles.qrCodeContainer}>

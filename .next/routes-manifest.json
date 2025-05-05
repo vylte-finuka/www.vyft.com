@@ -1,0 +1,139 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/administration/main-management",
+      "regex": "^/administration/main\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/administration/main\\-management(?:/)?$"
+    },
+    {
+      "page": "/administration/reports",
+      "regex": "^/administration/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/administration/reports(?:/)?$"
+    },
+    {
+      "page": "/administration/settings",
+      "regex": "^/administration/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/administration/settings(?:/)?$"
+    },
+    {
+      "page": "/conditions-generals-de-vente",
+      "regex": "^/conditions\\-generals\\-de\\-vente(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conditions\\-generals\\-de\\-vente(?:/)?$"
+    },
+    {
+      "page": "/events/management",
+      "regex": "^/events/management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/events/management(?:/)?$"
+    },
+    {
+      "page": "/events/statistics",
+      "regex": "^/events/statistics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/events/statistics(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/register",
+      "regex": "^/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register(?:/)?$"
+    },
+    {
+      "page": "/regulations/aml",
+      "regex": "^/regulations/aml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/regulations/aml(?:/)?$"
+    },
+    {
+      "page": "/regulations/kyc",
+      "regex": "^/regulations/kyc(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/regulations/kyc(?:/)?$"
+    },
+    {
+      "page": "/regulations/pci-dss",
+      "regex": "^/regulations/pci\\-dss(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/regulations/pci\\-dss(?:/)?$"
+    },
+    {
+      "page": "/risk-management/accounting",
+      "regex": "^/risk\\-management/accounting(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/risk\\-management/accounting(?:/)?$"
+    },
+    {
+      "page": "/risk-management/cashback",
+      "regex": "^/risk\\-management/cashback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/risk\\-management/cashback(?:/)?$"
+    },
+    {
+      "page": "/success",
+      "regex": "^/success(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/success(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}

@@ -86,7 +86,8 @@ const Login = () => {
       secureLocalStorage.setItem("picture", userInfo.picture || "");
       secureLocalStorage.setItem("auth0UserId", userInfo.sub || ""); // Stocker l'auth0UserId
         // Stocker le jeton utilisateur dans secureLocalStorage
-      setToken(secureLocalStorage.setItem("userToken", access_token));
+      secureLocalStorage.setItem("userToken", access_token);
+      setToken(access_token);
       // Mettre à jour l'état pour rediriger vers Home
       setIsLoggedIn(true);
     } catch (err: any) {

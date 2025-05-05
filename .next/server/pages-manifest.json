@@ -1,5 +1,26 @@
 {
   "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/administration/main-management": "pages/administration/main-management.html",
+  "/administration/reports": "pages/administration/reports.html",
+  "/api/check-subscription-status": "pages/api/check-subscription-status.js",
+  "/administration/settings": "pages/administration/settings.html",
+  "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
+  "/api/vyfthealth_proc": "pages/api/vyfthealth_proc.js",
+  "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js",
+  "/api/vyfthealth_sub": "pages/api/vyfthealth_sub.js",
+  "/conditions-generals-de-vente": "pages/conditions-generals-de-vente.html",
+  "/events/management": "pages/events/management.html",
+  "/events/statistics": "pages/events/statistics.html",
+  "/login": "pages/login.html",
+  "/api/lib/mongodb": "pages/api/lib/mongodb.js",
+  "/register": "pages/register.html",
+  "/regulations/kyc": "pages/regulations/kyc.html",
+  "/regulations/aml": "pages/regulations/aml.html",
+  "/regulations/pci-dss": "pages/regulations/pci-dss.html",
+  "/risk-management/cashback": "pages/risk-management/cashback.html",
+  "/success": "pages/success.html",
+  "/risk-management/accounting": "pages/risk-management/accounting.html",
   "/_document": "pages/_document.js",
-  "/login": "pages/login.js"
+  "/404": "pages/404.html"
 }
