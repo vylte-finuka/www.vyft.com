@@ -71,20 +71,13 @@ const Navbar = () => {
   return (
     <AuthGuard>
       <nav className={styles.Navbar}>
+      <div className={styles.logo}>
           <Link legacyBehavior href="/">
             <a>
-              <Image
-                src="/Vyft_program.png"
-                alt="Logo"
-                style={{
-                  width: "166px",
-                  height: "74px",
-                  objectFit: "cover",
-                }}
-                className={styles.logo}
-              />
+              <Image src="/Vyft_program.png" alt="Vyftprogram" width={166} height={74} className={styles.logo} />
             </a>
           </Link>
+        </div>
         <ul className={styles.navLinks}>
           {/* Section Administration */}
           <li>
