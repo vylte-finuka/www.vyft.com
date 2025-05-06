@@ -72,19 +72,27 @@ const Navbar = () => {
     <AuthGuard>
       <nav className={styles.Navbar}>
         <div className={styles.logo}>
-          <Link legacyBehavior href="/">
-            <a>
-              <Image 
-              src="/Vyft_program.png" 
-              alt="Vyftprogram" 
-              width={166} 
-              height={74} 
-              className={styles.logo} 
-              draggable={false} // Empêche le glisser-déposer
-              onContextMenu={(e) => e.preventDefault()} // Empêche le clic droit
-              />
-            </a>
-          </Link>
+            <Link legacyBehavior href="/">
+              <a>
+              <div
+                style={{
+                width: "166px",
+                height: "74px",
+                backgroundImage: "url(/Vyft_program.png)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                }}
+                className={styles.logo}
+                draggable={false} // Empêche le glisser-déposer
+                onContextMenu={(e) => e.preventDefault()} // Empêche le clic droit
+                onMouseDown={(e) => e.preventDefault()} // Empêche le clic gauche
+                onClick={(e) => {
+                e.preventDefault(); // Empêche toute autre action
+                window.location.href = "/"; // Redirige uniquement vers "/"
+                }}
+              ></div>
+              </a>
+            </Link>
         </div>
         <ul className={styles.navLinks}>
           {/* Section Administration */}
