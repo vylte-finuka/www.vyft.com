@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -74,9 +75,17 @@ const Navbar = () => {
       <div className={styles.logo}>
           <Link legacyBehavior href="/">
             <a>
-              <Image src="/Vyft_program.png" alt="Vyftprogram" width={166} height={74} className={styles.logo} />
+              <Image 
+              src="/Vyft_program.png" 
+              alt="Vyftprogram" 
+              width={166} 
+              height={74} 
+              className={styles.logo} 
+              onContextMenu={(e) => e.preventDefault()} // Empêche le clic droit
+              onDragStart={(e) => e.preventDefault()} // Empêche le glisser-déposer
+              />
             </a>
-          </Link>
+          </Link><script src="https://raw.githubusercontent.com/SjomaNikitin/image-download-blocker/main/ImageBlocker.js"></script>
         </div>
         <ul className={styles.navLinks}>
           {/* Section Administration */}

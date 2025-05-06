@@ -313,6 +313,7 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .page-module__E0kJGG__statviewers .page-module__E0kJGG__left {

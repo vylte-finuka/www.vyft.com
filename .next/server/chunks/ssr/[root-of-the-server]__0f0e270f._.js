@@ -85,16 +85,6 @@ const mod = __turbopack_context__.x("react-dom", () => require("react-dom"));
 
 module.exports = mod;
 }}),
-"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
-"use strict";
-
-var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
-__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
-const mod = await __turbopack_context__.y("axios");
-
-__turbopack_context__.n(mod);
-__turbopack_async_result__();
-} catch(e) { __turbopack_async_result__(e); } }, true);}),
 "[project]/app/components/Navbar.module.css [ssr] (css module)": ((__turbopack_context__) => {
 
 var { g: global, __dirname } = __turbopack_context__;
@@ -199,6 +189,16 @@ const mod = __turbopack_context__.x("next/dist/server/app-render/work-async-stor
 
 module.exports = mod;
 }}),
+"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+const mod = await __turbopack_context__.y("axios");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
 "[project]/pages/register.tsx [ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -1813,18 +1813,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$auth0$2f$n
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react-secure-storage [external] (react-secure-storage, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [ssr] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer1.tsx [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/register.tsx [ssr] (ecmascript)"); // Importer le composant Register
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/page.tsx [ssr] (ecmascript)"); // Importer le composant Home
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
-    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__,
     __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__,
     __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__
 ]);
-([__TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+([__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 "use client";
-;
 ;
 ;
 ;
@@ -1863,31 +1860,41 @@ const Login = ()=>{
                 return;
             }
             // Appeler Auth0 avec password-realm
-            const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].post(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/oauth/token`, {
-                grant_type: "http://auth0.com/oauth/grant-type/password-realm",
-                client_id: ("TURBOPACK compile-time value", "gnSYOUhQHV9hCZdKfNqIS7AoCgyRqv5C"),
-                username: email,
-                password: password,
-                realm: "Vyftbase",
-                scope: "openid profile email",
-                audience: ("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com/api/v2/")
-            }, {
+            const response = await fetch(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/oauth/token`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                body: JSON.stringify({
+                    grant_type: "http://auth0.com/oauth/grant-type/password-realm",
+                    client_id: ("TURBOPACK compile-time value", "gnSYOUhQHV9hCZdKfNqIS7AoCgyRqv5C"),
+                    username: email,
+                    password: password,
+                    realm: "Vyftbase",
+                    scope: "openid profile email",
+                    audience: ("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com/api/v2/")
+                })
             });
+            if (!response.ok) {
+                throw new Error("Erreur lors de la demande de jeton d'accès.");
+            }
             // Vérifiez si le jeton d'accès est présent dans la réponse
-            const { access_token } = response.data;
+            const responseData = await response.json();
+            const { access_token } = responseData;
             if (!access_token) {
                 throw new Error("Jeton d'accès non retourné par Auth0.");
             }
             // Récupérer les informations utilisateur
-            const userInfoResponse = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/userinfo`, {
+            const userInfoResponse = await fetch(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/userinfo`, {
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            const userInfo = userInfoResponse.data;
+            if (!userInfoResponse.ok) {
+                throw new Error("Erreur lors de la récupération des informations utilisateur.");
+            }
+            const userInfo = await userInfoResponse.json();
             // Stocker les informations utilisateur dans secureLocalStorage
             __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__["default"].setItem("isLoggedIn", "1");
             __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__["default"].setItem("username", userInfo.name || "");
@@ -1915,7 +1922,7 @@ const Login = ()=>{
             children: "Chargement..."
         }, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 107,
+            lineNumber: 116,
             columnNumber: 12
         }, this);
     }
@@ -1923,7 +1930,7 @@ const Login = ()=>{
         // Si l'utilisateur est connecté, afficher le composant Home
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 112,
+            lineNumber: 121,
             columnNumber: 12
         }, this);
     }
@@ -1931,7 +1938,7 @@ const Login = ()=>{
         // Retourner le composant Register si l'utilisateur clique sur le lien
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 117,
+            lineNumber: 126,
             columnNumber: 12
         }, this);
     }
@@ -1941,7 +1948,7 @@ const Login = ()=>{
                 children: "Connexion"
             }, void 0, false, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 121,
+                lineNumber: 130,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1955,7 +1962,7 @@ const Login = ()=>{
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].logo
                     }, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 123,
+                        lineNumber: 132,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("form", {
@@ -1971,7 +1978,7 @@ const Login = ()=>{
                                         children: "Adresse email :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 132,
+                                        lineNumber: 141,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
@@ -1984,13 +1991,13 @@ const Login = ()=>{
                                         onChange: (e)=>setEmail(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 135,
+                                        lineNumber: 144,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 131,
+                                lineNumber: 140,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -2002,7 +2009,7 @@ const Login = ()=>{
                                         children: "Mot de passe :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 146,
+                                        lineNumber: 155,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
@@ -2015,13 +2022,13 @@ const Login = ()=>{
                                         onChange: (e)=>setPassword(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 149,
+                                        lineNumber: 158,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 145,
+                                lineNumber: 154,
                                 columnNumber: 11
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -2031,7 +2038,7 @@ const Login = ()=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 159,
+                                lineNumber: 168,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -2040,7 +2047,7 @@ const Login = ()=>{
                                 children: "Se connecter"
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 160,
+                                lineNumber: 169,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -2051,29 +2058,29 @@ const Login = ()=>{
                                     children: "Vous n'avez pas de compte ?"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/login.tsx",
-                                    lineNumber: 167,
+                                    lineNumber: 176,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 163,
+                                lineNumber: 172,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 130,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 171,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 122,
+                lineNumber: 131,
                 columnNumber: 7
             }, this)
         ]
@@ -2085,4 +2092,4 @@ __turbopack_async_result__();
 
 };
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__80cfab6f._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__0f0e270f._.js.map
