@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
-import { useRouter } from "next/navigation"; // Importer useRouter pour la navigation
 import styles from "./Navbar.module.css";
 import AuthGuard from "./AuthGuard"; // Importer AuthGuard
 
@@ -16,7 +15,6 @@ const Navbar = () => {
   const [userSub, setUserSub] = useState<string | null>(null); // État pour stocker le sub (identifiant utilisateur)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // État pour le sous-menu du profil
 
-  const router = useRouter();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -76,14 +74,22 @@ const Navbar = () => {
         <div className={styles.logo}>
           <Link legacyBehavior href="/">
             <a>
-              <Image src="/Vyft_program.png" alt="Vyftprogram" width={166} height={74} className={styles.logo} />
+              <Image 
+              src="/Vyft_program.png" 
+              alt="Vyftprogram" 
+              width={166} 
+              height={74} 
+              className={styles.logo} 
+              draggable={false} // Empêche le glisser-déposer
+              onContextMenu={(e) => e.preventDefault()} // Empêche le clic droit
+              />
             </a>
           </Link>
         </div>
         <ul className={styles.navLinks}>
           {/* Section Administration */}
           <li>
-            <Link href="/administration/statistics" className={styles.fontstyle}>Administration</Link>
+            <span className={styles.fontstyle}>Administration</span>
             <ul className={`${styles.subMenu} ${isSubMenuOpen ? styles.open : ''}`}>
               <li><Link href="/administration/main-management" className={styles.fontstyle1}>Gestion principale</Link></li>
               <li><Link href="/administration/reports" className={styles.fontstyle1}>Rapports</Link></li>
@@ -93,7 +99,7 @@ const Navbar = () => {
 
           {/* Section Évènements */}
           <li>
-            <Link href="/events/statistics" className={styles.fontstyle}>Évènements</Link>
+            <span className={styles.fontstyle}>Évènements</span>
             <ul className={`${styles.subMenu} ${isSubMenuOpen ? styles.open : ''}`}>
               <li><Link href="/events/statistics" className={styles.fontstyle1}>Statistiques</Link></li>
               <li><Link href="/events/management" className={styles.fontstyle1}>Management</Link></li>
@@ -102,7 +108,7 @@ const Navbar = () => {
 
           {/* Section Gestion des risques */}
           <li>
-            <Link href="/risk-management/cashback" className={styles.fontstyle}>Gestion des risques</Link>
+            <span className={styles.fontstyle}>Gestion des risques</span>
             <ul className={`${styles.subMenu} ${isSubMenuOpen ? styles.open : ''}`}>
               <li><Link href="/risk-management/accounting" className={styles.fontstyle1}>Comptabilité</Link></li>
               <li><Link href="/risk-management/cashback" className={styles.fontstyle1}>Cashback</Link></li>
@@ -111,7 +117,7 @@ const Navbar = () => {
 
           {/* Section Règlementations */}
           <li>
-            <Link href="/regulations/aml" className={styles.fontstyle}>Règlementations</Link>
+            <span className={styles.fontstyle}>Règlementations</span>
             <ul className={`${styles.subMenu} ${isSubMenuOpen ? styles.open : ''}`}>
               <li><Link href="/regulations/aml" className={styles.fontstyle1}>AML</Link></li>
               <li><Link href="/regulations/kyc" className={styles.fontstyle1}>KYC</Link></li>
@@ -132,7 +138,7 @@ const Navbar = () => {
             ></div>
             <ul className={`${styles.subMenu} ${isProfileMenuOpen ? styles.open : ""}`}>
               <li>
-                <Link href="/profile" className={styles.fontstyle1}>Mon Profil</Link>
+                <span className={styles.fontstyle1}>Mon Profil</span>
               </li>
               <li onClick={handleLogout} className={styles.fontstyle1}>
                 Déconnexion
