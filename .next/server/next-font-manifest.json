@@ -9,7 +9,20 @@
   },
   "appUsingSizeAdjust": true,
   "pages": {
-    "/login": []
+    "/administration/main-management": [],
+    "/administration/reports": [],
+    "/administration/settings": [],
+    "/conditions-generals-de-vente": [],
+    "/events/management": [],
+    "/events/statistics": [],
+    "/login": [],
+    "/register": [],
+    "/regulations/aml": [],
+    "/regulations/kyc": [],
+    "/regulations/pci-dss": [],
+    "/risk-management/accounting": [],
+    "/risk-management/cashback": [],
+    "/success": []
   },
   "pagesUsingSizeAdjust": false
 }
