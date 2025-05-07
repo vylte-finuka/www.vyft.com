@@ -264,7 +264,7 @@ export default function Home() {
   
     fetchVisitorsAndCompare(); // Appel initial
   
-    const interval = setInterval(fetchVisitorsAndCompare, 5000); // Actualisation toutes les 10 secondes
+    const interval = setInterval(fetchVisitorsAndCompare, 10000); // Actualisation toutes les 10 secondes
   
     return () => clearInterval(interval); // Nettoyage de l'intervalle
   }, []);
@@ -310,7 +310,7 @@ export default function Home() {
     };
 
     fetchSubscriptionStatus();
-    const interval = setInterval(fetchSubscriptionStatus, 4000);
+    const interval = setInterval(fetchSubscriptionStatus, 10000);
 
     return () => clearInterval(interval);
   }, []);

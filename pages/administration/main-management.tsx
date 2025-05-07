@@ -67,20 +67,38 @@ useEffect(() => {
         }
       );
 
+      if (!response.data) {
+        console.error("Impossible de récupérer les métadonnées utilisateur.");
+        return;
+      }
+
       // Toujours récupérer la valeur, même si les métadonnées utilisateur sont absentes
       const denomination = response.data?.user_metadata?.denomination?.trim();
+      const stripeCustomerId = response.data?.user_metadata?.subid?.trim();
+
       setStoreName(denomination); // Mettre à jour l'état avec le nom de l'enseigne
       console.log("Nom de l'enseigne récupéré :", denomination);
+      console.log("Stripe Customer ID récupéré :", stripeCustomerId);
 
       if (!denomination) {
         console.error("Denomination manquante dans les métadonnées utilisateur.");
         return;
       }
 
+      if (!stripeCustomerId) {
+        console.error("Stripe Customer ID manquant dans les métadonnées utilisateur.");
+        return;
+      }
+
       // Récupérer les données filtrées depuis l'API /api/vyfthealth_proc
-      const apiResponse = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}`, {
-        method: "GET",
-      });
+      const apiResponse = await fetch(
+        `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(
+          stripeCustomerId
+        )}`,
+        {
+          method: "GET",
+        }
+      );
 
       if (!apiResponse.ok) {
         const errorText = await apiResponse.text();

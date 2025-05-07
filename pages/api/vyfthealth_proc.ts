@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import clientPromise from "./lib/mongodb"; // Import pour accéder à MongoDB
 
 // Remplacez par votre clé Stripe de production et assurez-vous d'utiliser une version d'API valide.
-const stripe = new Stripe("sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy", { apiVersion: "2025-04-30.basil" });
+const stripe = new Stripe("sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy", { apiVersion: "2022-11-15" });
 
 type ResponseData = {
   success: boolean;
@@ -19,84 +19,65 @@ type ResponseData = {
   };
 };
 
-/**
- * Récupère le subid (customerId Stripe) depuis les métadonnées utilisateur Auth0.
- *
- * @param auth0UserId - ID utilisateur Auth0
- * @param userToken - Token d'accès Auth0
- */
-async function getSubidFromAuth0(auth0UserId: string, userToken: string): Promise<string | null> {
-  try {
-    const auth0Domain = process.env.AUTH0_DOMAIN; // Domaine Auth0
-
-    const response = await fetch(`https://${auth0Domain}/api/v2/users/${auth0UserId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erreur lors de la récupération des métadonnées utilisateur dans Auth0.");
-    }
-
-    const userData = await response.json();
-    return userData.user_metadata?.subid || null; // Retourner le subid si disponible
-  } catch (error) {
-    console.error("Erreur lors de la récupération du subid :", error);
-    return null;
-  }
-}
+// Stocker les métriques précédentes pour éviter les envois redondants
+let previousMetrics = {
+  totalSteps: 0,
+  totalDistance: 0,
+  dailyRevenue: 0,
+};
 
 /**
- * Calcule la consommation et crée un meter event Stripe pour la facturation à la consommation.
+ * Envoie les métriques calculées à Stripe via un événement de facturation.
  *
- * @param distanceMeters - Distance parcourue (en mètres)
- * @param visitors - Nombre de visiteurs uniques
- * @param pricePerStep - Tarif par pas
- * @param pricePerVisitor - Tarif par visiteur
- * @param stripeCustomerId - Identifiant du client Stripe associé
+ * @param stripeCustomerId - Identifiant du client Stripe
+ * @param totalSteps - Nombre total de pas
+ * @param totalDistance - Distance totale parcourue
+ * @param dailyRevenue - Revenu journalier calculé
  */
-async function processMetrics(
-  distanceMeters: number,
-  visitors: number,
-  pricePerStep: number,
-  pricePerVisitor: number,
-  stripeCustomerId: string
+async function sendMetricsToStripe(
+  stripeCustomerId: string,
+  totalSteps: number,
+  totalDistance: number,
+  dailyRevenue: number
 ) {
   try {
-    const stepLength = 0.7; // Longueur moyenne d'un pas en mètres
-    const computedSteps = Math.floor(distanceMeters / stepLength);
-    const stepsRevenue = computedSteps * pricePerStep;
-    const visitorsRevenue = visitors * pricePerVisitor;
-    const totalRevenue = Math.round(stepsRevenue + visitorsRevenue);
+    // Vérifier si les métriques ont changé
+    if (
+      totalSteps === previousMetrics.totalSteps &&
+      totalDistance === previousMetrics.totalDistance &&
+      dailyRevenue === previousMetrics.dailyRevenue
+    ) {
+      console.log("Les métriques n'ont pas changé. Aucun événement envoyé à Stripe.");
+      return; // Ne rien faire si les métriques n'ont pas changé
+    }
 
-    console.log(`Revenu calculé : ${totalRevenue} €`);
+    // Mettre à jour les métriques précédentes
+    previousMetrics = { totalSteps, totalDistance, dailyRevenue };
 
-    // Création d'un meter event via l'API Stripe Billing
+    const timestamp = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+
     const meterEvent = await stripe.billing.meterEvents.create({
-      event_name: "daily_consumption",
+      event_name: "meterstep",
+      timestamp,
       payload: {
-        value: totalRevenue.toString(),
         stripe_customer_id: stripeCustomerId,
-        total_steps: computedSteps.toString(),
-        total_distance: distanceMeters.toString(),
-        visitors: visitors.toString(),
+        value: dailyRevenue.toString(),
+        total_steps: totalSteps.toString(),
+        total_distance: totalDistance.toString(),
       },
     });
 
-    console.log("Meter Event enregistré avec succès :", meterEvent);
+    console.log("Meter Event envoyé à Stripe :", meterEvent);
     return meterEvent;
   } catch (error: any) {
-    console.error("Erreur lors de la facturation :", error.message);
+    console.error("Erreur lors de l'envoi des métriques à Stripe :", error.message);
     throw error;
   }
 }
 
 /**
  * API handler Next.js.
- * - POST : Récupère les données de capteur depuis MongoDB, met à jour les métriques et envoie un meter event à Stripe.
- * - GET : Récupère les métriques cumulées.
+ * - GET : Récupère les métriques cumulées et les envoie à Stripe.
  */
 export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
@@ -107,12 +88,19 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
   if (req.method === "GET") {
     try {
       // Récupérer le paramètre `enseigne` depuis la requête
-      const { enseigne: enseigneFilter } = req.query;
+      const { enseigne: enseigneFilter, stripeCustomerId } = req.query;
 
       if (!enseigneFilter || typeof enseigneFilter !== "string") {
         return res.status(400).json({
           success: false,
           message: "Le paramètre 'enseigne' est requis pour accéder aux données.",
+        });
+      }
+
+      if (!stripeCustomerId || typeof stripeCustomerId !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Le paramètre 'stripeCustomerId' est requis pour envoyer les métriques à Stripe.",
         });
       }
 
@@ -182,9 +170,12 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
         return sum;
       }, 0);
 
+      // Envoyer les métriques calculées à Stripe uniquement si elles ont changé
+      await sendMetricsToStripe(stripeCustomerId, totalSteps, totalDistance, dailyRevenue);
+
       res.status(200).json({
         success: true,
-        message: "Données calculées avec succès.",
+        message: "Données calculées et envoyées à Stripe avec succès.",
         data: {
           enseigne, // Inclure l'enseigne dans la réponse
           totalSteps,

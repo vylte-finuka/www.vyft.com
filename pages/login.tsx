@@ -27,6 +27,7 @@ const Login = () => {
       secureLocalStorage.setItem("email", user.email || "");
       secureLocalStorage.setItem("picture", user.picture || "");
       secureLocalStorage.setItem("userToken", token);
+      secureLocalStorage.setItem("auth0UserId", user.sub || "");
       setIsLoggedIn(true);
     }
   }, [user]);

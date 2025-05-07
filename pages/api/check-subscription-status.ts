@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Récupérer le client Stripe via auth0UserId
     const customers = await stripe.customers.list({
-      limit: 1,
       expand: ["data.subscriptions"],
     });
 
@@ -33,10 +32,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     );
 
     if (activeSubscription) {
-      return res.status(200).json({ hasActiveSubscription: true });
+      return res.status(202).json({ hasActiveSubscription: true });
     }
 
-    return res.status(200).json({ hasActiveSubscription: false });
+    return res.status(201).json({ hasActiveSubscription: false });
   } catch (error) {
     console.error("Erreur lors de la vérification de l'abonnement :", error);
     return res.status(500).json({ error: "Erreur lors de la vérification de l'abonnement" });
