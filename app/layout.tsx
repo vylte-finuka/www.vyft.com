@@ -8,8 +8,8 @@ import AuthGuard from "./components/AuthGuard"; // Importer AuthGuard
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vyft program - Manage your own market.",
-  description: "Vyft program - Manage your own market.",
+  title: "Vyft program: Manage your own market.",
+  description: "Vyft program: Manage your own market.",
 };
 
 export default function RootLayout({

@@ -11,7 +11,7 @@ export default function aml() {
         <>
             <div className={styles.container2}>
                 <head>
-                    <title>En construction</title>
+                    <title>En construction - Vyft program: Manage your own market.</title>
                 </head>
                 <Navbar />
                 <main className={styles.main}>

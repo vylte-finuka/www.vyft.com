@@ -119,7 +119,7 @@ const Login = () => {
   }
 
   return (
-    <><title>Connexion</title>
+    <><title>Connexion - Vyft program: Manage your own market.</title>
       <div className={`${styles.container3} ${styles.center}`}>
         <Image
           src="/Vyft_program.png"

@@ -49,7 +49,7 @@ export default function Success() {
 
   return (
     <div className={styles.container3}>
-    <title>Succès</title>
+    <title>Succès - Vyft program: Manage your own market.</title>
       {/* Afficher les confettis avec un nombre de pièces dynamique */}
       {confettiPieces > 0 && (
         <Confetti width={windowSize.width} height={windowSize.height} numberOfPieces={confettiPieces} />

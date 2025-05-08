@@ -224,7 +224,7 @@ useEffect(() => {
     <>
       <div className={styles.container2}>
         <head>
-          <title>Gestion principale</title>
+          <title>Gestion principale - Vyft program: Manage your own market.</title>
         </head>
         <Navbar />
         <main className={styles.main}>

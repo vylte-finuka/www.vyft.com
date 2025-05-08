@@ -10,12 +10,8 @@ import Footer from '@/app/components/Footer';
 export default function CGU() {
     const router = useRouter();
 
-    const redirectToArticle = (slug: string) => {
-        router.push(`/blog/${slug}`);
-    };
-
     return (
-        <><title>Conditions générals d&apos;utilsation - Vylte-finuka: Powered&apos;s web3 exchange by nature.</title><div>
+        <><title>Conditions générals d&apos;utilsation - Vyft program: Manage your own market.</title><div>
             <div className={styles.container2}>
                 <Navbar />
                 <main className={styles.main}>
