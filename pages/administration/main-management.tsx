@@ -11,7 +11,7 @@ import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 
 type MetricsData = {
-  totalSteps: number;
+  yearlySteps: number;
   totalDistance: number;
   estimatedRevenue: number;
   dailySteps: number;
@@ -270,17 +270,17 @@ useEffect(() => {
                 </div>
                 <div className={styles.right}>
                   <h2 className={styles.bodycar1}>Usage de Vyft™</h2>
-                  <h3 className={styles.body}>Total des pas de tout les utilisateurs en 24 heures :</h3>
+                  <h3 className={styles.body}>Total des pas de tout clients en 24 heures :</h3>
                   <p className={styles.body}>
                     {metrics ? `${metrics.dailySteps} pas` : "N/A"}
                   </p>
-                  <h3 className={styles.body}>Total parcourus de tout ces utilisateurs :</h3>
+                  <h3 className={styles.body}>Total parcourus de tout ces clients en 24 heures :</h3>
                   <p className={styles.body}>
                     {metrics ? `${metrics.dailyDistance} mètres` : "N/A"}
                   </p>
-                  <h3 className={styles.body}>Total de nombre de pas depuis un an de tout ces utilisateurs :</h3>
+                  <h3 className={styles.body}>Total de nombre de pas depuis un an de tout clients :</h3>
                   <p className={styles.body}>
-                    {metrics ? `${metrics.totalSteps} pas` : "N/A"}
+                    {metrics ? `${metrics.yearlySteps} pas` : "N/A"}
                   </p>
                 </div>
               </div>

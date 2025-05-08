@@ -1065,7 +1065,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Total des pas de tout les utilisateurs en 24 heures :"
+                                                            children: "Total des pas de tout clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 273,
@@ -1081,7 +1081,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Total parcourus de tout ces utilisateurs :"
+                                                            children: "Total parcourus de tout ces clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 277,
@@ -1097,7 +1097,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Total de nombre de pas depuis un an de tout ces utilisateurs :"
+                                                            children: "Total de nombre de pas depuis un an de tout clients :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 281,
@@ -1105,7 +1105,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: metrics ? `${metrics.totalSteps} pas` : "N/A"
+                                                            children: metrics ? `${metrics.yearlySteps} pas` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 282,

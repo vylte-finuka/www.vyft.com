@@ -62,45 +62,30 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ([__TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
 ;
-// Remplacez par votre clé Stripe de production et assurez-vous d'utiliser une version d'API valide.
 const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy", {
-    apiVersion: "2022-11-15"
+    apiVersion: "2025-04-30.basil"
 });
 // Stocker les métriques précédentes pour éviter les envois redondants
 let previousMetrics = {
-    totalSteps: 0,
     totalDistance: 0,
-    dailyRevenue: 0
+    dailySteps: 0,
+    dailyRevenue: 0,
+    accumulatedValue: 0
 };
 /**
  * Envoie les métriques calculées à Stripe via un événement de facturation.
  *
  * @param stripeCustomerId - Identifiant du client Stripe
- * @param totalSteps - Nombre total de pas
- * @param totalDistance - Distance totale parcourue
- * @param dailyRevenue - Revenu journalier calculé
- */ async function sendMetricsToStripe(stripeCustomerId, totalSteps, totalDistance, dailyRevenue) {
+ * @param incrementalValue - Valeur incrémentale calculée
+ */ async function sendMetricsToStripe(stripeCustomerId, incrementalValue) {
     try {
-        // Vérifier si les métriques ont changé
-        if (totalSteps === previousMetrics.totalSteps && totalDistance === previousMetrics.totalDistance && dailyRevenue === previousMetrics.dailyRevenue) {
-            console.log("Les métriques n'ont pas changé. Aucun événement envoyé à Stripe.");
-            return; // Ne rien faire si les métriques n'ont pas changé
-        }
-        // Mettre à jour les métriques précédentes
-        previousMetrics = {
-            totalSteps,
-            totalDistance,
-            dailyRevenue
-        };
-        const timestamp = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+        const timestamp = Math.floor(Date.now() / 1000);
         const meterEvent = await stripe.billing.meterEvents.create({
             event_name: "meterstep",
             timestamp,
             payload: {
                 stripe_customer_id: stripeCustomerId,
-                value: dailyRevenue.toString(),
-                total_steps: totalSteps.toString(),
-                total_distance: totalDistance.toString()
+                value: Math.round(incrementalValue).toString()
             }
         });
         console.log("Meter Event envoyé à Stripe :", meterEvent);
@@ -117,7 +102,6 @@ async function Vyfthealth_proc(req, res) {
     res.setHeader("Surrogate-Control", "no-store");
     if (req.method === "GET") {
         try {
-            // Récupérer le paramètre `enseigne` depuis la requête
             const { enseigne: enseigneFilter, stripeCustomerId } = req.query;
             if (!enseigneFilter || typeof enseigneFilter !== "string") {
                 return res.status(400).json({
@@ -131,71 +115,117 @@ async function Vyfthealth_proc(req, res) {
                     message: "Le paramètre 'stripeCustomerId' est requis pour envoyer les métriques à Stripe."
                 });
             }
-            // Connexion à MongoDB
             const client = await __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$lib$2f$mongodb$2e$ts__$5b$api$5d$__$28$ecmascript$29$__["default"];
             const db = client.db("vyfbase");
             const collection = db.collection("vyfthealth");
-            // Filtrer les données directement dans MongoDB
             const sensorData = await collection.find({
                 enseigne: {
                     $regex: `^${enseigneFilter.trim()}$`,
                     $options: "i"
                 }
-            }) // Filtrage insensible à la casse
-            .toArray();
+            }).toArray();
             if (sensorData.length === 0) {
                 return res.status(404).json({
                     success: false,
                     message: `Aucune donnée trouvée pour l'enseigne "${enseigneFilter}".`
                 });
             }
-            // Réinitialiser les métriques journalières
             let dailySteps = 0;
             let dailyDistance = 0;
-            // Calculer les métriques globales
-            let totalSteps = 0;
+            let yearlySteps = 0;
             let totalDistance = 0;
-            // Ajouter le champ enseigne
             let enseigne = "";
+            const now = new Date();
+            const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
             sensorData.forEach((item)=>{
                 const steps = item.steps || 0;
                 const distance = parseFloat(item.distance) || 0;
-                dailySteps += steps;
-                dailyDistance += distance;
-                totalSteps += steps;
-                totalDistance += distance;
-                // Récupérer l'enseigne si elle est présente
+                const date = new Date(item.date); // Utilisation de "date" au lieu de "timestamp"
+                if (date >= oneYearAgo) {
+                    yearlySteps += steps;
+                    totalDistance += distance;
+                }
+                if (date >= twentyFourHoursAgo) {
+                    dailySteps += steps;
+                    dailyDistance += distance;
+                }
                 if (item.enseigne) {
                     enseigne = item.enseigne;
                 }
             });
-            // Récupérer les paiements Stripe pour calculer le revenu total
             const charges = await stripe.charges.list({
                 limit: 100
             });
             const totalRevenue = charges.data.reduce((sum, charge)=>{
                 if (charge.paid && !charge.refunded) {
-                    return sum + charge.amount / 100; // Convertir les centimes en euros
+                    return sum + charge.amount / 100;
                 }
                 return sum;
             }, 0);
-            // Calcul du revenu journalier basé sur les paiements récents
-            const today = new Date().toISOString().split("T")[0];
             const dailyRevenue = charges.data.reduce((sum, charge)=>{
-                const chargeDate = new Date(charge.created * 1000).toISOString().split("T")[0];
-                if (charge.paid && !charge.refunded && chargeDate === today) {
-                    return sum + charge.amount / 100; // Convertir les centimes en euros
+                const chargeDate = new Date(charge.created * 1000);
+                if (charge.paid && !charge.refunded && chargeDate >= twentyFourHoursAgo) {
+                    return sum + charge.amount / 100;
                 }
                 return sum;
             }, 0);
-            // Envoyer les métriques calculées à Stripe uniquement si elles ont changé
-            await sendMetricsToStripe(stripeCustomerId, totalSteps, totalDistance, dailyRevenue);
+            // Stocker l'identifiant de la dernière entrée traitée
+            let lastProcessedId = null;
+            // Récupérer dans MongoDB les dernières entrées pour l'enseigne
+            const lastEntries = await collection.find({
+                enseigne: {
+                    $regex: `^${enseigneFilter.trim()}$`,
+                    $options: "i"
+                }
+            }).sort({
+                date: -1
+            }).limit(1).toArray();
+            const lastEntry = lastEntries[0];
+            // Vérifier si une nouvelle entrée est détectée
+            if (lastEntry) {
+                const currentEntryId = lastEntry._id.toString();
+                const entryDate = new Date(lastEntry.date); // Convertir la date de l'entrée en objet Date
+                const now = new Date(); // Obtenir la date et l'heure actuelles
+                // Vérifier si cette entrée est différente de la dernière traitée et non marquée comme traitée
+                if ((!lastProcessedId || currentEntryId !== lastProcessedId) && !lastEntry.processed) {
+                    const lastSteps = lastEntry.steps || 0;
+                    const lastDistance = parseFloat(lastEntry.distance) || 0;
+                    // Calculer les valeurs incrémentales basées sur les dernières entrées
+                    const incrementalSteps = lastSteps * 0.3; // Ratio de 30 % sur les steps
+                    const incrementalDistance = lastDistance * 0.3; // Ratio de 30 % sur la distance
+                    // Calculer la valeur incrémentale totale
+                    const incrementalValue = Math.round(incrementalSteps + incrementalDistance);
+                    // Envoyer les métriques calculées à Stripe
+                    await sendMetricsToStripe(stripeCustomerId, incrementalValue);
+                    console.log("Nouvelle entrée détectée. Valeur incrémentale envoyée à Stripe :", incrementalValue);
+                    // Mettre à jour l'identifiant de la dernière entrée traitée
+                    lastProcessedId = currentEntryId;
+                    // Marquer l'entrée comme traitée dans MongoDB
+                    await collection.updateOne({
+                        _id: lastEntry._id
+                    }, {
+                        $set: {
+                            processed: true
+                        }
+                    });
+                    console.log("Entrée marquée comme traitée dans MongoDB :", currentEntryId);
+                } else {
+                    // Si l'entrée est la même que la dernière traitée ou déjà marquée comme traitée
+                    console.log("Aucune nouvelle entrée détectée ou entrée déjà traitée. Valeur reste à 0.");
+                    await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+                }
+            } else {
+                // Si aucune entrée n'existe dans la base de données, envoyer 0 à Stripe
+                console.log("Aucune entrée trouvée dans la base de données. Valeur réinitialisée à 0.");
+                await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+            }
             res.status(200).json({
                 success: true,
                 message: "Données calculées et envoyées à Stripe avec succès.",
                 data: {
                     enseigne,
-                    totalSteps,
+                    yearlySteps,
                     totalDistance,
                     estimatedRevenue: totalRevenue,
                     dailySteps,
@@ -210,14 +240,6 @@ async function Vyfthealth_proc(req, res) {
                 message: "Erreur lors du calcul des données."
             });
         }
-    } else {
-        res.setHeader("Allow", [
-            "GET"
-        ]);
-        res.status(405).json({
-            success: false,
-            message: "Méthode non autorisée."
-        });
     }
 }
 __turbopack_async_result__();
