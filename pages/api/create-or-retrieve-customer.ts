@@ -74,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         customer: customer.id,
         line_items: [
           {
-            price: "price_1RI23dDrg8ui7gWsNpOt5RFr", // Remplacez par l'ID de votre tarif Stripe
+            price: "price_1RZRl6Drg8ui7gWsyPb1d88c", // Remplacez par l'ID de votre tarif Stripe
           },
         ],
         success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
