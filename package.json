@@ -12,7 +12,6 @@
     "@auth0/nextjs-auth0": "^4.4.2",
     "@next/third-parties": "^14.2.13",
     "@stripe/stripe-js": "^7.2.0",
-    "@transak/transak-sdk": "^3.2.0",
     "axios": "^1.8.4",
     "coinbase": "^2.0.8",
     "mongodb": "^6.15.0",

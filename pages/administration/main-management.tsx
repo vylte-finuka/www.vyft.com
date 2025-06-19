@@ -5,7 +5,6 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "../../app/page.module.css";
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
-import { TransakConfig, Transak } from "@transak/transak-sdk"; // Importer le SDK Transak
 import { useQRCode } from "next-qrcode"; // Importer la bibliothèque next-qrcode
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
@@ -137,51 +136,6 @@ useEffect(() => {
   return () => clearInterval(interval); // Nettoyage de l'intervalle
 }, []); // Exécuté une seule fois après le premier rendu
 
-  const openTransak = () => {
-    // Configuration du widget Transak
-    const transakConfig: TransakConfig = {
-      apiKey: "fb8ece67-0355-42be-926e-4e82e392e491", // Remplacez par votre clé API
-      environment: Transak.ENVIRONMENTS.STAGING, // STAGING ou PRODUCTION
-      defaultCryptoCurrency: "USDC",
-      fiatCurrency: "EUR",
-      walletAddress: "0x2DE81737589163266Ff70F89CCb12D0655C35853", // Adresse du portefeuille
-      themeColor: "1461db", // Couleur du thème
-      fiatAmount: 300, // Montant en fiat
-      network: "avaxcchain", // Réseau
-      disableWalletAddressForm: true, // Désactiver le formulaire d'adresse de portefeuille
-      defaultPaymentMethod: "credit_debit_card", // Méthode de paiement par défaut
-      paymentMethod: "credit_debit_card", // Méthode de paiement
-      productsAvailed: "BUY", // Produit disponible
-      email: "vylte-finuka@vylte-finuka.com",
-    };
-
-    const transak = new Transak(transakConfig);
-
-    // Initialiser le widget
-    transak.init();
-
-    // Écouter tous les événements
-    Transak.on("*", (data) => {
-      console.log("Événement Transak :", data);
-    });
-
-    // Déclenché lorsque l'utilisateur ferme le widget
-    Transak.on(Transak.EVENTS.TRANSAK_WIDGET_CLOSE, () => {
-      console.log("Widget Transak fermé !");
-    });
-
-    // Déclenché lorsque l'utilisateur crée une commande
-    Transak.on(Transak.EVENTS.TRANSAK_ORDER_CREATED, (orderData) => {
-      console.log("Commande créée :", orderData);
-    });
-
-    // Déclenché lorsque l'utilisateur marque le paiement comme effectué
-    Transak.on(Transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-      console.log("Paiement réussi :", orderData);
-      transak.close();
-    });
-  };
-
   useEffect(() => {
     const fetchMetricsAndCompare = async () => {
       try {
@@ -296,12 +250,6 @@ useEffect(() => {
                   </p>
                 </div>
               </div>
-              <button
-                className={styles.ActionEbuttonoveron} // Bouton pour ouvrir le widget
-                onClick={openTransak}
-              >
-                Acheter des cryptos
-              </button>
             </div>
 
             {/* Right Section */}

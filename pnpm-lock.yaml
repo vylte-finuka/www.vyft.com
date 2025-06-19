@@ -17,9 +17,6 @@ importers:
       '@stripe/stripe-js':
         specifier: ^7.2.0
         version: 7.3.0
-      '@transak/transak-sdk':
-        specifier: ^3.2.0
-        version: 3.2.0
       axios:
         specifier: ^1.8.4
         version: 1.9.0
@@ -378,9 +375,6 @@ packages:
 
   '@tybys/wasm-util@0.9.0':
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
-
-  '@types/coinbase@2.0.11':
-    resolution: {integrity: sha512-I4JRQS23z7eh4cdGz53ewG9wo/pds8Tg73nG7jjE6k4MYBQfUlVegZ1LdGkAvuWzMjtboKPbrqwf4+RLXW0lcw==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -2717,8 +2711,6 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@types/coinbase@2.0.11': {}
-
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
@@ -4970,7 +4962,6 @@ snapshots:
       '@next/third-parties': 14.2.28(next@15.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@stripe/stripe-js': 7.3.0
       '@transak/transak-sdk': 3.2.0
-      '@types/coinbase': 2.0.11
       axios: 1.9.0
       coinbase: 2.0.8
       mongodb: 6.15.0(socks@2.8.4)
