@@ -1,9 +1,0 @@
-__turbopack_load_page_chunks__("/conditions-generals-de-vente", [
-  "static/chunks/33cd1bca9b38d2fd.js",
-  "static/chunks/b6d263d4870195f7.js",
-  "static/chunks/cd38eb556aedfd9d.js",
-  "static/chunks/596df42ae77bf7e3.js",
-  "static/chunks/d50d4c033f04641e.js",
-  "static/chunks/307ff03f57ba1edc.css",
-  "static/chunks/ab2c3dfb5ba864e6.js"
-])

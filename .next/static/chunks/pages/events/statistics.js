@@ -1,9 +1,17 @@
 __turbopack_load_page_chunks__("/events/statistics", [
-  "static/chunks/2144e73058948042.js",
-  "static/chunks/8a3a2924253abad3.js",
-  "static/chunks/7b8e1421d11aba82.js",
-  "static/chunks/596df42ae77bf7e3.js",
-  "static/chunks/cd38eb556aedfd9d.js",
-  "static/chunks/307ff03f57ba1edc.css",
-  "static/chunks/a903eefb22818cae.js"
+  "static/chunks/[root-of-the-server]__17323059._.js",
+  "static/chunks/node_modules_next_dist_compiled_2d271c52._.js",
+  "static/chunks/node_modules_next_dist_shared_lib_c6e9c76d._.js",
+  "static/chunks/node_modules_next_dist_client_f131196d._.js",
+  "static/chunks/node_modules_next_dist_74abe800._.js",
+  "static/chunks/node_modules_next_5412f653._.js",
+  "static/chunks/node_modules_react_1cad9b0b._.js",
+  "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+  "static/chunks/node_modules_react-dom_f14d0471._.js",
+  "static/chunks/node_modules_axios_lib_9aa2336a._.js",
+  "static/chunks/node_modules_pako_dist_pako_esm_mjs_6f489bbd._.js",
+  "static/chunks/node_modules_b337f135._.js",
+  "static/chunks/app_77bb0f70._.css",
+  "static/chunks/pages_administration_main-management_tsx_5771e187._.js",
+  "static/chunks/pages_administration_main-management_tsx_8efb86d7._.js"
 ])

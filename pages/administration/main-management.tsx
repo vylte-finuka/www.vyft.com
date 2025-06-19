@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-head-element */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "../../app/page.module.css";
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
@@ -9,6 +9,7 @@ import { TransakConfig, Transak } from "@transak/transak-sdk"; // Importer le SD
 import { useQRCode } from "next-qrcode"; // Importer la bibliothèque next-qrcode
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import { useReactToPrint } from "react-to-print";
 
 type MetricsData = {
   yearlySteps: number;
@@ -25,6 +26,17 @@ export default function Funds_management() {
   const [storeName, setStoreName] = useState<string>(); // Nom de l'enseigne par défaut
   const { Canvas } = useQRCode(); // Utilisation de next-qrcode
   const [storeNamefact, setStoreNamefact] = useState<string>(); // Nom de l'enseigne par défaut
+  const qr1 = useRef<HTMLDivElement>(null); // Référence pour le QR code de départ
+  const QrT1 = useReactToPrint({
+    contentRef: qr1, // Utilisation de contentRef pour spécifier la référence au QR code de départ
+    documentTitle: "QR Code de départ", // Titre du document imprimé
+  });
+  
+  const qr2 = useRef<HTMLDivElement>(null); // Référence pour le QR code d'arrivée
+  const QrT2 = useReactToPrint({
+    contentRef: qr2, // Utilisation de contentRef pour spécifier la référence au QR code d'arrivée
+    documentTitle: "QR Code d'arrivée", // Titre du document imprimé
+  });
 
   useEffect(() => {
     // Simuler la récupération du nom de l'enseigne
@@ -306,7 +318,7 @@ useEffect(() => {
                   QR Code de départ :
                 </h2>
                 {storeName && (
-                  <div className={styles.qrCodeContainer}>
+                  <div ref={qr1} className={styles.qrCodeContainer}>
                     <Canvas
                       text={JSON.stringify({
                         message: "Vyft Tag on",
@@ -323,9 +335,9 @@ useEffect(() => {
                         },
                       }}
                     />
-                    <p className={styles.qrCodeLabel}>Scannez pour activer le Vyft Tag</p>
                   </div>
                 )}
+                <button onClick={QrT1} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
 
                 <h2
                   className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
@@ -334,7 +346,7 @@ useEffect(() => {
                   QR Code d&apos;arrivée :
                 </h2>
                 {storeName && (
-                  <div className={styles.qrCodeContainer}>
+                  <div ref={qr2} className={styles.qrCodeContainer}>
                     <Canvas
                       text={JSON.stringify({
                         message: "Vyft Tag off",
@@ -351,9 +363,9 @@ useEffect(() => {
                         },
                       }}
                     />
-                    <p className={styles.qrCodeLabel}>Scannez pour désactiver le Vyft Tag</p>
                   </div>
                 )}
+                <button onClick={QrT2} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
               </div>
             </div>
           </div>

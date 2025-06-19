@@ -1,3 +1,0 @@
-(globalThis.TURBOPACK=globalThis.TURBOPACK||[]).push(["object"==typeof document?document.currentScript:void 0,{26796:function(e){var{g:t,__dirname:r,m:n,e:o}=e;{"use strict";e.i(22271),Object.defineProperty(o,"__esModule",{value:!0}),Object.defineProperty(o,"HeadManagerContext",{enumerable:!0,get:function(){return t}});let t=e.r(13314)._(e.r(38653)).default.createContext({})}}}]);
-
-//# sourceMappingURL=8fb83f06ff69ab8a.js.map

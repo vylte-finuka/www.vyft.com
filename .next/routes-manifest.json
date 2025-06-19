@@ -46,6 +46,12 @@
       "namedRegex": "^/administration/settings(?:/)?$"
     },
     {
+      "page": "/cancel",
+      "regex": "^/cancel(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/cancel(?:/)?$"
+    },
+    {
       "page": "/conditions-generals-de-vente",
       "regex": "^/conditions\\-generals\\-de\\-vente(?:/)?$",
       "routeKeys": {},

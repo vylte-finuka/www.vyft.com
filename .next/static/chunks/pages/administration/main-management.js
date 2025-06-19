@@ -10,8 +10,8 @@ __turbopack_load_page_chunks__("/administration/main-management", [
   "static/chunks/node_modules_react-dom_f14d0471._.js",
   "static/chunks/node_modules_axios_lib_9aa2336a._.js",
   "static/chunks/node_modules_pako_dist_pako_esm_mjs_6f489bbd._.js",
-  "static/chunks/node_modules_b28556ee._.js",
+  "static/chunks/node_modules_b337f135._.js",
   "static/chunks/app_77bb0f70._.css",
   "static/chunks/pages_administration_main-management_tsx_5771e187._.js",
-  "static/chunks/pages_administration_main-management_tsx_c6b9a32f._.js"
+  "static/chunks/pages_administration_main-management_tsx_8efb86d7._.js"
 ])
