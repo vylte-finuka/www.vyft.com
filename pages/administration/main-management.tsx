@@ -272,7 +272,7 @@ useEffect(() => {
                         message: "Vyft Tag on",
                         enseigne: storeName,
                       })}
-                      logo={{src: "public/Authorphoto.png"}}
+                      logo={{src: "https://avatars.githubusercontent.com/u/123649969?v=4", options : { width: 88 }}}
                       options={{
                         errorCorrectionLevel: "M",
                         margin: 3,
@@ -301,7 +301,7 @@ useEffect(() => {
                         message: "Vyft Tag off",
                         enseigne: storeName,
                       })}
-                      logo={{src: "public/Authorphoto.png"}}
+                      logo={{src: "https://avatars.githubusercontent.com/u/123649969?v=4", options : { width: 88 }}}
                       options={{
                         errorCorrectionLevel: "M",
                         margin: 3,
