@@ -2,8 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import clientPromise from "./lib/mongodb"; // Import pour accéder à MongoDB
 
-const stripe = new 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", {
-  apiVersion: "2025-04-30.basil"});
+const stripe = new Stripe("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", { apiVersion: "2025-04-30.basil" });
 
 type ResponseData = {
   success: boolean;
