@@ -158,13 +158,12 @@ export default function Home() {
         return;
       }
 
-      const result = await stripe?.redirectToCheckout({ sessionId: session.sessionId });
-
-      if (result?.error) {
-        console.error("Erreur lors de la redirection vers Stripe Checkout :", result.error.message);
-      } else {
-        router.push("/success");
-      }
+// Remplacez l'appel Stripe SDK par une redirection directe
+if (session.url) {
+  window.location.href = session.url;
+} else {
+  console.error("URL de session Stripe manquante dans la réponse");
+}
     } catch (error) {
       console.error("Erreur lors du démarrage de la session Stripe :", error);
     }
