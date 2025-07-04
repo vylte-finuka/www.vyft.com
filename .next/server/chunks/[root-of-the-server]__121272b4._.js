@@ -8,12 +8,12 @@ const mod = __turbopack_context__.x("next/dist/compiled/next-server/pages-api-tu
 
 module.exports = mod;
 }}),
-"[externals]/stripe [external] (stripe, esm_import)": ((__turbopack_context__) => {
+"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
-const mod = await __turbopack_context__.y("stripe");
+const mod = await __turbopack_context__.y("axios");
 
 __turbopack_context__.n(mod);
 __turbopack_async_result__();
@@ -24,51 +24,57 @@ __turbopack_async_result__();
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
-    "default": (()=>checkSubrcriptionStatus)
+    "default": (()=>CheckSubscriptionStatus)
 });
-var __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/stripe [external] (stripe, esm_import)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
-    __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__
+    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__
 ]);
-([__TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+([__TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
-const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"](("TURBOPACK compile-time value", "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"), {
-    apiVersion: "2025-04-30.basil"
-});
-async function checkSubrcriptionStatus(req, res) {
+const NOWPAYMENTS_API_KEY = "A9A3FDG-3HRMXA6-NTYRGV4-3QZE71X";
+const NOWPAYMENTS_API_URL = "https://api.nowpayments.io/v1";
+const VYFT_PLAN_TITLE = "Vyft program Operation Partner";
+async function getPlanIdByTitle(title) {
+    try {
+        const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${NOWPAYMENTS_API_URL}/subscriptions/plans`, {
+            headers: {
+                "x-api-key": NOWPAYMENTS_API_KEY
+            }
+        });
+        const plans = response.data;
+        const found = Array.isArray(plans) ? plans.find((plan)=>plan.title === title) : null;
+        return found ? found.id : null;
+    } catch (e) {
+        console.error("Erreur lors de la récupération des plans :", e);
+        return null;
+    }
+}
+async function CheckSubscriptionStatus(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({
             error: "Méthode non autorisée"
         });
     }
-    const { userToken, auth0UserId } = req.body;
-    if (!auth0UserId) {
+    const { email } = req.body;
+    if (!email) {
         return res.status(400).json({
-            error: "auth0UserId manquant"
+            error: "Email manquant"
         });
     }
     try {
-        // Récupérer le client Stripe via auth0UserId
-        const customers = await stripe.customers.list({
-            expand: [
-                "data.subscriptions"
-            ]
-        });
-        const customer = customers.data.find((c)=>c.metadata?.auth0UserId === auth0UserId);
-        if (!customer) {
-            return res.status(200).json({
-                hasActiveSubscription: false
+        // 1. Récupérer l'ID du plan
+        const planId = await getPlanIdByTitle(VYFT_PLAN_TITLE);
+        if (!planId) {
+            return res.status(404).json({
+                error: "Plan d'abonnement introuvable."
             });
         }
-        // Vérifier si un abonnement actif existe
-        const activeSubscription = customer.subscriptions?.data.find((sub)=>sub.status === "active");
-        if (activeSubscription) {
-            return res.status(202).json({
-                hasActiveSubscription: true
-            });
-        }
-        return res.status(201).json({
-            hasActiveSubscription: false
+        // 2. (Supposé) Récupérer les abonnés du plan (l'API NowPayments ne fournit pas d'endpoint pour cela)
+        // Il faut donc gérer l'état d'abonnement côté backend lors de la souscription.
+        // Ici, on retourne une erreur explicite pour rester conforme à la spec.
+        return res.status(501).json({
+            error: "L'API NowPayments ne permet pas de vérifier directement l'abonnement d'un utilisateur. Stockez l'état d'abonnement lors de la souscription."
         });
     } catch (error) {
         console.error("Erreur lors de la vérification de l'abonnement :", error);
@@ -200,4 +206,4 @@ __turbopack_async_result__();
 
 };
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__d87e1843._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__121272b4._.js.map
