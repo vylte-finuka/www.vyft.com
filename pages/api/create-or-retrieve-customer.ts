@@ -86,7 +86,8 @@ export default async function createOrRetriveCustomer(req: NextApiRequest, res: 
 
       console.log("Session Stripe Checkout créée :", session.id);
 
-      return res.status(200).json({ sessionId: session.id, customerId: customer.id });
+      // Après la création de la session Stripe Checkout
+return res.status(200).json({ sessionId: session.id, customerId: customer.id, url: session.url });
     } else if (action === "unsubscribe") {
       console.log("Annulation d'un abonnement Stripe...");
 
