@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY as string, {
+const stripe = new Stripe("sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy", {
   apiVersion: "2025-04-30.basil",
 });
 
@@ -74,7 +74,7 @@ export default async function createOrRetriveCustomer(req: NextApiRequest, res: 
         customer: customer.id,
         line_items: [
           {
-            price: "price_1RhFZvGdfgLieo7OoT93BfQO", // Remplacez par l'ID de votre tarif Stripe
+            price: "price_1RZTCsDrg8ui7gWsp9xLVr74", // Remplacez par l'ID de votre tarif Stripe
           },
         ],
         success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
