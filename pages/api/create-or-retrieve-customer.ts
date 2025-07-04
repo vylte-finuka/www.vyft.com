@@ -74,7 +74,7 @@ export default async function createOrRetriveCustomer(req: NextApiRequest, res: 
         customer: customer.id,
         line_items: [
           {
-            price: "price_1RhCTRGdfgLieo7O9P3P0Fx4", // Remplacez par l'ID de votre tarif Stripe
+            price: "price_1RhFZvGdfgLieo7OoT93BfQO", // Remplacez par l'ID de votre tarif Stripe
           },
         ],
         success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
