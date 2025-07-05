@@ -35,7 +35,7 @@ export default function Cancel() {
             Éspérons que vous faites le bon choix !
           </h1>
           <p className={styles.bodyonwhite}>
-            Votre paiement d&apos;abonnement a été annul avec succès. Nous serions heureux de vous revoir !
+            Votre paiement d&apos;abonnement a été annulé avec succès. Nous serions heureux de vous revoir !
           </p>
           <button className={styles.ActionEbuttonoveron} onClick={handleGoBack}>
             Retour au tableau de bord
