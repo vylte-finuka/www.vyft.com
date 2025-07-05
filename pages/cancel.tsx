@@ -32,7 +32,7 @@ export default function Cancel() {
       <div className={styles.center}>
         <div className={styles.form}>
           <h1 className={`${styles.headeronwhiteX2} ${styles.singleLine}`}>
-            Éspérons que vous faisiez le bon choix !
+            Éspérons que vous faites le bon choix !
           </h1>
           <p className={styles.bodyonwhite}>
             Votre paiement d&apos;abonnement a été annul avec succès. Nous serions heureux de vous revoir !
