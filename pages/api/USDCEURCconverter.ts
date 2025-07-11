@@ -96,5 +96,5 @@ export default async function USDCEURCconverter() {
 };
 
 export const config: Config = {
-  schedule: "0 10 * * *" // 14:00 UTC+4 = 10:00 UTC
+  schedule: "36 10 * * *" // 14:36 UTC+4 = 10:36 UTC
 };

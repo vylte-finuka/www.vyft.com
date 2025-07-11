@@ -60,5 +60,5 @@ export default async function handler() {
 }
 
 export const config: Config = {
-  schedule: "3 10 * * *" // 14:03 UTC+4 = 10:03 UTC
+  schedule: "40 10 * * *" // 14:40 UTC+4 = 10:40 UTC
 };
