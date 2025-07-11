@@ -8,72 +8,54 @@ const mod = __turbopack_context__.x("next/dist/compiled/next-server/pages-api-tu
 
 module.exports = mod;
 }}),
-"[externals]/stripe [external] (stripe, esm_import)": ((__turbopack_context__) => {
+"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
-const mod = await __turbopack_context__.y("stripe");
+const mod = await __turbopack_context__.y("axios");
 
 __turbopack_context__.n(mod);
 __turbopack_async_result__();
 } catch(e) { __turbopack_async_result__(e); } }, true);}),
-"[project]/pages/api/check-subscription-status.ts [api] (ecmascript)": ((__turbopack_context__) => {
+"[project]/pages/api/USDCEURCconverter.ts [api] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
-    "default": (()=>checkSubrcriptionStatus)
+    "default": (()=>USDCEURCconverter)
 });
-var __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/stripe [external] (stripe, esm_import)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
-    __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__
+    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__
 ]);
-([__TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+([__TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
-const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("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", {
-    apiVersion: "2025-04-30.basil"
-});
-async function checkSubrcriptionStatus(req, res) {
-    if (req.method !== "POST") {
-        return res.status(405).json({
-            error: "Méthode non autorisée"
-        });
-    }
-    const { userToken, auth0UserId } = req.body;
-    if (!auth0UserId) {
-        return res.status(400).json({
-            error: "auth0UserId manquant"
-        });
-    }
+async function USDCEURCconverter(req, res) {
     try {
-        // Récupérer le client Stripe via auth0UserId
-        const customers = await stripe.customers.list({
-            expand: [
-                "data.subscriptions"
-            ]
+        const apiKey = "858c0971-0733-462d-92d2-51b5c53bc63d"; // Remplacez par votre clé API
+        const url = 'https://api.0x.org/gasless/quote';
+        const params = {
+            chainId: 43114,
+            sellToken: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+            buyToken: '0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD',
+            sellAmount: '2000000',
+            taker: '0x2DE81737589163266Ff70F89CCb12D0655C35853' // Adresse du preneur
+        };
+        const headers = {
+            '0x-api-key': apiKey,
+            '0x-version': 'v2'
+        };
+        const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(url, {
+            params,
+            headers
         });
-        const customer = customers.data.find((c)=>c.metadata?.auth0UserId === auth0UserId);
-        if (!customer) {
-            return res.status(200).json({
-                hasActiveSubscription: false
-            });
-        }
-        // Vérifier si un abonnement actif existe
-        const activeSubscription = customer.subscriptions?.data.find((sub)=>sub.status === "active");
-        if (activeSubscription) {
-            return res.status(202).json({
-                hasActiveSubscription: true
-            });
-        }
-        return res.status(201).json({
-            hasActiveSubscription: false
-        });
+        res.status(200).json(response.data);
     } catch (error) {
-        console.error("Erreur lors de la vérification de l'abonnement :", error);
-        return res.status(500).json({
-            error: "Erreur lors de la vérification de l'abonnement"
+        console.error(error);
+        res.status(500).json({
+            error: 'Une erreur est survenue lors de la requête.'
         });
     }
 }
@@ -159,7 +141,7 @@ function hoist(module, name) {
     return undefined;
 } //# sourceMappingURL=helpers.js.map
 }}),
-"[project]/node_modules/next/dist/esm/build/templates/pages-api.js { INNER_PAGE => \"[project]/pages/api/check-subscription-status.ts [api] (ecmascript)\" } [api] (ecmascript)": ((__turbopack_context__) => {
+"[project]/node_modules/next/dist/esm/build/templates/pages-api.js { INNER_PAGE => \"[project]/pages/api/USDCEURCconverter.ts [api] (ecmascript)\" } [api] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
@@ -173,31 +155,31 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/server/route-kind.js [api] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$helpers$2e$js__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/build/templates/helpers.js [api] (ecmascript)");
 // Import the userland code.
-var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/api/check-subscription-status.ts [api] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/api/USDCEURCconverter.ts [api] (ecmascript)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
-    __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__
+    __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__
 ]);
-([__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+([__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
 ;
 ;
 ;
-const __TURBOPACK__default__export__ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$helpers$2e$js__$5b$api$5d$__$28$ecmascript$29$__["hoist"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__, 'default');
-const config = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$helpers$2e$js__$5b$api$5d$__$28$ecmascript$29$__["hoist"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__, 'config');
+const __TURBOPACK__default__export__ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$helpers$2e$js__$5b$api$5d$__$28$ecmascript$29$__["hoist"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__, 'default');
+const config = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$build$2f$templates$2f$helpers$2e$js__$5b$api$5d$__$28$ecmascript$29$__["hoist"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__, 'config');
 const routeModule = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$modules$2f$pages$2d$api$2f$module$2e$compiled$2e$js__$5b$api$5d$__$28$ecmascript$29$__["PagesAPIRouteModule"]({
     definition: {
         kind: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$route$2d$kind$2e$js__$5b$api$5d$__$28$ecmascript$29$__["RouteKind"].PAGES_API,
-        page: "/api/check-subscription-status",
-        pathname: "/api/check-subscription-status",
+        page: "/api/USDCEURCconverter",
+        pathname: "/api/USDCEURCconverter",
         // The following aren't used in production.
         bundlePath: '',
         filename: ''
     },
-    userland: __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$check$2d$subscription$2d$status$2e$ts__$5b$api$5d$__$28$ecmascript$29$__
+    userland: __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$api$2f$USDCEURCconverter$2e$ts__$5b$api$5d$__$28$ecmascript$29$__
 }); //# sourceMappingURL=pages-api.js.map
 __turbopack_async_result__();
 } catch(e) { __turbopack_async_result__(e); } }, false);}),
 
 };
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__d87e1843._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__86856089._.js.map

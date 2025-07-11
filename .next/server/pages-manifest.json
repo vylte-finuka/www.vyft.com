@@ -1,5 +1,1 @@
-{
-  "/api/check-subscription-status": "pages/api/check-subscription-status.js",
-  "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
-  "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js"
-}
+{}
