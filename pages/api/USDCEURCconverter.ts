@@ -1,9 +1,20 @@
 import type { Config } from "@netlify/functions";
 import { NextApiResponse, NextApiRequest } from "next";
 import axios from "axios";
-import { createWalletClient, http, parseSignature, PrivateKeyAccount } from "viem";
+import { createWalletClient, http, parseSignature } from "viem";
 import { avalanche } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
+
+function stringifyBigInts(obj: any): any {
+  if (typeof obj === "bigint") return obj.toString();
+  if (Array.isArray(obj)) return obj.map(stringifyBigInts);
+  if (obj && typeof obj === "object") {
+    return Object.fromEntries(
+      Object.entries(obj).map(([k, v]) => [k, stringifyBigInts(v)])
+    );
+  }
+  return obj;
+}
 
 export default async function USDCEURCconverter(
   req: NextApiRequest,
@@ -90,8 +101,10 @@ export default async function USDCEURCconverter(
       chainId: chainId.toString(), // Convertir en chaîne
     };
 
+    const payloadSafe = stringifyBigInts(payload);
+
     // 5. Soumettre la transaction
-    const submitResponse = await axios.post(submitUrl, payload, { headers });
+    const submitResponse = await axios.post(submitUrl, payloadSafe, { headers });
     res.status(200).json(submitResponse.data);
   } catch (error) {
     console.error(error);
@@ -116,5 +129,5 @@ export default async function USDCEURCconverter(
 }
 
 export const config: Config = {
-  schedule: "40 15 * * *" // 19:40 UTC+4 = 15:40 UTC
+  schedule: "45 18 * * *"
 };

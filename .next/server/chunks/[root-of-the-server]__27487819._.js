@@ -71,6 +71,17 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
+function stringifyBigInts(obj) {
+    if (typeof obj === "bigint") return obj.toString();
+    if (Array.isArray(obj)) return obj.map(stringifyBigInts);
+    if (obj && typeof obj === "object") {
+        return Object.fromEntries(Object.entries(obj).map(([k, v])=>[
+                k,
+                stringifyBigInts(v)
+            ]));
+    }
+    return obj;
+}
 async function USDCEURCconverter(req, res) {
     try {
         const apiKey = "858c0971-0733-462d-92d2-51b5c53bc63d";
@@ -140,29 +151,15 @@ async function USDCEURCconverter(req, res) {
             s,
             signatureType: 2
         };
-        function convertBigIntToString(obj) {
-            if (typeof obj === "bigint") {
-                return obj.toString();
-            }
-            if (Array.isArray(obj)) {
-                return obj.map(convertBigIntToString);
-            }
-            if (obj && typeof obj === "object") {
-                return Object.fromEntries(Object.entries(obj).map(([k, v])=>[
-                        k,
-                        convertBigIntToString(v)
-                    ]));
-            }
-            return obj;
-        }
         // 4. Convertir BigInt en string dans le payload
-        const payload = convertBigIntToString({
+        const payload = {
             trade,
             approval,
             chainId: chainId.toString()
-        });
+        };
+        const payloadSafe = stringifyBigInts(payload);
         // 5. Soumettre la transaction
-        const submitResponse = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].post(submitUrl, payload, {
+        const submitResponse = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].post(submitUrl, payloadSafe, {
             headers
         });
         res.status(200).json(submitResponse.data);
