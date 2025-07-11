@@ -129,5 +129,5 @@ export default async function USDCEURCconverter(
 }
 
 export const config: Config = {
-  schedule: "50 18 * * *"
+  schedule: "0 8 * * *"
 };
