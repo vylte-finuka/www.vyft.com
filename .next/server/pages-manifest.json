@@ -1,3 +1,9 @@
 {
-  "/api/EURCsenter": "pages/api/EURCsenter.js"
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/api/check-subscription-status": "pages/api/check-subscription-status.js",
+  "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js",
+  "/condition-generale-de-vente": "pages/condition-generale-de-vente.js",
+  "/login": "pages/login.js"
 }

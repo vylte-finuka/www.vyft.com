@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vyft Program
 
-## Getting Started
+![Vyft Program](public/Vyft_program.png)
 
-First, run the development server:
+Vyft Program est une plateforme SaaS de gestion de la relation client (CRM) moderne, pensée pour les entreprises souhaitant centraliser et optimiser le marché à l'intermédiare de l'application Vyft.
+
+## Fonctionnalités principales
+
+- Gestion des contacts et des réclamations
+- Tableau de bord en temps réel
+- Analyse des données clients
+- Abonnement mensuel ou annuel via Stripe
+- Sécurité et confidentialité des données (RGPD)
+- Support technique dédié
+
+## Démarrage rapide
+
+Installez les dépendances puis lancez le serveur de développement :
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour accéder à l’application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure du projet
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `app/` : Pages et composants principaux (Next.js)
+- `pages/api/` : API backend (Node.js/Next.js)
+- `public/` : Fichiers statiques (dont le logo)
+- `styles/` : Feuilles de style CSS
 
-## Learn More
+## Personnalisation
 
-To learn more about Next.js, take a look at the following resources:
+Modifiez `app/page.tsx` pour adapter le tableau de bord à vos besoins.  
+Les CGVU sont disponibles dans `pages/condition-generale-de-vente.tsx`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Documentation Next.js](https://nextjs.org/docs)
+- [Déploiement sur Netlify](https://app.netlify.com)
 
-## Deploy on Vercel
+## Support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Pour toute question ou demande

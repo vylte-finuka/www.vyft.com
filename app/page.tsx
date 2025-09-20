@@ -331,44 +331,51 @@ if (session.url) {
                 Dernières réclamations :
               </h2>
               {transactions.length > 0 ? (
-                transactions.map((transaction, index) => {
-                  let formattedDate = "Date invalide";
-                  let formattedTime = "Heure invalide";
+                // Trier les transactions par date décroissante avant de les afficher
+                [...transactions]
+                  .sort((a, b) => {
+                    const dateA = new Date(a.time).getTime();
+                    const dateB = new Date(b.time).getTime();
+                    return dateB - dateA; // Plus récent en premier
+                  })
+                  .map((transaction, index) => {
+                    let formattedDate = "Date invalide";
+                    let formattedTime = "Heure invalide";
 
-                  if (transaction.time) {
-                    try {
-                      const rawDate = new Date(transaction.time);
-                      if (!isNaN(rawDate.getTime())) {
-                        formattedDate = rawDate.toLocaleDateString("fr-FR", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        });
-                        formattedTime = rawDate.toLocaleTimeString("fr-FR", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        });
+                    if (transaction.time) {
+                      try {
+                        const rawDate = new Date(transaction.time);
+                        if (!isNaN(rawDate.getTime())) {
+                          formattedDate = rawDate.toLocaleDateString("fr-FR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          });
+                          formattedTime = rawDate.toLocaleTimeString("fr-FR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          });
+                        }
+                      } catch {
+                        // Les valeurs par défaut restent "Date invalide" et "Heure invalide"
                       }
-                    } catch {
-                      // Les valeurs par défaut restent "Date invalide" et "Heure invalide"
                     }
-                  }
 
-                  return (
-                    <div key={index}>
-                      <p className={styles.date}>{formattedDate}</p>
-                      <div className={styles.ActionEbutton}>
-                        <p className={styles.ActionE}>
-                          <p className={styles.time}>{formattedTime}</p>
-                          <span className={styles.personName}>{transaction.name}</span>
-                          <span className={styles.personDetails}>
-                            {transaction.steps} pas • {transaction.distance} mètres • 🟠 en attente
-                          </span>
-                        </p>
+                    return (
+                      <div key={index}>
+                        <p className={styles.date}>{formattedDate}</p>
+                        <div className={styles.ActionEbutton}>
+                          <p className={styles.ActionE}>
+                            <p className={styles.time}>{formattedTime}</p>
+                            <span className={styles.personName}>{transaction.name}</span>
+                            <span className={styles.personDetails}>
+                              {transaction.steps} pas • {transaction.distance} mètres • 🟠 en attente
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })
+                    );
+                  })
               ) : (
                 <p className={styles.date}>Pas de visiteurs pour l&apos;instant.</p>
               )}
