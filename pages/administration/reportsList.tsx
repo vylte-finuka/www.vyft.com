@@ -11,7 +11,10 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer"; // <-- Utilise import ESM
 
-const PDFDownloadButton = dynamic(() => import("./PDFDownloadButton"), { ssr: false });
+const PDFDownloadButton = dynamic(
+  () => import("../../app/components/PDFDownloadButton"),
+  { ssr: false }
+);
 
 const pdfStyles = StyleSheet.create({
   page: {
