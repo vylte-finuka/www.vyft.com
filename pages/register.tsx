@@ -14,12 +14,17 @@ const capitalizeWords = (value: string) => {
     .join(" ");
 };
 
-const ModalMarkdown = ({ visible, onClose, markdown }) => {
+type ModalMarkdownProps = {
+  visible: boolean;
+  onClose: () => void;
+  markdown: string;
+};
+const ModalMarkdown: React.FC<ModalMarkdownProps> = ({ visible, onClose, markdown }) => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
     if (visible && scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
+      (scrollRef.current as HTMLDivElement).scrollTop = 0;
     }
   }, [visible]);
 
@@ -285,7 +290,11 @@ const Register = () => {
   };
 
   // Composant Checkbox personnalisé
-  const CustomCheckbox = ({ checked, onChange }) => (
+  type CustomCheckboxProps = {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+  };
+  const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onChange }) => (
     <div
       onClick={() => onChange(!checked)}
       style={{
