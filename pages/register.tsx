@@ -58,7 +58,6 @@ const ModalMarkdown = ({ visible, onClose, markdown }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <ReactMarkdown
-          children={markdown}
           components={{
             h1: ({ node, ...props }) => (
               <h1
@@ -115,7 +114,9 @@ const ModalMarkdown = ({ visible, onClose, markdown }) => {
               />
             ),
           }}
-        />
+        >
+          {markdown}
+        </ReactMarkdown>
         <button
           onClick={onClose}
           style={{
