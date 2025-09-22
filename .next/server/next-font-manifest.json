@@ -9,6 +9,7 @@
   },
   "appUsingSizeAdjust": true,
   "pages": {
+    "/administration/reports": [],
     "/login": []
   },
   "pagesUsingSizeAdjust": false

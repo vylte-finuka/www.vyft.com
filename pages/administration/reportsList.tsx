@@ -11,6 +11,8 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer"; // <-- Utilise import ESM
 
+const PDFDownloadButton = dynamic(() => import("./PDFDownloadButton"), { ssr: false });
+
 const pdfStyles = StyleSheet.create({
   page: {
     backgroundColor: "#DBDFE0",
@@ -153,7 +155,7 @@ export default function ReportsList({
               Période : {period}
             </p>
           </div>
-          <PDFDownloadLink
+          <PDFDownloadButton
             document={<CustomReportPDF reportType={reportType} period={period} data={data} />}
             fileName={`vyft-rapport-${reportType}.pdf`}
             style={{
@@ -166,9 +168,7 @@ export default function ReportsList({
               textDecoration: "none",
               marginLeft: 24,
             }}
-          >
-            {({ loading }) => (loading ? "Génération..." : "Télécharger PDF")}
-          </PDFDownloadLink>
+          />
         </li>
       </ul>
     </section>
