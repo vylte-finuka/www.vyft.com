@@ -22,7 +22,6 @@ __turbopack_context__.v({
   "body": "page-module__E0kJGG__body",
   "bodyattract": "page-module__E0kJGG__bodyattract",
   "bodycar": "page-module__E0kJGG__bodycar",
-  "bodycar1": "page-module__E0kJGG__bodycar1",
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
@@ -114,7 +113,7 @@ const Footer = ()=>{
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                     href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
-                    children: "Conditions générales de vente et d'utilisation"
+                    children: "Conditions Générales de Vente et d'Utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer.tsx",
                     lineNumber: 11,
@@ -719,9 +718,10 @@ __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __tur
     "default": (()=>Management)
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [ssr] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer.tsx [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [ssr] (ecmascript)"); // Assurez-vous que l'importation de Navbar est correcte
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [ssr] (ecmascript)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
     __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__
 ]);
@@ -731,53 +731,420 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
+;
 function Management() {
+    const [is2FAEnabled, setIs2FAEnabled] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const handle2FAToggle = ()=>{
+        setIs2FAEnabled((prev)=>!prev);
+        alert(is2FAEnabled ? "Double facteur désactivé." : "Double facteur activé. Veuillez suivre les instructions envoyées par email.");
+    };
+    const handleShowLoginHistory = ()=>{
+        alert("Historique de connexions : fonctionnalité à venir.");
+    };
+    const handleShowApiKey = ()=>{
+        alert("Clé API : fonctionnalité à venir.");
+    };
+    const handleAccountLock = ()=>{
+        alert("Verrouillage du compte : fonctionnalité à venir.");
+    };
+    const handleCreateLoginAlerts = ()=>{
+        alert("Créer des alertes de connexions : fonctionnalité à venir.");
+    };
+    const handleThirdPartyApp = ()=>{
+        alert("Application tiers : fonctionnalité à venir.");
+    };
+    // Fiscalité
+    const handleTaxDocs = ()=>{
+        alert("Suivi des documents fiscaux : fonctionnalité à venir.");
+    };
+    const handleAddOrEditTaxNumber = ()=>{
+        alert("Ajouter ou modifier un numéro fiscal : fonctionnalité à venir.");
+    };
+    const handleDownloadInvoices = ()=>{
+        alert("Télécharger les factures : fonctionnalité à venir.");
+    };
+    const handleVATSettings = ()=>{
+        alert("Paramètres de TVA : fonctionnalité à venir.");
+    };
+    const handleFiscalExport = ()=>{
+        alert("Exporter les données fiscales : fonctionnalité à venir.");
+    };
+    // Couleur unique pour tous les boutons secondaires (vert) et primaire (gris)
+    const secondaryBtnColor = "#1a7f6b";
+    const primaryBtnColor = "#444444";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["Fragment"], {
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].container2,
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("head", {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("title", {
-                        children: "En construction - Vyft program: Manage your own market."
+                        children: "Paramètres - Vyft program: Manage your own market."
                     }, void 0, false, {
                         fileName: "[project]/pages/administration/settings.tsx",
-                        lineNumber: 14,
+                        lineNumber: 68,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/administration/settings.tsx",
-                    lineNumber: 13,
+                    lineNumber: 67,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/pages/administration/settings.tsx",
-                    lineNumber: 16,
+                    lineNumber: 70,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("main", {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].main,
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
-                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhitemessage,
-                        children: "Cette fonctionnalité n'est pas encore disponible."
-                    }, void 0, false, {
-                        fileName: "[project]/pages/administration/settings.tsx",
-                        lineNumber: 18,
-                        columnNumber: 21
-                    }, this)
-                }, void 0, false, {
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
+                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhiteX2,
+                            children: "Paramètres"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/administration/settings.tsx",
+                            lineNumber: 72,
+                            columnNumber: 21
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
+                            style: {
+                                background: "#fff",
+                                borderRadius: 24,
+                                padding: 32,
+                                marginBottom: 32,
+                                width: "100%",
+                                maxWidth: 600,
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.07)"
+                            },
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                    children: "Sécurité"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 83,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                    children: "Protégez votre compte et auditez vos connexions."
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 84,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                    style: {
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 16,
+                                        marginTop: 16
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handle2FAToggle,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: is2FAEnabled ? secondaryBtnColor : primaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: is2FAEnabled ? "Désactiver le double facteur" : "Activer le double facteur 2FA"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 93,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleShowLoginHistory,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Historique de connexions"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 111,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleShowApiKey,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Clé API"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 129,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleAccountLock,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Verrouillage du compte"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 147,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleCreateLoginAlerts,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Créer des alertes de connexions"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 165,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleThirdPartyApp,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Application tiers"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 183,
+                                            columnNumber: 29
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 87,
+                                    columnNumber: 25
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/administration/settings.tsx",
+                            lineNumber: 74,
+                            columnNumber: 21
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
+                            style: {
+                                background: "#fff",
+                                borderRadius: 24,
+                                padding: 32,
+                                marginBottom: 32,
+                                width: "100%",
+                                maxWidth: 600,
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.07)"
+                            },
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                    children: "Fiscalité"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 213,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                    children: "Gérez vos obligations fiscales et vos documents administratifs."
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 214,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                    style: {
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 16,
+                                        marginTop: 16
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleTaxDocs,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Suivi des documents fiscaux"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 223,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleAddOrEditTaxNumber,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Ajouter ou modifier un numéro fiscal"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 241,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleDownloadInvoices,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Télécharger les factures"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 259,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleVATSettings,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Paramètres de TVA"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 277,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                                            onClick: handleFiscalExport,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: secondaryBtnColor,
+                                                color: "#fff",
+                                                borderRadius: 18,
+                                                padding: "12px 32px",
+                                                fontSize: 16,
+                                                cursor: "pointer",
+                                                width: 260,
+                                                fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
+                                                border: "none",
+                                                transition: "background 0.2s"
+                                            },
+                                            children: "Exporter les données fiscales"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/settings.tsx",
+                                            lineNumber: 295,
+                                            columnNumber: 29
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/administration/settings.tsx",
+                                    lineNumber: 217,
+                                    columnNumber: 25
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/administration/settings.tsx",
+                            lineNumber: 204,
+                            columnNumber: 21
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/pages/administration/settings.tsx",
-                    lineNumber: 17,
+                    lineNumber: 71,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/pages/administration/settings.tsx",
-                    lineNumber: 22,
+                    lineNumber: 316,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/administration/settings.tsx",
-            lineNumber: 12,
+            lineNumber: 66,
             columnNumber: 13
         }, this)
     }, void 0, false);

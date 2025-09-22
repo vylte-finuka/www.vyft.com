@@ -476,7 +476,6 @@ __turbopack_context__.v({
   "body": "page-module__E0kJGG__body",
   "bodyattract": "page-module__E0kJGG__bodyattract",
   "bodycar": "page-module__E0kJGG__bodycar",
-  "bodycar1": "page-module__E0kJGG__bodycar1",
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
@@ -568,7 +567,7 @@ const Footer = ()=>{
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
                     href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
-                    children: "Conditions générales de vente et d'utilisation"
+                    children: "Conditions Générales de Vente et d'Utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer.tsx",
                     lineNumber: 11,
@@ -1157,69 +1156,323 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 /* eslint-disable @next/next/no-head-element */ __turbopack_context__.s({
     "default": (()=>Reports)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dynamic$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dynamic.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-secure-storage/dist/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [client] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer.tsx [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [client] (ecmascript)"); // Assurez-vous que l'importation de Navbar est correcte
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$chartjs$2d$2$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-chartjs-2/dist/index.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$chart$2e$js$2f$auto$2f$auto$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/chart.js/auto/auto.js [client] (ecmascript) <module evaluation>");
+;
+;
+var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
 ;
 ;
+;
+;
+;
+;
+;
+const ReportsList = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dynamic$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"])(()=>__turbopack_context__.r("[project]/pages/administration/reportsList.tsx [client] (ecmascript, next/dynamic entry, async loader)")(__turbopack_context__.i), {
+    loadableGenerated: {
+        modules: [
+            "[project]/pages/administration/reportsList.tsx [client] (ecmascript, next/dynamic entry)"
+        ]
+    },
+    ssr: false
+});
+_c = ReportsList;
 function Reports() {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].container2,
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("head", {
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("title", {
-                        children: "En construction - Vyft program: Manage your own market."
-                    }, void 0, false, {
-                        fileName: "[project]/pages/administration/reports.tsx",
-                        lineNumber: 14,
-                        columnNumber: 21
-                    }, this)
+    _s();
+    const [reportData, setReportData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])({
+        totalSteps: 0,
+        totalDistance: 0,
+        totalRevenue: 0,
+        growth: "0 %",
+        daily: []
+    });
+    const [period, setPeriod] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [metricsHistory, setMetricsHistory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Reports.useEffect": ()=>{
+            const fetchData = {
+                "Reports.useEffect.fetchData": async ()=>{
+                    try {
+                        const userToken = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].getItem("userToken");
+                        if (!userToken) {
+                            setLoading(false);
+                            return;
+                        }
+                        // Récupérer les infos utilisateur depuis Auth0
+                        const userInfoResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/userinfo`, {
+                            headers: {
+                                Authorization: `Bearer ${userToken}`,
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        const userId = userInfoResponse.data.sub;
+                        // Récupérer les métadonnées utilisateur (enseigne et stripeCustomerId)
+                        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/api/v2/users/${userId}`, {
+                            headers: {
+                                Authorization: `Bearer ${userToken}`,
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        const denomination = response.data?.user_metadata?.denomination?.trim();
+                        const stripeCustomerId = response.data?.user_metadata?.subid?.trim();
+                        if (!denomination || !stripeCustomerId) {
+                            setLoading(false);
+                            return;
+                        }
+                        // Récupérer les vraies données depuis l'API
+                        const apiResponse = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`);
+                        const data = await apiResponse.json();
+                        if (data.success && data.data) {
+                            // Générer la période dynamique sur 7 jours glissants avec format JJ/MM/AAAA
+                            const formatDate = {
+                                "Reports.useEffect.fetchData.formatDate": (date)=>date.toLocaleDateString("fr-FR", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric"
+                                    })
+                            }["Reports.useEffect.fetchData.formatDate"];
+                            // Générer les 7 derniers jours (du plus ancien au plus récent)
+                            const days = [];
+                            for(let i = 6; i >= 0; i--){
+                                const d = new Date();
+                                d.setDate(d.getDate() - i);
+                                days.push(formatDate(d));
+                            }
+                            // Associer les données metricsHistory aux bons jours (sinon 0)
+                            let history = Array.isArray(data.data.metricsHistory) ? [
+                                ...data.data.metricsHistory
+                            ] : [];
+                            const dailyHistory = days.map({
+                                "Reports.useEffect.fetchData.dailyHistory": (dateStr)=>{
+                                    const found = history.find({
+                                        "Reports.useEffect.fetchData.dailyHistory.found": (h)=>formatDate(new Date(h.date)) === dateStr
+                                    }["Reports.useEffect.fetchData.dailyHistory.found"]);
+                                    return {
+                                        date: dateStr,
+                                        steps: found ? found.dailySteps : 0,
+                                        distance: found ? found.dailyDistance : 0,
+                                        revenue: found ? found.dailyRevenue : 0
+                                    };
+                                }
+                            }["Reports.useEffect.fetchData.dailyHistory"]);
+                            // Période affichée
+                            setPeriod(`${days[0]} au ${days[6]}`);
+                            setReportData({
+                                totalSteps: data.data.yearlySteps,
+                                totalDistance: data.data.totalDistance,
+                                totalRevenue: data.data.estimatedRevenue,
+                                growth: data.data.growth,
+                                daily: dailyHistory
+                            });
+                            setMetricsHistory(dailyHistory.map({
+                                "Reports.useEffect.fetchData": (h)=>({
+                                        date: h.date,
+                                        dailyRevenue: h.revenue,
+                                        dailySteps: h.steps,
+                                        dailyDistance: h.distance
+                                    })
+                            }["Reports.useEffect.fetchData"]));
+                        }
+                    } catch (error) {
+                        console.error("Erreur lors de la récupération des données :", error);
+                    } finally{
+                        setLoading(false);
+                    }
+                }
+            }["Reports.useEffect.fetchData"];
+            fetchData();
+            const interval = setInterval(fetchData, 20000); // 20 secondes
+            return ({
+                "Reports.useEffect": ()=>clearInterval(interval)
+            })["Reports.useEffect"];
+        }
+    }["Reports.useEffect"], []);
+    // Graphique basé sur les vraies données
+    const chartData = {
+        labels: metricsHistory.map((h)=>h.date),
+        datasets: [
+            {
+                label: "Bénéfice estimé (€)",
+                data: metricsHistory.map((h)=>h.dailyRevenue),
+                backgroundColor: "#1a7f6b",
+                borderRadius: 8
+            },
+            {
+                label: "Pas (k)",
+                data: metricsHistory.map((h)=>Math.round(h.dailySteps / 1000)),
+                backgroundColor: "#444444",
+                borderRadius: 8
+            }
+        ]
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].container2,
+        style: {
+            fontFamily: "BR Sonoma, BRSonoma, sans-serif"
+        },
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("head", {
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("title", {
+                    children: "Rapports - Vyft program: Manage your own market."
                 }, void 0, false, {
                     fileName: "[project]/pages/administration/reports.tsx",
-                    lineNumber: 13,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                    fileName: "[project]/pages/administration/reports.tsx",
-                    lineNumber: 16,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].main,
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhitemessage,
-                        children: "Cette fonctionnalité n'est pas encore disponible."
-                    }, void 0, false, {
-                        fileName: "[project]/pages/administration/reports.tsx",
-                        lineNumber: 18,
-                        columnNumber: 21
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/pages/administration/reports.tsx",
-                    lineNumber: 17,
-                    columnNumber: 17
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                    fileName: "[project]/pages/administration/reports.tsx",
-                    lineNumber: 22,
-                    columnNumber: 17
+                    lineNumber: 159,
+                    columnNumber: 9
                 }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/pages/administration/reports.tsx",
-            lineNumber: 12,
-            columnNumber: 13
-        }, this)
-    }, void 0, false);
+            }, void 0, false, {
+                fileName: "[project]/pages/administration/reports.tsx",
+                lineNumber: 158,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                fileName: "[project]/pages/administration/reports.tsx",
+                lineNumber: 161,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].main,
+                style: {
+                    fontFamily: "BR Sonoma, BRSonoma, sans-serif"
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].header,
+                        style: {
+                            fontFamily: "BR Sonoma, BRSonoma, sans-serif"
+                        },
+                        children: "Rapports automatiques"
+                    }, void 0, false, {
+                        fileName: "[project]/pages/administration/reports.tsx",
+                        lineNumber: 163,
+                        columnNumber: 9
+                    }, this),
+                    !loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ReportsList, {
+                        reportType: "weekly",
+                        period: period,
+                        data: reportData
+                    }, void 0, false, {
+                        fileName: "[project]/pages/administration/reports.tsx",
+                        lineNumber: 167,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                        style: {
+                            background: "#fff",
+                            borderRadius: 24,
+                            padding: 32,
+                            width: "100%",
+                            maxWidth: 700,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.07)"
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                children: "Aperçu graphique"
+                            }, void 0, false, {
+                                fileName: "[project]/pages/administration/reports.tsx",
+                                lineNumber: 179,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                style: {
+                                    background: "#DBDFE0",
+                                    borderRadius: 18,
+                                    padding: 18
+                                },
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$chartjs$2d$2$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Bar"], {
+                                    data: chartData,
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                display: true,
+                                                labels: {
+                                                    color: "#222",
+                                                    font: {
+                                                        family: "BR Sonoma Semibold",
+                                                        size: 14
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            x: {
+                                                ticks: {
+                                                    color: "#444444",
+                                                    font: {
+                                                        family: "BR Sonoma Semibold"
+                                                    }
+                                                },
+                                                grid: {
+                                                    color: "#e0dbdd"
+                                                }
+                                            },
+                                            y: {
+                                                ticks: {
+                                                    color: "#1a7f6b",
+                                                    font: {
+                                                        family: "BR Sonoma Semibold"
+                                                    }
+                                                },
+                                                grid: {
+                                                    color: "#e0dbdd"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    height: 120
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/administration/reports.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/administration/reports.tsx",
+                                lineNumber: 180,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/administration/reports.tsx",
+                        lineNumber: 169,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/administration/reports.tsx",
+                lineNumber: 162,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                fileName: "[project]/pages/administration/reports.tsx",
+                lineNumber: 210,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/pages/administration/reports.tsx",
+        lineNumber: 157,
+        columnNumber: 5
+    }, this);
 }
-_c = Reports;
-var _c;
-__turbopack_context__.k.register(_c, "Reports");
+_s(Reports, "0VzOWDvfSmy009ZFCmL/6ti+ywg=");
+_c1 = Reports;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "ReportsList");
+__turbopack_context__.k.register(_c1, "Reports");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

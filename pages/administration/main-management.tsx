@@ -309,13 +309,13 @@ export default function Funds_management() {
                       ? `${convert(metrics.monthlyInvestment)} ${currency}`
                       : "0.00 " + currency}
                   </p>
-                  <h3 className={styles.body}>Moyenne possible de recette en une journée :</h3>
+                  <h3 className={styles.body}>Moyenne estimée de bénéfice en une journée :</h3>
                   <p className={styles.body}>
                     {metrics && metrics.dailyRevenue !== undefined && metrics.dailyRevenue !== null
                       ? `${convert(metrics.dailyRevenue)} ${currency}`
                       : "0.00 " + currency}
                   </p>
-                  <h3 className={styles.body}>Pourcentage de croissance :</h3>
+                  <h3 className={styles.body}>Pourcentage de croissance dans la semaine :</h3>
                   <p
                     className={
                       metrics && metrics.growth
@@ -331,7 +331,7 @@ export default function Funds_management() {
                   </p>
                 </div>
                 <div className={styles.right}>
-                  <h2 className={styles.bodycar1}>Usage de Vyft™</h2>
+                  <h2 className={styles.bodycar}>Usage de Vyft™</h2>
                   <h3 className={styles.body}>Total des pas de tout clients en 24 heures :</h3>
                   <p className={styles.body}>
                     {metrics ? `${metrics.dailySteps} pas` : "N/A"}

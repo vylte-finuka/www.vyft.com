@@ -226,16 +226,6 @@ async function Vyfthealth_proc(req, res) {
                 console.log("Aucune entrée trouvée dans la base de données. Valeur réinitialisée à 0.");
                 await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
             }
-            // Récupération de l'historique des métriques pour le calcul de la moyenne et de la croissance
-            const metricsHistory = await collection.find({
-                enseigne: {
-                    $regex: `^${enseigneFilter.trim()}$`,
-                    $options: "i"
-                }
-            }).sort({
-                date: -1
-            }).limit(7) // Limiter à 7 jours pour le calcul de la moyenne sur 7 jours
-            .toArray();
             // Calcul dynamique du prix du mètre selon la moyenne réelle
             const count = sensorData.length;
             const totalDistanceForAvg = sensorData.reduce((sum, item)=>sum + (parseFloat(item.distance) || 0), 0);
@@ -251,6 +241,82 @@ async function Vyfthealth_proc(req, res) {
             });
             const stepmeterPrice = stepmeterPriceObj.data[0]?.unit_amount ?? 0; // en centimes
             const GLOBAL_STEP_PRICE = stepmeterPrice / 100; // en euros
+            // Récupération de l'historique des métriques pour le calcul de la moyenne et de la croissance
+            const metricsHistory = await collection.aggregate([
+                {
+                    $match: {
+                        enseigne: {
+                            $regex: `^${enseigneFilter.trim()}$`,
+                            $options: "i"
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                        dateObj: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        {
+                                            $type: "$date"
+                                        },
+                                        "date"
+                                    ]
+                                },
+                                "$date",
+                                {
+                                    $toDate: "$date"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            year: {
+                                $year: "$dateObj"
+                            },
+                            month: {
+                                $month: "$dateObj"
+                            },
+                            day: {
+                                $dayOfMonth: "$dateObj"
+                            }
+                        },
+                        date: {
+                            $first: "$dateObj"
+                        },
+                        dailySteps: {
+                            $sum: "$steps"
+                        },
+                        dailyDistance: {
+                            $sum: {
+                                $toDouble: "$distance"
+                            }
+                        }
+                    }
+                },
+                {
+                    $sort: {
+                        date: -1
+                    }
+                },
+                {
+                    $limit: 7
+                }
+            ]).toArray();
+            const metricsHistoryWithRevenue = metricsHistory.map((h)=>{
+                const steps = h.dailySteps || 0;
+                const distance = h.dailyDistance || 0;
+                const dailyRevenue = steps * GLOBAL_STEP_PRICE + distance * GLOBAL_METER_PRICE;
+                return {
+                    date: h.date,
+                    dailySteps: h.dailySteps,
+                    dailyDistance: h.dailyDistance,
+                    dailyRevenue: Number(dailyRevenue.toFixed(2))
+                };
+            });
             // Récupérer les 14 derniers jours pour comparer 7 derniers jours vs 7 jours précédents
             const metrics14Days = await collection.find({
                 enseigne: {
@@ -279,8 +345,8 @@ async function Vyfthealth_proc(req, res) {
             } else {
                 growth = "0 %";
             }
-            // Moyenne journalière sur 7 jours
-            const avgRevenue = dailyRevenues14.slice(0, 7).length > 0 ? (sumLast7 / dailyRevenues14.slice(0, 7).length).toFixed(2) : "0";
+            // Moyenne journalière sur 7 jours glissants
+            const avgRevenue = dailyRevenues14.slice(0, 7).length > 0 ? (dailyRevenues14.slice(0, 7).reduce((sum, v)=>sum + v, 0) / dailyRevenues14.slice(0, 7).length).toFixed(2) : "0";
             // Calcul de la recette du jour (basée sur les pas et la distance du dernier jour)
             const dailyRevenue = dailyRevenues14.length > 0 ? dailyRevenues14[0].toFixed(2) : "0";
             res.status(200).json({
@@ -296,7 +362,8 @@ async function Vyfthealth_proc(req, res) {
                     dailyRevenue: Number(dailyRevenue),
                     avgRevenue,
                     growth,
-                    monthlyInvestment
+                    monthlyInvestment,
+                    metricsHistory: metricsHistoryWithRevenue
                 }
             });
         } catch (error) {

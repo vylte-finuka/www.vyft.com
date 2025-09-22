@@ -10,8 +10,11 @@
   "appUsingSizeAdjust": true,
   "pages": {
     "/administration/main-management": [],
-    "/cancel": [],
-    "/login": []
+    "/administration/reports": [],
+    "/administration/settings": [],
+    "/conditions-generales-de-vente": [],
+    "/login": [],
+    "/success": []
   },
   "pagesUsingSizeAdjust": false
 }

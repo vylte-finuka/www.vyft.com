@@ -14,13 +14,30 @@ export default function CGVU() {
                     <Navbar />
                     <main className={styles.main}>
                         <h1 className={styles.headeronwhiteX2}>Conditions Générales de Vente et d’Utilisation</h1>
+                        <h2 className={styles.headeronwhite}>À propos de Vyft Program</h2>
+                        <h3 className={styles.bodyonwhite}>
+                            Vyft Program est un outil conçu pour l’application Vyft, une solution de suivi et d’analyse des pas et de l’activité physique de vos clients.<br />
+                            Il permet aux entreprises de suivre les pas réalisés dans leurs établissements, d’analyser la fréquentation, de générer des statistiques de performance et d’automatiser la gestion de la relation client.<br />
+                            Il permet aussi aux services de la commune d’organiser des marchés ou événements dans des lieux spécifiques et de suivre la fréquentation grâce à l’application.
+                        </h3>
+                        <h2 className={styles.headeronwhite}>Fonctionnalités principales</h2>
+                        <ul className={styles.bodyonwhite} style={{ marginBottom: 24 }}>
+                            <li>Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne.</li>
+                            <li>Analyse des données de fréquentation et de l’engagement client.</li>
+                            <li>Tableau de bord pour visualiser les réclamations et les statistiques d’activité.</li>
+                            <li>Gestion des abonnements via Stripe en mode "pay as you go".</li>
+                            <li>Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™).</li>
+                            <li>Export et impression des statistiques et des tags pour vos opérations marketing.</li>
+                            <li>Support technique dédié et gestion des accès utilisateurs.</li>
+                            <li>Outils pour les services de la commune afin de suivre la fréquentation lors d’événements ou marchés dans des lieux spécifiques.</li>
+                        </ul>
                         <h2 className={styles.headeronwhite}>1. Objet</h2>
                         <h3 className={styles.bodyonwhite}>
                             Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société Vylte-finuka SARL.
                         </h3>
                         <h2 className={styles.headeronwhite}>2. Accès au service</h2>
                         <h3 className={styles.bodyonwhite}>
-                            L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné au paiement de l’abonnement souscrit.
+                            L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement.
                         </h3>
                         <h2 className={styles.headeronwhite}>3. Description du service</h2>
                         <h3 className={styles.bodyonwhite}>
@@ -28,7 +45,7 @@ export default function CGVU() {
                         </h3>
                         <h2 className={styles.headeronwhite}>4. Commande et abonnement</h2>
                         <h3 className={styles.bodyonwhite}>
-                            L’abonnement est souscrit en ligne pour la durée choisie (mensuelle ou annuelle). Le paiement s’effectue par carte bancaire via Stripe. L’abonnement est renouvelé automatiquement sauf résiliation par l’utilisateur avant l’échéance.
+                            L’abonnement fonctionne aujourd’hui en mode "pay as you go" via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
                         </h3>
                         <h2 className={styles.headeronwhite}>5. Prix et paiement</h2>
                         <h3 className={styles.bodyonwhite}>
@@ -36,7 +53,7 @@ export default function CGVU() {
                         </h3>
                         <h2 className={styles.headeronwhite}>6. Résiliation</h2>
                         <h3 className={styles.bodyonwhite}>
-                            L’utilisateur peut résilier son abonnement à tout moment depuis son espace client ou en contactant le support. Toute période entamée reste due. Vylte-finuka peut suspendre ou résilier l’accès en cas de non-respect des CGVU.
+                            L’utilisateur peut demander la révocation de son abonnement à tout moment en contactant le support à support@vylte-finuka.com. Toute période entamée reste due. Vylte-finuka peut suspendre ou résilier l’accès en cas de non-respect des CGVU.
                         </h3>
                         <h2 className={styles.headeronwhite}>7. Propriété intellectuelle</h2>
                         <h3 className={styles.bodyonwhite}>

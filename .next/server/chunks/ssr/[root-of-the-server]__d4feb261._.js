@@ -14,7 +14,6 @@ __turbopack_context__.v({
   "body": "page-module__E0kJGG__body",
   "bodyattract": "page-module__E0kJGG__bodyattract",
   "bodycar": "page-module__E0kJGG__bodycar",
-  "bodycar1": "page-module__E0kJGG__bodycar1",
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
@@ -782,6 +781,7 @@ const Register = ()=>{
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(""); // Pour afficher les erreurs
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [showLogin, setShowLogin] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false); // État pour basculer vers Login
+    const [acceptCGVU, setAcceptCGVU] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false); // État pour accepter les CGVU
     const handleRegister = async (e)=>{
         e.preventDefault();
         try {
@@ -792,6 +792,10 @@ const Register = ()=>{
             }
             if (!denomination || !companyName || !siret || !email || !firstName || !lastName || !address) {
                 setError("Veuillez remplir tous les champs.");
+                return;
+            }
+            if (!acceptCGVU) {
+                setError("Vous devez accepter les CGVU pour continuer.");
                 return;
             }
             const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/dbconnections/signup`, {
@@ -829,10 +833,62 @@ const Register = ()=>{
             }
         }
     };
+    // Composant Checkbox personnalisé
+    const CustomCheckbox = ({ checked, onChange, id })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            onClick: ()=>onChange(!checked),
+            style: {
+                width: 28,
+                height: 28,
+                borderRadius: 10,
+                border: "2px solid #1a7f6b",
+                background: checked ? "#1a7f6b" : "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                marginRight: 10,
+                transition: "background 0.2s",
+                boxSizing: "border-box"
+            },
+            tabIndex: 0,
+            role: "checkbox",
+            "aria-checked": checked,
+            "aria-labelledby": id,
+            onKeyDown: (e)=>{
+                if (e.key === " " || e.key === "Enter") onChange(!checked);
+            },
+            children: checked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                width: "18",
+                height: "18",
+                viewBox: "0 0 20 20",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("polyline", {
+                    points: "4,11 9,16 16,6",
+                    style: {
+                        fill: "none",
+                        stroke: "#fff",
+                        strokeWidth: 3,
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round"
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/pages/register.tsx",
+                    lineNumber: 121,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/pages/register.tsx",
+                lineNumber: 120,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/pages/register.tsx",
+            lineNumber: 95,
+            columnNumber: 5
+        }, this);
     if (showLogin) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$login$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/pages/register.tsx",
-            lineNumber: 88,
+            lineNumber: 137,
             columnNumber: 12
         }, this);
     }
@@ -842,7 +898,7 @@ const Register = ()=>{
                 children: "Vyft - Inscription - Vyft program: Manage your own market."
             }, void 0, false, {
                 fileName: "[project]/pages/register.tsx",
-                lineNumber: 93,
+                lineNumber: 142,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -856,8 +912,8 @@ const Register = ()=>{
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].logo
                     }, void 0, false, {
                         fileName: "[project]/pages/register.tsx",
-                        lineNumber: 95,
-                        columnNumber: 7
+                        lineNumber: 144,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].form,
@@ -872,8 +928,8 @@ const Register = ()=>{
                                         children: "Dénomination sociale* :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 104,
-                                        columnNumber: 11
+                                        lineNumber: 153,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -885,14 +941,14 @@ const Register = ()=>{
                                         onChange: (e)=>setDenomination(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 107,
-                                        columnNumber: 11
+                                        lineNumber: 156,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 103,
-                                columnNumber: 9
+                                lineNumber: 152,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -903,8 +959,8 @@ const Register = ()=>{
                                         children: "Nom de la société :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 118,
-                                        columnNumber: 11
+                                        lineNumber: 167,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -916,14 +972,14 @@ const Register = ()=>{
                                         onChange: (e)=>setCompanyName(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 121,
-                                        columnNumber: 11
+                                        lineNumber: 170,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 117,
-                                columnNumber: 9
+                                lineNumber: 166,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -934,8 +990,8 @@ const Register = ()=>{
                                         children: "Numéro de SIRET** :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 132,
-                                        columnNumber: 11
+                                        lineNumber: 181,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -947,14 +1003,14 @@ const Register = ()=>{
                                         onChange: (e)=>setSiret(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 135,
-                                        columnNumber: 11
+                                        lineNumber: 184,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 131,
-                                columnNumber: 9
+                                lineNumber: 180,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -965,8 +1021,8 @@ const Register = ()=>{
                                         children: "Adresse postale professionnelle :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 146,
-                                        columnNumber: 11
+                                        lineNumber: 195,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -978,14 +1034,14 @@ const Register = ()=>{
                                         onChange: (e)=>setAddress(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 149,
-                                        columnNumber: 11
+                                        lineNumber: 198,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 145,
-                                columnNumber: 9
+                                lineNumber: 194,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -996,8 +1052,8 @@ const Register = ()=>{
                                         children: "Adresse email :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 160,
-                                        columnNumber: 11
+                                        lineNumber: 209,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "email",
@@ -1009,14 +1065,14 @@ const Register = ()=>{
                                         onChange: (e)=>setEmail(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 163,
-                                        columnNumber: 11
+                                        lineNumber: 212,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 159,
-                                columnNumber: 9
+                                lineNumber: 208,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -1027,8 +1083,8 @@ const Register = ()=>{
                                         children: "Prénom :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 174,
-                                        columnNumber: 11
+                                        lineNumber: 223,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -1040,14 +1096,14 @@ const Register = ()=>{
                                         onChange: (e)=>setFirstName(capitalizeWords(e.target.value))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 177,
-                                        columnNumber: 11
+                                        lineNumber: 226,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 173,
-                                columnNumber: 9
+                                lineNumber: 222,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -1058,8 +1114,8 @@ const Register = ()=>{
                                         children: "Nom :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 188,
-                                        columnNumber: 11
+                                        lineNumber: 237,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
@@ -1071,14 +1127,14 @@ const Register = ()=>{
                                         onChange: (e)=>setLastName(capitalizeWords(e.target.value))
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 191,
-                                        columnNumber: 11
+                                        lineNumber: 240,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 187,
-                                columnNumber: 9
+                                lineNumber: 236,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
@@ -1089,8 +1145,8 @@ const Register = ()=>{
                                         children: "Mot de passe :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 202,
-                                        columnNumber: 11
+                                        lineNumber: 251,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "password",
@@ -1102,14 +1158,71 @@ const Register = ()=>{
                                         onChange: (e)=>setPassword(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 205,
-                                        columnNumber: 11
+                                        lineNumber: 254,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 201,
-                                columnNumber: 9
+                                lineNumber: 250,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].formGroup,
+                                style: {
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginTop: 18
+                                },
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CustomCheckbox, {
+                                        checked: acceptCGVU,
+                                        onChange: setAcceptCGVU,
+                                        id: "acceptCGVU"
+                                    }, void 0, false, {
+                                        fileName: "[project]/pages/register.tsx",
+                                        lineNumber: 265,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                        htmlFor: "acceptCGVU",
+                                        style: {
+                                            color: "#1a7f6b",
+                                            fontWeight: 600,
+                                            fontFamily: "BRSonoma Semibold, sans-serif",
+                                            cursor: "pointer",
+                                            fontSize: 15,
+                                            userSelect: "none"
+                                        },
+                                        children: [
+                                            "J’accepte les",
+                                            " ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: "/CGVU.pdf",
+                                                target: "_blank",
+                                                rel: "noopener noreferrer",
+                                                style: {
+                                                    color: "#007bff",
+                                                    textDecoration: "underline",
+                                                    fontFamily: "BRSonoma Semibold, sans-serif"
+                                                },
+                                                children: "CGVU"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/register.tsx",
+                                                lineNumber: 282,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/pages/register.tsx",
+                                        lineNumber: 270,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/pages/register.tsx",
+                                lineNumber: 264,
+                                columnNumber: 11
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
                                 style: {
@@ -1120,8 +1233,8 @@ const Register = ()=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 216,
-                                columnNumber: 11
+                                lineNumber: 297,
+                                columnNumber: 13
                             }, this),
                             success && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 style: {
@@ -1130,8 +1243,8 @@ const Register = ()=>{
                                 children: success
                             }, void 0, false, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 220,
-                                columnNumber: 21
+                                lineNumber: 301,
+                                columnNumber: 23
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 type: "submit",
@@ -1139,8 +1252,8 @@ const Register = ()=>{
                                 children: "S'inscrire"
                             }, void 0, false, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 221,
-                                columnNumber: 9
+                                lineNumber: 302,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].signupText,
@@ -1153,20 +1266,20 @@ const Register = ()=>{
                                         children: "Connectez-vous ici"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/register.tsx",
-                                        lineNumber: 229,
-                                        columnNumber: 11
+                                        lineNumber: 310,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 224,
-                                columnNumber: 9
+                                lineNumber: 305,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/register.tsx",
-                        lineNumber: 102,
-                        columnNumber: 7
+                        lineNumber: 151,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodymessage,
@@ -1174,25 +1287,25 @@ const Register = ()=>{
                             "* La dénomination sociale est utilisée uniquement à des fins informatives.",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                 fileName: "[project]/pages/register.tsx",
-                                lineNumber: 234,
-                                columnNumber: 9
+                                lineNumber: 315,
+                                columnNumber: 11
                             }, this),
                             "** Le numéro de SIRET est requis pour identifier votre société."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/register.tsx",
-                        lineNumber: 232,
-                        columnNumber: 7
+                        lineNumber: 313,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/register.tsx",
-                        lineNumber: 237,
-                        columnNumber: 7
+                        lineNumber: 318,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/register.tsx",
-                lineNumber: 94,
+                lineNumber: 143,
                 columnNumber: 7
             }, this)
         ]

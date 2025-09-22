@@ -32,7 +32,6 @@ __turbopack_context__.v({
   "body": "page-module__E0kJGG__body",
   "bodyattract": "page-module__E0kJGG__bodyattract",
   "bodycar": "page-module__E0kJGG__bodycar",
-  "bodycar1": "page-module__E0kJGG__bodycar1",
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
@@ -124,7 +123,7 @@ const Footer = ()=>{
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                     href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
-                    children: "Conditions générales de vente et d'utilisation"
+                    children: "Conditions Générales de Vente et d'Utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer.tsx",
                     lineNumber: 11,
@@ -1102,7 +1101,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Moyenne possible de recette en une journée :"
+                                                            children: "Moyenne estimée de bénéfice en une journée :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 312,
@@ -1118,7 +1117,7 @@ function Funds_management() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Pourcentage de croissance :"
+                                                            children: "Pourcentage de croissance dans la semaine :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
                                                             lineNumber: 318,
@@ -1142,7 +1141,7 @@ function Funds_management() {
                                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].right,
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
-                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodycar1,
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodycar,
                                                             children: "Usage de Vyft™"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
