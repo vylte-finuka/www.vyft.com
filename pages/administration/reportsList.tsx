@@ -1,11 +1,15 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import styles from "../../app/page.module.css";
-const { Document, Page, Text, View, Image, StyleSheet } = require("@react-pdf/renderer");
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then(mod => mod.PDFDownloadLink),
-  { ssr: false }
-);
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  PDFDownloadLink,
+} from "@react-pdf/renderer"; // <-- Utilise import ESM
 
 const pdfStyles = StyleSheet.create({
   page: {
