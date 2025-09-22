@@ -18,6 +18,7 @@ type ResponseData = {
     avgRevenue?: string;
     growth?: string;
     monthlyInvestment?: number; // Ajouté ici
+    metricsHistory?: any; // Ajouté ici pour corriger l'erreur de propriété inconnue
   };
 };
 
