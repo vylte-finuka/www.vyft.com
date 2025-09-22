@@ -1,9 +1,11 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
+  "/administration/main-management": "pages/administration/main-management.js",
   "/api/check-subscription-status": "pages/api/check-subscription-status.js",
+  "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
+  "/api/vyfthealth_proc": "pages/api/vyfthealth_proc.js",
   "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js",
-  "/condition-generale-de-vente": "pages/condition-generale-de-vente.js",
+  "/cancel": "pages/cancel.js",
   "/login": "pages/login.js"
 }

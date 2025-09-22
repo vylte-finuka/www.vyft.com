@@ -7891,6 +7891,7 @@ snapshots:
   vyftprogram.vylte-finuka.com@file:(@types/node@20.17.32)(bufferutil@4.0.9)(socks@2.8.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(webpack@5.99.7)(zod@3.25.76):
     dependencies:
       '@auth0/nextjs-auth0': 4.5.1(next@15.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@netlify/functions': 4.1.10
       '@next/third-parties': 14.2.28(next@15.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@stripe/stripe-js': 7.3.0
       alchemy-sdk: 3.6.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
@@ -7922,6 +7923,7 @@ snapshots:
       - gcp-metadata
       - kerberos
       - mongodb-client-encryption
+      - rollup
       - sass
       - snappy
       - socks

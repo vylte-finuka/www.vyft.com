@@ -18,7 +18,6 @@ __turbopack_context__.v({
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
-  "bodyposit": "page-module__E0kJGG__bodyposit",
   "button": "page-module__E0kJGG__button",
   "card": "page-module__E0kJGG__card",
   "center": "page-module__E0kJGG__center",
@@ -52,6 +51,7 @@ __turbopack_context__.v({
   "personName": "page-module__E0kJGG__personName",
   "prev": "page-module__E0kJGG__prev",
   "right": "page-module__E0kJGG__right",
+  "selectCurrency": "page-module__E0kJGG__selectCurrency",
   "signupLink": "page-module__E0kJGG__signupLink",
   "signupText": "page-module__E0kJGG__signupText",
   "singleLine": "page-module__E0kJGG__singleLine",
@@ -564,9 +564,9 @@ const Footer = ()=>{
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].links,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/condition-generale-de-vente",
+                    href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].fontstyle1,
-                    children: "Condition générale de vente et d'utilisation"
+                    children: "Conditions générales de vente et d'utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer.tsx",
                     lineNumber: 11,
@@ -629,9 +629,9 @@ const Footer = ()=>{
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].links,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/condition-generale-de-vente",
+                    href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].fontstyle3,
-                    children: "Condition générale de vente et d'utilisation"
+                    children: "Conditions générales de vente et d'utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer1.tsx",
                     lineNumber: 11,
@@ -1163,7 +1163,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$imag
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer1.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/register.tsx [app-client] (ecmascript)"); // Importer le composant Register
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/page.tsx [app-client] (ecmascript)"); // Importer le composant Home
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)"); // Ajoutez ceci en haut
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -1178,6 +1178,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 const Login = ()=>{
     _s();
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])(); // Ajoutez ceci dans le composant
     const { user, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$auth0$2f$nextjs$2d$auth0$2f$dist$2f$client$2f$hooks$2f$use$2d$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUser"])(); // Récupère l'utilisateur connecté via Auth0
     const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1200,6 +1201,16 @@ const Login = ()=>{
         }
     }["Login.useEffect"], [
         user
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Login.useEffect": ()=>{
+            if (isLoggedIn) {
+                router.push("/"); // Redirige vers la page d'accueil
+            }
+        }
+    }["Login.useEffect"], [
+        isLoggedIn,
+        router
     ]);
     const handleLogin = async (e)=>{
         e.preventDefault();
@@ -1261,23 +1272,19 @@ const Login = ()=>{
             children: "Chargement..."
         }, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 108,
+            lineNumber: 116,
             columnNumber: 12
         }, this);
     }
-    if (isLoggedIn) {
-        // Si l'utilisateur est connecté, afficher le composant Home
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-            fileName: "[project]/pages/login.tsx",
-            lineNumber: 113,
-            columnNumber: 12
-        }, this);
-    }
+    // Supprimez ce bloc :
+    // if (isLoggedIn) {
+    //   return <Home />;
+    // }
     if (showRegister) {
         // Retourner le composant Register si l'utilisateur clique sur le lien
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 118,
+            lineNumber: 126,
             columnNumber: 12
         }, this);
     }
@@ -1287,7 +1294,7 @@ const Login = ()=>{
                 children: "Connexion - Vyft program: Manage your own market."
             }, void 0, false, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 122,
+                lineNumber: 130,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1301,7 +1308,7 @@ const Login = ()=>{
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].logo
                     }, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 124,
+                        lineNumber: 132,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1317,7 +1324,7 @@ const Login = ()=>{
                                         children: "Adresse email :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 141,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1330,13 +1337,13 @@ const Login = ()=>{
                                         onChange: (e)=>setEmail(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 144,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 132,
+                                lineNumber: 140,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1348,7 +1355,7 @@ const Login = ()=>{
                                         children: "Mot de passe :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 155,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1361,13 +1368,13 @@ const Login = ()=>{
                                         onChange: (e)=>setPassword(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 150,
+                                        lineNumber: 158,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 146,
+                                lineNumber: 154,
                                 columnNumber: 11
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1377,7 +1384,7 @@ const Login = ()=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 160,
+                                lineNumber: 168,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1386,7 +1393,7 @@ const Login = ()=>{
                                 children: "Se connecter"
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 161,
+                                lineNumber: 169,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1397,36 +1404,37 @@ const Login = ()=>{
                                     children: "Vous n'avez pas de compte ?"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/login.tsx",
-                                    lineNumber: 168,
+                                    lineNumber: 176,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 164,
+                                lineNumber: 172,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 131,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 172,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 123,
+                lineNumber: 131,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 };
-_s(Login, "rfi8e7Uq2XOfGfxhixjvQIr68xM=", false, function() {
+_s(Login, "RRdKHIig43IwjtFI9qp9IasMbtQ=", false, function() {
     return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$auth0$2f$nextjs$2d$auth0$2f$dist$2f$client$2f$hooks$2f$use$2d$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUser"]
     ];
 });
@@ -1883,7 +1891,7 @@ function Home() {
                                                                     transaction.steps,
                                                                     " pas • ",
                                                                     transaction.distance,
-                                                                    " mètres • 🟠 en attente"
+                                                                    " mètres"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/page.tsx",
@@ -1921,7 +1929,8 @@ function Home() {
                                         style: {
                                             fontFamily: "BR Sonoma, sans-serif",
                                             fontSize: "16px",
-                                            fontWeight: "bold"
+                                            fontWeight: "bold",
+                                            color: "#000"
                                         },
                                         children: subid ? "Arrêter l'abonnement" : "Se lancer avec Vyft Program"
                                     }, void 0, false, {
@@ -1961,7 +1970,7 @@ function Home() {
                             children: "Contactez le support"
                         }, void 0, false, {
                             fileName: "[project]/app/page.tsx",
-                            lineNumber: 400,
+                            lineNumber: 401,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1975,14 +1984,14 @@ function Home() {
                                     children: "support@vylte-finuka.com"
                                 }, void 0, false, {
                                     fileName: "[project]/app/page.tsx",
-                                    lineNumber: 403,
+                                    lineNumber: 404,
                                     columnNumber: 15
                                 }, this),
                                 "."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/page.tsx",
-                            lineNumber: 401,
+                            lineNumber: 402,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1991,18 +2000,18 @@ function Home() {
                             children: "Fermer"
                         }, void 0, false, {
                             fileName: "[project]/app/page.tsx",
-                            lineNumber: 407,
+                            lineNumber: 408,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/page.tsx",
-                    lineNumber: 399,
+                    lineNumber: 400,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/page.tsx",
-                lineNumber: 398,
+                lineNumber: 399,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2012,18 +2021,18 @@ function Home() {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].main
                     }, void 0, false, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 414,
+                        lineNumber: 415,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 415,
+                        lineNumber: 416,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/page.tsx",
-                lineNumber: 413,
+                lineNumber: 414,
                 columnNumber: 7
             }, this)
         ]

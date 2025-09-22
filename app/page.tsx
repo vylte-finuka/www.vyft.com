@@ -369,7 +369,7 @@ if (session.url) {
                             <p className={styles.time}>{formattedTime}</p>
                             <span className={styles.personName}>{transaction.name}</span>
                             <span className={styles.personDetails}>
-                              {transaction.steps} pas • {transaction.distance} mètres • 🟠 en attente
+                              {transaction.steps} pas • {transaction.distance} mètres
                             </span>
                           </p>
                         </div>
@@ -386,6 +386,7 @@ if (session.url) {
                   fontFamily: "BR Sonoma, sans-serif",
                   fontSize: "16px",
                   fontWeight: "bold",
+                  color: "#000",
                 }}
               >
                 {subid ? "Arrêter l'abonnement" : "Se lancer avec Vyft Program"}

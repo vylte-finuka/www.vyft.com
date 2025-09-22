@@ -68,12 +68,6 @@
   font-size: 18px;
 }
 
-.page-module__E0kJGG__bodyposit {
-  font-family: BR Sonoma Semibold;
-  font-size: 18px;
-  color: #86cf92 !important;
-}
-
 .page-module__E0kJGG__bodycar {
   color: #000;
   font-family: BR Sonoma Semibold;
@@ -93,6 +87,7 @@
 }
 
 .page-module__E0kJGG__container {
+  background-color: #e0dbdd;
   flex-direction: column;
   display: flex;
   align-items: flex-start !important;
@@ -317,7 +312,7 @@
 }
 
 .page-module__E0kJGG__statviewers .page-module__E0kJGG__left {
-  background-color: #fff1db;
+  background-color: #dbfff3;
   flex-direction: column;
   flex: 1;
   justify-content: center;
@@ -327,7 +322,7 @@
 }
 
 .page-module__E0kJGG__statviewers .page-module__E0kJGG__right {
-  background-color: #777e7b;
+  background-color: #528478;
   flex-direction: column;
   flex: 1;
   justify-content: center;
@@ -529,6 +524,29 @@
   text-decoration: underline;
 }
 
+.page-module__E0kJGG__selectCurrency {
+  color: #000;
+  background: #fff;
+  border: 1px solid #a5a3a3;
+  border-radius: 18px;
+  outline: none;
+  margin-left: 8px;
+  padding: 8px 18px;
+  font-family: BR Sonoma Semibold;
+  font-size: 1rem;
+  transition: border-color .2s;
+}
+
+.page-module__E0kJGG__selectCurrency:focus {
+  border-color: #528478;
+}
+
+.page-module__E0kJGG__selectCurrency option {
+  color: #000;
+  background: #fff;
+  font-family: BR Sonoma Semibold;
+}
+
 
 /* [project]/app/components/Navbar.module.css [app-client] (css) */
 .Navbar-module__pSp8Ga__navbar {
@@ -657,7 +675,7 @@
 
 .Navbar-module__pSp8Ga__subSubMenu {
   visibility: hidden;
-  background-color: #333;
+  background-color: #00cb9e;
   border-radius: 10px;
   max-height: 0;
   margin: 0;
@@ -704,14 +722,14 @@
   }
 
   .Navbar-module__pSp8Ga__navLinks li a:hover {
-    background-color: #000000b3;
+    background-color: #00cb9e;
     border-radius: 5px;
     width: auto;
     padding: .5rem;
   }
 
   .Navbar-module__pSp8Ga__subMenu, .Navbar-module__pSp8Ga__subSubMenu {
-    background-color: #333;
+    background-color: #00cb9e;
     border-radius: 10px;
     width: auto;
     position: static;

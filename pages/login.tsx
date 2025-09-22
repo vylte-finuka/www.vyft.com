@@ -9,8 +9,10 @@ import axios from "axios";
 import Footer from "../app/components/Footer1";
 import Register from "./register"; // Importer le composant Register
 import Home from "../app/page"; // Importer le composant Home
+import { useRouter } from "next/navigation"; // Ajoutez ceci en haut
 
 const Login = () => {
+  const router = useRouter(); // Ajoutez ceci dans le composant
   const { user, isLoading } = useUser(); // Récupère l'utilisateur connecté via Auth0
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +33,12 @@ const Login = () => {
       setIsLoggedIn(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/"); // Redirige vers la page d'accueil
+    }
+  }, [isLoggedIn, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,10 +116,10 @@ const Login = () => {
     return <div>Chargement...</div>;
   }
 
-  if (isLoggedIn) {
-    // Si l'utilisateur est connecté, afficher le composant Home
-    return <Home />;
-  }
+  // Supprimez ce bloc :
+  // if (isLoggedIn) {
+  //   return <Home />;
+  // }
 
   if (showRegister) {
     // Retourner le composant Register si l'utilisateur clique sur le lien

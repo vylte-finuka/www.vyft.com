@@ -480,7 +480,6 @@ __turbopack_context__.v({
   "bodymessage": "page-module__E0kJGG__bodymessage",
   "bodyonwhite": "page-module__E0kJGG__bodyonwhite",
   "bodyonwhitemessage": "page-module__E0kJGG__bodyonwhitemessage",
-  "bodyposit": "page-module__E0kJGG__bodyposit",
   "button": "page-module__E0kJGG__button",
   "card": "page-module__E0kJGG__card",
   "center": "page-module__E0kJGG__center",
@@ -514,6 +513,7 @@ __turbopack_context__.v({
   "personName": "page-module__E0kJGG__personName",
   "prev": "page-module__E0kJGG__prev",
   "right": "page-module__E0kJGG__right",
+  "selectCurrency": "page-module__E0kJGG__selectCurrency",
   "signupLink": "page-module__E0kJGG__signupLink",
   "signupText": "page-module__E0kJGG__signupText",
   "singleLine": "page-module__E0kJGG__singleLine",
@@ -566,9 +566,9 @@ const Footer = ()=>{
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].links,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/conditions-generals-de-vente",
+                    href: "/conditions-generales-de-vente",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
-                    children: "Conditions générals d'utilisation"
+                    children: "Conditions générales de vente et d'utilisation"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Footer.tsx",
                     lineNumber: 11,
@@ -1160,11 +1160,11 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [client] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer.tsx [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$qrcode$2f$dist$2f$next$2d$qrcode$2e$es$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-qrcode/dist/next-qrcode.es.js [client] (ecmascript)"); // Importer la bibliothèque next-qrcode
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-secure-storage/dist/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$to$2d$print$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-to-print/lib/index.js [client] (ecmascript)");
 ;
@@ -1178,6 +1178,12 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+const SUPPORTED_CURRENCIES = [
+    "€",
+    "Ar",
+    "$",
+    "£"
+];
 function Funds_management() {
     _s();
     const [metrics, setMetrics] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
@@ -1195,6 +1201,14 @@ function Funds_management() {
         contentRef: qr2,
         documentTitle: "QR Code d'arrivée"
     });
+    const [metricsHistory, setMetricsHistory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currency, setCurrency] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("€");
+    const [rates, setRates] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])({
+        "€": 1,
+        "Ar": 0,
+        "$": 0,
+        "£": 0
+    });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Funds_management.useEffect": ()=>{
             // Simuler la récupération du nom de l'enseigne
@@ -1202,6 +1216,36 @@ function Funds_management() {
             setStoreName(denomination); // Mettre à jour l'état avec le nom de l'enseigne
         }
     }["Funds_management.useEffect"], []); // Exécuté une seule fois après le premier rendu
+    // Récupérer les taux de change à chaque changement de devise
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Funds_management.useEffect": ()=>{
+            const fetchRates = {
+                "Funds_management.useEffect.fetchRates": async ()=>{
+                    try {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json");
+                        setRates({
+                            "€": 1,
+                            "Ar": res.data.eur.mga,
+                            "$": res.data.eur.usd,
+                            "£": res.data.eur.gbp
+                        });
+                    } catch (e) {
+                        console.error("Erreur lors de la récupération des taux de change :", e);
+                    }
+                }
+            }["Funds_management.useEffect.fetchRates"];
+            fetchRates();
+        }
+    }["Funds_management.useEffect"], []);
+    // Fonction de conversion
+    const convert = (amount)=>{
+        if (amount === null || amount === undefined || isNaN(Number(amount))) return "0.00";
+        const rate = rates[currency] || 1;
+        return (Number(amount) * rate).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Funds_management.useEffect": ()=>{
             const fetchStoreNameAndMetrics = {
@@ -1259,6 +1303,25 @@ function Funds_management() {
                         console.log("Données filtrées récupérées :", apiData);
                         if (apiData.success) {
                             setMetrics(apiData.data); // Mettre à jour l'état avec les données filtrées
+                            // Ajout à l'historique (max 7 jours)
+                            setMetricsHistory({
+                                "Funds_management.useEffect.fetchStoreNameAndMetrics": (prev)=>{
+                                    const today = new Date().toISOString().slice(0, 10);
+                                    // Évite les doublons pour la même date
+                                    const filtered = prev.filter({
+                                        "Funds_management.useEffect.fetchStoreNameAndMetrics.filtered": (h)=>h.date !== today
+                                    }["Funds_management.useEffect.fetchStoreNameAndMetrics.filtered"]);
+                                    return [
+                                        ...filtered,
+                                        {
+                                            date: today,
+                                            dailyRevenue: apiData.data.dailyRevenue,
+                                            dailySteps: apiData.data.dailySteps,
+                                            dailyDistance: apiData.data.dailyDistance
+                                        }
+                                    ].slice(-7); // Garde les 7 derniers jours
+                                }
+                            }["Funds_management.useEffect.fetchStoreNameAndMetrics"]);
                         } else {
                             console.error("Erreur lors de la récupération des données :", apiData.message);
                         }
@@ -1334,22 +1397,31 @@ function Funds_management() {
                         children: "Gestion principale - Vyft program: Manage your own market."
                     }, void 0, false, {
                         fileName: "[project]/pages/administration/main-management.tsx",
-                        lineNumber: 193,
+                        lineNumber: 260,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 192,
+                    lineNumber: 259,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 195,
+                    lineNumber: 262,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].main,
                     children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            style: {
+                                marginBottom: "1rem"
+                            }
+                        }, void 0, false, {
+                            fileName: "[project]/pages/administration/main-management.tsx",
+                            lineNumber: 265,
+                            columnNumber: 11
+                        }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             style: {
                                 display: "flex",
@@ -1365,7 +1437,7 @@ function Funds_management() {
                                             children: "Gestion principale"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 207,
+                                            lineNumber: 277,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1377,15 +1449,68 @@ function Funds_management() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 208,
+                                            lineNumber: 278,
                                             columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            htmlFor: "currency",
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
+                                            children: "Devise : "
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/main-management.tsx",
+                                            lineNumber: 286,
+                                            columnNumber: 27
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                            id: "currency",
+                                            value: currency,
+                                            onChange: (e)=>setCurrency(e.target.value),
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].selectCurrency,
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "€",
+                                                    children: "EUR (€)"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/main-management.tsx",
+                                                    lineNumber: 293,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "$",
+                                                    children: "USD ($)"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/main-management.tsx",
+                                                    lineNumber: 294,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "£",
+                                                    children: "GBP (£)"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/main-management.tsx",
+                                                    lineNumber: 295,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: "Ar",
+                                                    children: "MGA (Ar)"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/main-management.tsx",
+                                                    lineNumber: 296,
+                                                    columnNumber: 15
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/administration/main-management.tsx",
+                                            lineNumber: 287,
+                                            columnNumber: 13
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                             className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
                                             children: "Informations de consommations additionnelles :"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 216,
+                                            lineNumber: 298,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1399,23 +1524,23 @@ function Funds_management() {
                                                             children: "Recette"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 223,
+                                                            lineNumber: 305,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
-                                                            children: "Total perçu de la devise actuelle :"
+                                                            children: "Investissement dans le mois :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 224,
+                                                            lineNumber: 306,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
-                                                            children: metrics ? `${metrics.estimatedRevenue} €` : "N/A"
+                                                            children: metrics && metrics.monthlyInvestment !== undefined && metrics.monthlyInvestment !== null ? `${convert(metrics.monthlyInvestment)} ${currency}` : "0.00 " + currency
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 225,
+                                                            lineNumber: 307,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1423,15 +1548,15 @@ function Funds_management() {
                                                             children: "Moyenne possible de recette en une journée :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 228,
+                                                            lineNumber: 312,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
-                                                            children: metrics ? `${metrics.dailyRevenue} €` : "N/A"
+                                                            children: metrics && metrics.dailyRevenue !== undefined && metrics.dailyRevenue !== null ? `${convert(metrics.dailyRevenue)} ${currency}` : "0.00 " + currency
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 229,
+                                                            lineNumber: 313,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1439,21 +1564,21 @@ function Funds_management() {
                                                             children: "Pourcentage de croissance :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 232,
+                                                            lineNumber: 318,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: metrics && metrics.dailyRevenue > 0 ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyposit : __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyposit,
-                                                            children: metrics ? "+ 0%" : "N/A"
+                                                            className: metrics && metrics.growth ? parseFloat(String(metrics.growth).replace(",", ".").replace("%", "")) > 0 ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body : __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body : __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
+                                                            children: metrics && metrics.growth !== undefined && metrics.growth !== null ? String(metrics.growth).replace(".", ",") : "0 %"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 233,
+                                                            lineNumber: 319,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 222,
+                                                    lineNumber: 304,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1464,7 +1589,7 @@ function Funds_management() {
                                                             children: "Usage de Vyft™"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 238,
+                                                            lineNumber: 334,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1472,7 +1597,7 @@ function Funds_management() {
                                                             children: "Total des pas de tout clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 239,
+                                                            lineNumber: 335,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1480,7 +1605,7 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.dailySteps} pas` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 240,
+                                                            lineNumber: 336,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1488,7 +1613,7 @@ function Funds_management() {
                                                             children: "Total parcourus de tout ces clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 243,
+                                                            lineNumber: 339,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1496,7 +1621,7 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.dailyDistance} mètres` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 244,
+                                                            lineNumber: 340,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1504,7 +1629,7 @@ function Funds_management() {
                                                             children: "Total de nombre de pas depuis un an de tout clients :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 247,
+                                                            lineNumber: 343,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1512,25 +1637,25 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.yearlySteps} pas` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 248,
+                                                            lineNumber: 344,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 237,
+                                                    lineNumber: 333,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 221,
+                                            lineNumber: 303,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                    lineNumber: 206,
+                                    lineNumber: 276,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1540,7 +1665,7 @@ function Funds_management() {
                                             children: "Vyft tag™ :"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 257,
+                                            lineNumber: 353,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1550,7 +1675,7 @@ function Funds_management() {
                                                     children: "QR Code de départ :"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 359,
                                                     columnNumber: 17
                                                 }, this),
                                                 storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1579,12 +1704,12 @@ function Funds_management() {
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/administration/main-management.tsx",
-                                                        lineNumber: 270,
+                                                        lineNumber: 366,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 269,
+                                                    lineNumber: 365,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1593,7 +1718,7 @@ function Funds_management() {
                                                     children: "Imprimer ce tag"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 289,
+                                                    lineNumber: 385,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1604,7 +1729,7 @@ function Funds_management() {
                                                     children: "QR Code d'arrivée :"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 291,
+                                                    lineNumber: 387,
                                                     columnNumber: 17
                                                 }, this),
                                                 storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1633,12 +1758,12 @@ function Funds_management() {
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/administration/main-management.tsx",
-                                                        lineNumber: 299,
+                                                        lineNumber: 395,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 298,
+                                                    lineNumber: 394,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1647,54 +1772,54 @@ function Funds_management() {
                                                     children: "Imprimer ce tag"
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 318,
+                                                    lineNumber: 414,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 358,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                    lineNumber: 256,
+                                    lineNumber: 352,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/administration/main-management.tsx",
-                            lineNumber: 197,
+                            lineNumber: 267,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyattract
                         }, void 0, false, {
                             fileName: "[project]/pages/administration/main-management.tsx",
-                            lineNumber: 322,
+                            lineNumber: 418,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 196,
+                    lineNumber: 263,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 324,
+                    lineNumber: 420,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/administration/main-management.tsx",
-            lineNumber: 191,
+            lineNumber: 258,
             columnNumber: 7
         }, this)
     }, void 0, false);
 }
-_s(Funds_management, "bVoSZvT0Qm+ajATbCQzcpioE3LM=", false, function() {
+_s(Funds_management, "7BeOuXNEGYlixJHEfBmAc7DhM14=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$qrcode$2f$dist$2f$next$2d$qrcode$2e$es$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useQRCode"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$to$2d$print$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useReactToPrint"],

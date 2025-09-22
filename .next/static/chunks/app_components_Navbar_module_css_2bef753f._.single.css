@@ -125,7 +125,7 @@
 
 .Navbar-module__pSp8Ga__subSubMenu {
   visibility: hidden;
-  background-color: #333;
+  background-color: #00cb9e;
   border-radius: 10px;
   max-height: 0;
   margin: 0;
@@ -172,14 +172,14 @@
   }
 
   .Navbar-module__pSp8Ga__navLinks li a:hover {
-    background-color: #000000b3;
+    background-color: #00cb9e;
     border-radius: 5px;
     width: auto;
     padding: .5rem;
   }
 
   .Navbar-module__pSp8Ga__subMenu, .Navbar-module__pSp8Ga__subSubMenu {
-    background-color: #333;
+    background-color: #00cb9e;
     border-radius: 10px;
     width: auto;
     position: static;

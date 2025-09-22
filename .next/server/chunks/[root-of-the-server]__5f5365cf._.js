@@ -62,7 +62,7 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ([__TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
 ;
-const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy", {
+const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("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", {
     apiVersion: "2025-04-30.basil"
 });
 // Stocker les métriques précédentes pour éviter les envois redondants
@@ -163,9 +163,15 @@ async function Vyfthealth_proc(req, res) {
                 }
                 return sum;
             }, 0);
-            const dailyRevenue = charges.data.reduce((sum, charge)=>{
-                const chargeDate = new Date(charge.created * 1000);
-                if (charge.paid && !charge.refunded && chargeDate >= twentyFourHoursAgo) {
+            // Récupérer la date du début du mois en cours
+            const nowDate = new Date();
+            const startOfMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+            // Filtrer les paiements Stripe du mois en cours POUR LE CLIENT
+            const monthlyInvestment = charges.data.reduce((sum, charge)=>{
+                const paidAt = new Date((charge.created || 0) * 1000);
+                // Filtre par customer Stripe
+                if (charge.paid && !charge.refunded && paidAt >= startOfMonth && paidAt <= nowDate && charge.customer === stripeCustomerId // <-- Filtre ici !
+                ) {
                     return sum + charge.amount / 100;
                 }
                 return sum;
@@ -186,7 +192,7 @@ async function Vyfthealth_proc(req, res) {
             if (lastEntry) {
                 const currentEntryId = lastEntry._id.toString();
                 const entryDate = new Date(lastEntry.date); // Convertir la date de l'entrée en objet Date
-                const now = new Date(); // Obtenir la date et l'heure actuelles
+                const now = new Date(); // Obtenir la date et l'heure actuelles;
                 // Vérifier si cette entrée est différente de la dernière traitée et non marquée comme traitée
                 if ((!lastProcessedId || currentEntryId !== lastProcessedId) && !lastEntry.processed) {
                     const lastSteps = lastEntry.steps || 0;
@@ -220,6 +226,63 @@ async function Vyfthealth_proc(req, res) {
                 console.log("Aucune entrée trouvée dans la base de données. Valeur réinitialisée à 0.");
                 await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
             }
+            // Récupération de l'historique des métriques pour le calcul de la moyenne et de la croissance
+            const metricsHistory = await collection.find({
+                enseigne: {
+                    $regex: `^${enseigneFilter.trim()}$`,
+                    $options: "i"
+                }
+            }).sort({
+                date: -1
+            }).limit(7) // Limiter à 7 jours pour le calcul de la moyenne sur 7 jours
+            .toArray();
+            // Calcul dynamique du prix du mètre selon la moyenne réelle
+            const count = sensorData.length;
+            const totalDistanceForAvg = sensorData.reduce((sum, item)=>sum + (parseFloat(item.distance) || 0), 0);
+            const avgDistance = count > 0 ? totalDistanceForAvg / count : 0;
+            const BASE_METER_PRICE = 0.10; // prix de référence par mètre
+            const REFERENCE_AVG_DISTANCE = 1000; // référence moyenne en mètres
+            let GLOBAL_METER_PRICE = avgDistance > 0 ? BASE_METER_PRICE * (avgDistance / REFERENCE_AVG_DISTANCE) : BASE_METER_PRICE;
+            // Récupération du prix du stepmeter (Stripe)
+            const stepmeterPriceObj = await stripe.prices.list({
+                product: "prod_ScRMkxEBJt4ToK",
+                active: true,
+                limit: 1
+            });
+            const stepmeterPrice = stepmeterPriceObj.data[0]?.unit_amount ?? 0; // en centimes
+            const GLOBAL_STEP_PRICE = stepmeterPrice / 100; // en euros
+            // Récupérer les 14 derniers jours pour comparer 7 derniers jours vs 7 jours précédents
+            const metrics14Days = await collection.find({
+                enseigne: {
+                    $regex: `^${enseigneFilter.trim()}$`,
+                    $options: "i"
+                }
+            }).sort({
+                date: -1
+            }).limit(14).toArray();
+            const dailyRevenues14 = metrics14Days.map((h)=>{
+                const steps = h.steps || 0;
+                const distance = parseFloat(h.distance) || 0;
+                return steps * GLOBAL_STEP_PRICE + distance * GLOBAL_METER_PRICE;
+            });
+            // Somme des 7 derniers jours
+            const sumLast7 = dailyRevenues14.slice(0, 7).reduce((sum, v)=>sum + v, 0);
+            // Somme des 7 jours précédents
+            const sumPrev7 = dailyRevenues14.slice(7, 14).reduce((sum, v)=>sum + v, 0);
+            // Croissance hebdomadaire en %
+            let growth = "0 %";
+            if (sumPrev7 > 0) {
+                const percent = (sumLast7 - sumPrev7) / sumPrev7 * 100;
+                growth = (percent > 0 ? "+" : "") + percent.toFixed(2) + " %";
+            } else if (sumLast7 > 0) {
+                growth = "+∞ %";
+            } else {
+                growth = "0 %";
+            }
+            // Moyenne journalière sur 7 jours
+            const avgRevenue = dailyRevenues14.slice(0, 7).length > 0 ? (sumLast7 / dailyRevenues14.slice(0, 7).length).toFixed(2) : "0";
+            // Calcul de la recette du jour (basée sur les pas et la distance du dernier jour)
+            const dailyRevenue = dailyRevenues14.length > 0 ? dailyRevenues14[0].toFixed(2) : "0";
             res.status(200).json({
                 success: true,
                 message: "Données calculées et envoyées à Stripe avec succès.",
@@ -230,7 +293,10 @@ async function Vyfthealth_proc(req, res) {
                     estimatedRevenue: totalRevenue,
                     dailySteps,
                     dailyDistance,
-                    dailyRevenue
+                    dailyRevenue: Number(dailyRevenue),
+                    avgRevenue,
+                    growth,
+                    monthlyInvestment
                 }
             });
         } catch (error) {

@@ -9,7 +9,8 @@
   },
   "appUsingSizeAdjust": true,
   "pages": {
-    "/condition-generale-de-vente": [],
+    "/administration/main-management": [],
+    "/cancel": [],
     "/login": []
   },
   "pagesUsingSizeAdjust": false

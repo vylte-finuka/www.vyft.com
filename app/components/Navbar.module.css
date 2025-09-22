@@ -136,7 +136,7 @@
   position: absolute;
   top: 0;
   left: 100%;
-  background-color: #333;
+  background-color: #00CB9E;
   display: none;
   padding: 0;
   margin: 0;
@@ -183,12 +183,12 @@
     width: auto; /* Show full text on hover */
     padding: 0.5rem;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.7); /* Background for better readability */
+    background-color: #00CB9E; /* Background for better readability */
   }
 
   .subMenu, .subSubMenu {
     position: static; /* Submenus behave more naturally on mobile */
-    background-color: #333;
+    background-color: #00CB9E;
     border-radius: 10px;
     width: auto;
   }

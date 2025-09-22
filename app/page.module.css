@@ -68,12 +68,6 @@
     font-size: 18px;
   }
   
-  .bodyposit {
-    font-family: BR Sonoma Semibold;
-    color: #86cf92 !important;
-    font-size: 18px;
-  }
-  
   .bodycar {
     font-family: BR Sonoma Semibold;
     color: #000000;
@@ -95,6 +89,7 @@
   /* Containers */
   .container {
     display: flex;
+    background-color: #e0dbdd;
     flex-direction: column;
     align-items: flex-start !important; /* Aligne tout le contenu à gauche */
     width: 100% !important; /* Assure que le conteneur occupe toute la largeur */
@@ -321,11 +316,11 @@
   pointer-events: none; /* Désactive toutes les interactions utilisateur */
   user-select: none; /* Empêche la sélection de l'image */
   -webkit-user-drag: none; /* Empêche le glisser-déposer sur les navigateurs WebKit */
-  -webkit-touch-callout: none; /* Empêche le menu contextuel sur iOS */
+  -webkit-touch-callout: none; /* Empêche le menu contextuel on iOS */
 }
   
   .statviewers .left {
-    background-color: #fff1db; /* Couleur du côté gauche */
+    background-color: #dbfff3; /* Couleur du côté gauche */
     flex: 1; /* Prend 50% de la largeur */
     display: flex;
     flex-direction: column;
@@ -335,7 +330,7 @@
   }
   
   .statviewers .right {
-    background-color: #777e7b; /* Couleur du côté droit */
+    background-color: #528478; /* Couleur du côté droit */
     flex: 1; /* Prend 50% de la largeur */
     display: flex;
     flex-direction: column;
@@ -538,4 +533,27 @@
 
   .signupLink:hover {
     text-decoration: underline;
+  }
+
+  .selectCurrency {
+    font-family: BR Sonoma Semibold;
+    font-size: 1rem;
+    color: #000;
+    background: #fff;
+    border: 1px solid #a5a3a3;
+    border-radius: 18px;
+    padding: 8px 18px;
+    margin-left: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .selectCurrency:focus {
+    border-color: #528478;
+  }
+
+  .selectCurrency option {
+    font-family: BR Sonoma Semibold;
+    color: #000;
+    background: #fff;
   }

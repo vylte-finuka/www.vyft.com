@@ -32,7 +32,7 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ]);
 ([__TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
-const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"](("TURBOPACK compile-time value", "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"), {
+const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("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", {
     apiVersion: "2025-04-30.basil"
 });
 async function createOrRetriveCustomer(req, res) {
@@ -118,9 +118,11 @@ async function createOrRetriveCustomer(req, res) {
                 });
             }
             console.log("Session Stripe Checkout créée :", session.id);
+            // Après la création de la session Stripe Checkout
             return res.status(200).json({
                 sessionId: session.id,
-                customerId: customer.id
+                customerId: customer.id,
+                url: session.url
             });
         } else if (action === "unsubscribe") {
             console.log("Annulation d'un abonnement Stripe...");
