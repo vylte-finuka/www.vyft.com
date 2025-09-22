@@ -25,7 +25,7 @@ export default function CGVU() {
                             <li>Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne.</li>
                             <li>Analyse des données de fréquentation et de l’engagement client.</li>
                             <li>Tableau de bord pour visualiser les réclamations et les statistiques d’activité.</li>
-                            <li>Gestion des abonnements via Stripe en mode "pay as you go".</li>
+                            <li>Gestion des abonnements via Stripe en mode &quot;pay as you go&quot;.</li>
                             <li>Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™).</li>
                             <li>Export et impression des statistiques et des tags pour vos opérations marketing.</li>
                             <li>Support technique dédié et gestion des accès utilisateurs.</li>
@@ -45,7 +45,7 @@ export default function CGVU() {
                         </h3>
                         <h2 className={styles.headeronwhite}>4. Commande et abonnement</h2>
                         <h3 className={styles.bodyonwhite}>
-                            L’abonnement fonctionne aujourd’hui en mode "pay as you go" via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
+                            L’abonnement fonctionne aujourd’hui en mode &quot;pay as you go&quot; via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
                         </h3>
                         <h2 className={styles.headeronwhite}>5. Prix et paiement</h2>
                         <h3 className={styles.bodyonwhite}>

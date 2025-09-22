@@ -476,7 +476,7 @@ const Register = () => {
                 userSelect: "none",
               }}
             >
-              J'accepte les{" "}
+              J&apos;accepte les{" "}
               <span
                 style={{
                   color: "#1a7f6b",
@@ -486,7 +486,7 @@ const Register = () => {
                 }}
                 onClick={() => setShowCGVU(true)}
               >
-                Conditions Générales de Vente et d'Utilisation
+                Conditions Générales de Vente et d&apos;Utilisation
               </span>
               .
             </span>
