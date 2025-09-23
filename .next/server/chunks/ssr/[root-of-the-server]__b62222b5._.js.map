@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 17, "column": 0}, "map": {"version":3,"sources":["file://D%3A/Downloads/Vyft_product/Vyft%20program/app/components/PDFDownloadButton.tsx"],"sourcesContent":["// filepath: d:\\Downloads\\Vyft_product\\Vyft program\\app\\components\\PDFDownloadButton.tsx\r\n\"use client\";\r\n\r\nimport { PDFDownloadLink } from \"@react-pdf/renderer\";\r\n\r\nexport default function PDFDownloadButton({ document, fileName, style, children }: any) {\r\n  return (\r\n    <PDFDownloadLink document={document} fileName={fileName} style={style}>\r\n      {children}\r\n    </PDFDownloadLink>\r\n  );\r\n}"],"names":[],"mappings":"AAAA,wFAAwF;;;;;AAGxF;;;;;AAFA;;;AAIe,SAAS,kBAAkB,EAAE,QAAQ,EAAE,QAAQ,EAAE,KAAK,EAAE,QAAQ,EAAO;IACpF,qBACE,qKAAC,oJAAA,CAAA,kBAAe;QAAC,UAAU;QAAU,UAAU;QAAU,OAAO;kBAC7D;;;;;;AAGP","debugId":null}}]
+}

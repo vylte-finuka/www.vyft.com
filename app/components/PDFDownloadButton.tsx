@@ -1,11 +1,12 @@
+// filepath: d:\Downloads\Vyft_product\Vyft program\app\components\PDFDownloadButton.tsx
 "use client";
-import React from "react";
+
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
-export default function PDFDownloadButton({ document, fileName, style }: any) {
+export default function PDFDownloadButton({ document, fileName, style, children }: any) {
   return (
     <PDFDownloadLink document={document} fileName={fileName} style={style}>
-      {({ loading }: { loading: boolean }) => (loading ? "Génération..." : "Télécharger PDF")}
+      {children}
     </PDFDownloadLink>
   );
 }

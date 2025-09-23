@@ -1,0 +1,3 @@
+{
+  "/api/generateReport": "pages/api/generateReport.js"
+}

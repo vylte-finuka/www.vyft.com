@@ -165,12 +165,12 @@ async function Vyfthealth_proc(req, res) {
             }, 0);
             // Récupérer la date du début du mois en cours
             const nowDate = new Date();
-            const startOfMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+            const startOfMonthForStripe = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
             // Filtrer les paiements Stripe du mois en cours POUR LE CLIENT
             const monthlyInvestment = charges.data.reduce((sum, charge)=>{
                 const paidAt = new Date((charge.created || 0) * 1000);
                 // Filtre par customer Stripe
-                if (charge.paid && !charge.refunded && paidAt >= startOfMonth && paidAt <= nowDate && charge.customer === stripeCustomerId // <-- Filtre ici !
+                if (charge.paid && !charge.refunded && paidAt >= startOfMonthForStripe && paidAt <= nowDate && charge.customer === stripeCustomerId // <-- Filtre ici !
                 ) {
                     return sum + charge.amount / 100;
                 }
@@ -349,6 +349,160 @@ async function Vyfthealth_proc(req, res) {
             const avgRevenue = dailyRevenues14.slice(0, 7).length > 0 ? (dailyRevenues14.slice(0, 7).reduce((sum, v)=>sum + v, 0) / dailyRevenues14.slice(0, 7).length).toFixed(2) : "0";
             // Calcul de la recette du jour (basée sur les pas et la distance du dernier jour)
             const dailyRevenue = dailyRevenues14.length > 0 ? dailyRevenues14[0].toFixed(2) : "0";
+            // Récupérer la prochaine facture Stripe pour le client
+            let upcomingInvoiceAmount = 0;
+            try {
+                // Utilisation de stripe.invoices.list pour récupérer la prochaine facture à venir
+                const invoices = await stripe.invoices.list({
+                    customer: stripeCustomerId,
+                    limit: 1,
+                    status: "open"
+                });
+                const upcomingInvoice = invoices.data.length > 0 ? invoices.data[0] : null;
+                if (upcomingInvoice && upcomingInvoice.amount_due !== undefined) {
+                    upcomingInvoiceAmount = upcomingInvoice.amount_due / 100; // en euros
+                }
+            } catch (err) {
+                // Si aucune facture à venir, Stripe renvoie une erreur, on ignore
+                upcomingInvoiceAmount = 0;
+            }
+            // Influence : nombre de marcheurs uniques (par nom) pour différentes périodes
+            const nowTime = new Date();
+            const startOfDay = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate());
+            const startOfWeek = new Date(nowTime);
+            startOfWeek.setDate(nowTime.getDate() - 6);
+            startOfWeek.setHours(0, 0, 0, 0);
+            const startOfMonthForInfluence = new Date(nowTime.getFullYear(), nowTime.getMonth(), 1);
+            const startOfYear = new Date(nowTime.getFullYear(), 0, 1);
+            async function countUnique(from) {
+                if (!enseigneFilter || typeof enseigneFilter !== "string") {
+                    return 0;
+                }
+                const match = {
+                    enseigne: {
+                        $regex: `^${enseigneFilter.trim()}$`,
+                        $options: "i"
+                    }
+                };
+                if (from) match.date = {
+                    $gte: from.toISOString()
+                };
+                const result = await collection.aggregate([
+                    {
+                        $match: match
+                    },
+                    {
+                        $group: {
+                            _id: "$name"
+                        }
+                    },
+                    {
+                        $count: "count"
+                    }
+                ]).toArray();
+                return result[0]?.count || 0;
+            }
+            const [influenceDay, influenceWeek, influenceMonth, influenceYear, influenceAll] = await Promise.all([
+                countUnique(startOfDay),
+                countUnique(startOfWeek),
+                countUnique(startOfMonthForInfluence),
+                countUnique(startOfYear),
+                countUnique(null)
+            ]);
+            // Historique 7 derniers jours (jour par jour)
+            const influenceHistory7Days = [];
+            for(let i = 6; i >= 0; i--){
+                const day = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate() - i);
+                const nextDay = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate() - i + 1);
+                const count = await collection.distinct("name", {
+                    enseigne: {
+                        $regex: `^${enseigneFilter.trim()}$`,
+                        $options: "i"
+                    },
+                    date: {
+                        $gte: day.toISOString(),
+                        $lt: nextDay.toISOString()
+                    }
+                });
+                influenceHistory7Days.push({
+                    date: day.toISOString(),
+                    count: count.length
+                });
+            }
+            // Historique du mois courant (jour par jour)
+            const influenceHistoryMonth = [];
+            const daysInMonth = new Date(nowTime.getFullYear(), nowTime.getMonth() + 1, 0).getDate();
+            for(let i = 1; i <= daysInMonth; i++){
+                const day = new Date(nowTime.getFullYear(), nowTime.getMonth(), i);
+                const nextDay = new Date(nowTime.getFullYear(), nowTime.getMonth(), i + 1);
+                const count = await collection.distinct("name", {
+                    enseigne: {
+                        $regex: `^${enseigneFilter.trim()}$`,
+                        $options: "i"
+                    },
+                    date: {
+                        $gte: day.toISOString(),
+                        $lt: nextDay.toISOString()
+                    }
+                });
+                influenceHistoryMonth.push({
+                    date: day.toISOString(),
+                    count: count.length
+                });
+            }
+            // Historique de l'année courante (mois par mois)
+            const influenceHistoryYear = [];
+            for(let m = 0; m < 12; m++){
+                const monthStart = new Date(nowTime.getFullYear(), m, 1);
+                const monthEnd = new Date(nowTime.getFullYear(), m + 1, 1);
+                const count = await collection.distinct("name", {
+                    enseigne: {
+                        $regex: `^${enseigneFilter.trim()}$`,
+                        $options: "i"
+                    },
+                    date: {
+                        $gte: monthStart.toISOString(),
+                        $lt: monthEnd.toISOString()
+                    }
+                });
+                influenceHistoryYear.push({
+                    month: monthStart.toLocaleString("fr-FR", {
+                        month: "short"
+                    }),
+                    count: count.length
+                });
+            }
+            // Top users (par nombre de participations)
+            const topUsersAgg = await collection.aggregate([
+                {
+                    $match: {
+                        enseigne: {
+                            $regex: `^${enseigneFilter.trim()}$`,
+                            $options: "i"
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$name",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                },
+                {
+                    $sort: {
+                        count: -1
+                    }
+                },
+                {
+                    $limit: 5
+                }
+            ]).toArray();
+            const topUsers = topUsersAgg.map((u)=>({
+                    name: u._id,
+                    count: u.count
+                }));
             res.status(200).json({
                 success: true,
                 message: "Données calculées et envoyées à Stripe avec succès.",
@@ -363,7 +517,19 @@ async function Vyfthealth_proc(req, res) {
                     avgRevenue,
                     growth,
                     monthlyInvestment,
-                    metricsHistory: metricsHistoryWithRevenue
+                    metricsHistory: metricsHistoryWithRevenue,
+                    upcomingInvoiceAmount,
+                    influence: {
+                        day: influenceDay,
+                        week: influenceWeek,
+                        month: influenceMonth,
+                        year: influenceYear,
+                        all: influenceAll,
+                        history7Days: influenceHistory7Days,
+                        historyMonth: influenceHistoryMonth,
+                        historyYear: influenceHistoryYear,
+                        topUsers
+                    }
                 }
             });
         } catch (error) {

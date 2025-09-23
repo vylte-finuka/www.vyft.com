@@ -87,6 +87,22 @@ export default function CGVU() {
                         <h3 className={styles.bodyonwhite}>
                             Pour toute question, contactez-nous à support@vylte-finuka.com ou à l’adresse du siège social : 60 rue François 1er, 75008 Paris.
                         </h3>
+                        <h2 className={styles.headeronwhite}>À propos du rapport PDF et de la grille d'influence</h2>
+                        <h3 className={styles.bodyonwhite}>
+                            Le rapport PDF généré par Vyft Program contient un tableau de suivi de l’influence et de la fréquentation sur 800 jours :
+                            <ul>
+                                <li>
+                                    <b>Ligne supérieure (1 à 32)</b> : chaque colonne correspond à un jour du mois (du 1<sup>er</sup> au 32<sup>e</sup> jour, pour couvrir tous les cas de mois).
+                                </li>
+                                <li>
+                                    <b>Légende inférieure (M1, M2, ...)</b> : chaque “M” indique le numéro du mois affiché (M1 = premier mois, M2 = deuxième mois, etc.).
+                                </li>
+                                <li>
+                                    Chaque case du tableau représente l’activité d’un jour donné, la couleur indiquant le niveau d’influence ou de fréquentation.
+                                </li>
+                            </ul>
+                            Ce format permet de visualiser rapidement l’évolution de l’activité jour par jour et mois par mois.
+                        </h3>
                     </main>
                     <Footer />
                 </div>

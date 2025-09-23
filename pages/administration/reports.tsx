@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-head-element */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 import styles from "../../app/page.module.css";
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
-import { Bar } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 
 const ReportsList = dynamic(() => import("./reportsList"), { ssr: false });
@@ -31,6 +31,17 @@ export default function Reports() {
   const [period, setPeriod] = useState("");
   const [loading, setLoading] = useState(true);
   const [metricsHistory, setMetricsHistory] = useState<MetricsHistory>([]);
+  const [influence, setInfluence] = useState<{day:number, week:number, month:number, year:number, all:number}>({day:0, week:0, month:0, year:0, all:0});
+  const [influencePeriod, setInfluencePeriod] = useState<"7days"|"day"|"week"|"month"|"year"|"all">("7days");
+  const [influenceHistory, setInfluenceHistory] = useState<{date:string, count:number}[]>([]);
+  const [influenceDayHours, setInfluenceDayHours] = useState<number[]>([]);
+  const [influenceWeekDays, setInfluenceWeekDays] = useState<{date:string, count:number}[]>([]);
+  const [influenceMonthDays, setInfluenceMonthDays] = useState<{date:string, count:number}[]>([]);
+  const [influenceYearMonths, setInfluenceYearMonths] = useState<{month:string, count:number}[]>([]);
+  const [topUsers, setTopUsers] = useState<{ name: string; count: number }[]>([]);
+  const barChartRef = useRef<any>(null);
+  const influenceChartRef = useRef<any>(null);
+  const topUsersChartRef = useRef<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +132,35 @@ export default function Reports() {
               dailyDistance: h.distance,
             }))
           );
+
+          if (data.data.influence) {
+            setInfluence(data.data.influence);
+            setInfluenceHistory(data.data.influence.history7Days || []);
+            setTopUsers(data.data.influence.topUsers || []);
+
+            // --- HISTOGRAMME PAR HEURE POUR AUJOURD'HUI ---
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const hours = [];
+            for (let h = 0; h < 24; h++) {
+              const start = new Date(today);
+              start.setHours(h, 0, 0, 0);
+              const end = new Date(today);
+              end.setHours(h+1, 0, 0, 0);
+              const count = data.data.influence.byHour?.[h] ?? 0;
+              hours.push(count);
+            }
+            setInfluenceDayHours(hours);
+
+            // --- HISTOGRAMME PAR JOUR POUR LA SEMAINE ---
+            setInfluenceWeekDays(data.data.influence.history7Days || []);
+
+            // --- HISTOGRAMME PAR JOUR POUR LE MOIS ---
+            setInfluenceMonthDays(data.data.influence.historyMonth || []);
+
+            // --- HISTOGRAMME PAR MOIS POUR L'ANNÉE ---
+            setInfluenceYearMonths(data.data.influence.historyYear || []);
+          }
         }
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
@@ -153,59 +193,303 @@ export default function Reports() {
     ],
   };
 
+  // Composant Dropdown web
+  function Dropdown({ options, value, onChange, placeholder }: {
+    options: { value: string, label: string }[],
+    value: string,
+    onChange: (val: string) => void,
+    placeholder?: string
+  }) {
+    return (
+      <div style={{
+        display: "flex",
+        gap: 12,
+        marginBottom: 24,
+        width: "100%",
+        justifyContent: "center"
+      }}>
+        {options.map(opt => (
+          <button
+            key={opt.value}
+            onClick={() => onChange(opt.value)}
+            style={{
+              flex: 1,
+              background: value === opt.value ? "#DBDFE0" : "#bfc4c5ff",
+              color: "#222",
+              border: "none",
+              borderRadius: 18,
+              height: 48,
+              fontSize: 16,
+              fontFamily: "BR Sonoma, BRSonoma, sans-serif",
+              cursor: "pointer",
+              transition: "background 0.2s, color 0.2s",
+              boxShadow: value === opt.value ? "0 2px 8px rgba(0,0,0,0.07)" : "none"
+            }}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  // Après le rendu
+  const getBarChartImage = () => barChartRef.current?.toBase64Image() || "";
+  const getInfluenceChartImage = () => influenceChartRef.current?.toBase64Image() || "";
+  const getTopUsersChartImage = () => topUsersChartRef.current?.toBase64Image() || "";
+
+  // Exemple de structure pour chaque rapport historique
+  const reportPeriods = [
+    { type: "weekly", label: "hebdomadaire", period: period, data: reportData, influenceHistory, chartImage: getBarChartImage(), influenceChartImage: getInfluenceChartImage(), topUsersChartImage: getTopUsersChartImage() },
+    // Ajoute ici les autres périodes (mensuel, fiscal, etc.) avec leurs propres données
+    // { type: "monthly", label: "mensuel", period: ..., data: ..., influenceHistory: ..., ... }
+  ];
+
   return (
-    <div className={styles.container2} style={{ fontFamily: "BR Sonoma, BRSonoma, sans-serif" }}>
+    <div className={styles.container2}>
       <head>
         <title>Rapports - Vyft program: Manage your own market.</title>
       </head>
       <Navbar />
-      <main className={styles.main} style={{ fontFamily: "BR Sonoma, BRSonoma, sans-serif" }}>
-        <h1 className={styles.header} style={{ fontFamily: "BR Sonoma, BRSonoma, sans-serif" }}>
-          Rapports automatiques
-        </h1>
-        {!loading && (
-          <ReportsList reportType="weekly" period={period} data={reportData} />
-        )}
-        <section
+      <main className={styles.main} style={{ alignItems: "flex-start" }}>
+        {/* Section horizontale : Liste des rapports à gauche, historique à droite */}
+        <div
           style={{
-            background: "#fff",
-            borderRadius: 24,
-            padding: 32,
+            display: "flex",
+            flexDirection: "row",
+            gap: 32,
             width: "100%",
-            maxWidth: 700,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+            alignItems: "flex-start",
+            marginBottom: 32,
           }}
         >
-          <h2 className={styles.headeronwhite}>Aperçu graphique</h2>
-          <div style={{ background: "#DBDFE0", borderRadius: 18, padding: 18 }}>
-            <Bar
-              data={chartData}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    display: true,
-                    labels: {
-                      color: "#222",
-                      font: { family: "BR Sonoma Semibold", size: 14 },
-                    },
-                  },
-                },
-                scales: {
-                  x: {
-                    ticks: { color: "#444444", font: { family: "BR Sonoma Semibold" } },
-                    grid: { color: "#e0dbdd" },
-                  },
-                  y: {
-                    ticks: { color: "#1a7f6b", font: { family: "BR Sonoma Semibold" } },
-                    grid: { color: "#e0dbdd" },
-                  },
-                },
+          {/* Liste des rapports générés */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h1 className={styles.header}>Rapports</h1>
+            {/* Partie principale avec les graphiques */}
+            <section
+              className={styles.bodyonwhite}
+              style={{
+                background: "#fff",
+                borderRadius: 24,
+                padding: 32,
+                width: "100%",
+                maxWidth: 700,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                marginBottom: 24,
               }}
-              height={120}
-            />
+            >
+              <h2 className={styles.headeronwhite}>Profit de marché</h2>
+              <div style={{ background: "#DBDFE0", borderRadius: 18, padding: 18 }}>
+                <Bar
+                  ref={barChartRef}
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        display: true,
+                        labels: {
+                          color: "#222",
+                          font: { family: "BR Sonoma Semibold", size: 14 },
+                        },
+                      },
+                    },
+                    scales: {
+                      x: {
+                        ticks: { color: "#444444", font: { family: "BR Sonoma Semibold" } },
+                        grid: { color: "#e0dbdd" },
+                      },
+                      y: {
+                        ticks: { color: "#1a7f6b", font: { family: "BR Sonoma Semibold" } },
+                        grid: { color: "#e0dbdd" },
+                      },
+                    },
+                  }}
+                  height={120}
+                />
+              </div>
+            </section>
+            <section
+              className={styles.bodyonwhite}
+              style={{
+                background: "#fff",
+                borderRadius: 24,
+                padding: 32,
+                width: "100%",
+                maxWidth: 700,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                marginTop: 24,
+              }}
+            >
+              <h2 className={styles.headeronwhite}>Influence</h2>
+              {/* Sélecteur coulissant */}
+              <Dropdown
+                options={[
+                  { value: "day", label: "Jour (heures)" },
+                  { value: "week", label: "Semaine (jours)" },
+                  { value: "month", label: "Mois (jours)" },
+                  { value: "year", label: "Année (mois)" },
+                  { value: "all", label: "Tout" },
+                ]}
+                value={influencePeriod}
+                onChange={(val) =>
+                  setInfluencePeriod(
+                    val as "7days" | "day" | "week" | "month" | "year" | "all"
+                  )
+                }
+                placeholder="Sélectionner une période"
+              />
+              <div style={{ background: "#DBDFE0", borderRadius: 18, padding: 18 }}>
+                <Bar
+                  ref={influenceChartRef}
+                  data={{
+                    labels:
+                      influencePeriod === "day"
+                        ? Array.from({ length: 24 }, (_, h) => `${h}h`)
+                        : influencePeriod === "week"
+                        ? influenceWeekDays.map((h) =>
+                            new Date(h.date).toLocaleDateString("fr-FR", {
+                              weekday: "short",
+                              day: "2-digit",
+                              month: "2-digit",
+                            })
+                          )
+                        : influencePeriod === "month"
+                        ? influenceMonthDays.map((h) =>
+                            new Date(h.date).toLocaleDateString("fr-FR", {
+                              day: "2-digit",
+                              month: "2-digit",
+                            })
+                          )
+                        : influencePeriod === "year"
+                        ? influenceYearMonths.map((m) => m.month)
+                        : influenceHistory.map((h) =>
+                            new Date(h.date).toLocaleDateString("fr-FR", {
+                              day: "2-digit",
+                              month: "2-digit",
+                            })
+                          ),
+                    datasets: [
+                      {
+                        label: "Marcheurs uniques",
+                        data:
+                          influencePeriod === "day"
+                            ? influenceDayHours
+                            : influencePeriod === "week"
+                            ? influenceWeekDays.map((h) => h.count)
+                            : influencePeriod === "month"
+                            ? influenceMonthDays.map((h) => h.count)
+                            : influencePeriod === "year"
+                            ? influenceYearMonths.map((m) => m.count)
+                            : influenceHistory.map((h) => h.count),
+                        backgroundColor: "#1a7f6b",
+                        borderRadius: 8,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                      x: {
+                        ticks: {
+                          color: "#444444",
+                          font: { family: "BR Sonoma Semibold" },
+                        },
+                        grid: { color: "#e0dbdd" },
+                      },
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          color: "#1a7f6b",
+                          font: { family: "BR Sonoma Semibold" },
+                        },
+                        grid: { color: "#e0dbdd" },
+                      },
+                    },
+                  }}
+                  height={120}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 16,
+                  flexWrap: "wrap",
+                  marginTop: 16,
+                }}
+              >
+                <div>
+                  Jour : <b className={styles.bodyonwhite}>{influence.day}</b>
+                </div>
+                <div>
+                  Semaine : <b className={styles.bodyonwhite}>{influence.week}</b>
+                </div>
+                <div>
+                  Mois : <b className={styles.bodyonwhite}>{influence.month}</b>
+                </div>
+                <div>
+                  An : <b className={styles.bodyonwhite}>{influence.year}</b>
+                </div>
+                <div>
+                  Total : <b className={styles.bodyonwhite}>{influence.all}</b>
+                </div>
+              </div>
+              {topUsers.length > 0 && (
+                <div
+                  style={{
+                    background: "#DBDFE0",
+                    borderRadius: 18,
+                    marginTop: 32,
+                    padding: 24,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                    maxWidth: 4010,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <h3 className={styles.headeronwhite}>Top clients du mois</h3>
+                  <Doughnut
+                    ref={topUsersChartRef}
+                    data={{
+                      labels: topUsers.map((u) => u.name),
+                      datasets: [
+                        {
+                          data: topUsers.map((u) => u.count),
+                          backgroundColor: [
+                            "#1a7f6b",
+                            "#444444",
+                            "#DBDFE0",
+                            "#bfc4c5ff",
+                            "#e0dbdd",
+                          ],
+                          borderWidth: 2,
+                        },
+                      ],
+                    }}
+                    options={{
+                      plugins: {
+                        legend: {
+                          display: true,
+                          position: "bottom",
+                          labels: {
+                            color: "#222",
+                            font: { family: "BR Sonoma Semibold", size: 14 },
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              )}
+            </section>
           </div>
-        </section>
+          {/* Historique à droite, bien au niveau de la section "Profit de marché" */}
+          <div style={{ minWidth: 420, maxWidth: 420, alignSelf: "flex-start" }}>
+            <ReportsList reports={reportPeriods} />
+          </div>
+        </div>
       </main>
       <Footer />
     </div>

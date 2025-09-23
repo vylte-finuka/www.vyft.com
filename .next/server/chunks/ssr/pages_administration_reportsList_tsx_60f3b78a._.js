@@ -6,8 +6,7 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.v((parentImport) => {
     return Promise.all([
-  "server/chunks/ssr/pages_administration_PDFDownloadButton_tsx_8b7ffb04._.js",
-  "server/chunks/ssr/[root-of-the-server]__5778aedb._.js"
+  "server/chunks/ssr/pages_administration_reportsList_tsx_c6785901._.js"
 ].map((chunk) => __turbopack_context__.l(chunk))).then(() => {
         return parentImport("[project]/pages/administration/reportsList.tsx [ssr] (ecmascript, next/dynamic entry)");
     });

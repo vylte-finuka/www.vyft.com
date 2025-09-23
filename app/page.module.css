@@ -310,6 +310,7 @@
   user-select: none; /* Empêche la sélection de l'image */
   -webkit-user-drag: none; /* Empêche le glisser-déposer sur les navigateurs WebKit */
   -webkit-touch-callout: none; /* Empêche le menu contextuel on iOS */
+  width: 0;
 }
   
   .statviewers .left {

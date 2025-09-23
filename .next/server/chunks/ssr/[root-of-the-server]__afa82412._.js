@@ -785,6 +785,23 @@ function Reports() {
     const [period, setPeriod] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(true);
     const [metricsHistory, setMetricsHistory] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [influence, setInfluence] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({
+        day: 0,
+        week: 0,
+        month: 0,
+        year: 0,
+        all: 0
+    });
+    const [influencePeriod, setInfluencePeriod] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("7days");
+    const [influenceHistory, setInfluenceHistory] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [influenceDayHours, setInfluenceDayHours] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [influenceWeekDays, setInfluenceWeekDays] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [influenceMonthDays, setInfluenceMonthDays] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [influenceYearMonths, setInfluenceYearMonths] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const [topUsers, setTopUsers] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([]);
+    const barChartRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
+    const influenceChartRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
+    const topUsersChartRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
         const fetchData = async ()=>{
             try {
@@ -859,6 +876,30 @@ function Reports() {
                             dailySteps: h.steps,
                             dailyDistance: h.distance
                         })));
+                    if (data.data.influence) {
+                        setInfluence(data.data.influence);
+                        setInfluenceHistory(data.data.influence.history7Days || []);
+                        setTopUsers(data.data.influence.topUsers || []);
+                        // --- HISTOGRAMME PAR HEURE POUR AUJOURD'HUI ---
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const hours = [];
+                        for(let h = 0; h < 24; h++){
+                            const start = new Date(today);
+                            start.setHours(h, 0, 0, 0);
+                            const end = new Date(today);
+                            end.setHours(h + 1, 0, 0, 0);
+                            const count = data.data.influence.byHour?.[h] ?? 0;
+                            hours.push(count);
+                        }
+                        setInfluenceDayHours(hours);
+                        // --- HISTOGRAMME PAR JOUR POUR LA SEMAINE ---
+                        setInfluenceWeekDays(data.data.influence.history7Days || []);
+                        // --- HISTOGRAMME PAR JOUR POUR LE MOIS ---
+                        setInfluenceMonthDays(data.data.influence.historyMonth || []);
+                        // --- HISTOGRAMME PAR MOIS POUR L'ANNÉE ---
+                        setInfluenceYearMonths(data.data.influence.historyYear || []);
+                    }
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération des données :", error);
@@ -888,153 +929,534 @@ function Reports() {
             }
         ]
     };
+    // Composant Dropdown web
+    function Dropdown({ options, value, onChange, placeholder }) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+            style: {
+                display: "flex",
+                gap: 12,
+                marginBottom: 24,
+                width: "100%",
+                justifyContent: "center"
+            },
+            children: options.map((opt)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
+                    onClick: ()=>onChange(opt.value),
+                    style: {
+                        flex: 1,
+                        background: value === opt.value ? "#DBDFE0" : "#bfc4c5ff",
+                        color: "#222",
+                        border: "none",
+                        borderRadius: 18,
+                        height: 48,
+                        fontSize: 16,
+                        fontFamily: "BR Sonoma, BRSonoma, sans-serif",
+                        cursor: "pointer",
+                        transition: "background 0.2s, color 0.2s",
+                        boxShadow: value === opt.value ? "0 2px 8px rgba(0,0,0,0.07)" : "none"
+                    },
+                    children: opt.label
+                }, opt.value, false, {
+                    fileName: "[project]/pages/administration/reports.tsx",
+                    lineNumber: 212,
+                    columnNumber: 11
+                }, this))
+        }, void 0, false, {
+            fileName: "[project]/pages/administration/reports.tsx",
+            lineNumber: 204,
+            columnNumber: 7
+        }, this);
+    }
+    // Après le rendu
+    const getBarChartImage = ()=>barChartRef.current?.toBase64Image() || "";
+    const getInfluenceChartImage = ()=>influenceChartRef.current?.toBase64Image() || "";
+    const getTopUsersChartImage = ()=>topUsersChartRef.current?.toBase64Image() || "";
+    // Exemple de structure pour chaque rapport historique
+    const reportPeriods = [
+        {
+            type: "weekly",
+            label: "hebdomadaire",
+            period: period,
+            data: reportData,
+            influenceHistory,
+            chartImage: getBarChartImage(),
+            influenceChartImage: getInfluenceChartImage(),
+            topUsersChartImage: getTopUsersChartImage()
+        }
+    ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].container2,
-        style: {
-            fontFamily: "BR Sonoma, BRSonoma, sans-serif"
-        },
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("head", {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("title", {
                     children: "Rapports - Vyft program: Manage your own market."
                 }, void 0, false, {
                     fileName: "[project]/pages/administration/reports.tsx",
-                    lineNumber: 159,
+                    lineNumber: 251,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/administration/reports.tsx",
-                lineNumber: 158,
+                lineNumber: 250,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/pages/administration/reports.tsx",
-                lineNumber: 161,
+                lineNumber: 253,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("main", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].main,
                 style: {
-                    fontFamily: "BR Sonoma, BRSonoma, sans-serif"
+                    alignItems: "flex-start"
                 },
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
-                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].header,
-                        style: {
-                            fontFamily: "BR Sonoma, BRSonoma, sans-serif"
-                        },
-                        children: "Rapports automatiques"
-                    }, void 0, false, {
-                        fileName: "[project]/pages/administration/reports.tsx",
-                        lineNumber: 163,
-                        columnNumber: 9
-                    }, this),
-                    !loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ReportsList, {
-                        reportType: "weekly",
-                        period: period,
-                        data: reportData
-                    }, void 0, false, {
-                        fileName: "[project]/pages/administration/reports.tsx",
-                        lineNumber: 167,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
-                        style: {
-                            background: "#fff",
-                            borderRadius: 24,
-                            padding: 32,
-                            width: "100%",
-                            maxWidth: 700,
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.07)"
-                        },
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
-                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
-                                children: "Aperçu graphique"
-                            }, void 0, false, {
-                                fileName: "[project]/pages/administration/reports.tsx",
-                                lineNumber: 179,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                style: {
-                                    background: "#DBDFE0",
-                                    borderRadius: 18,
-                                    padding: 18
-                                },
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$chartjs$2d$2__$5b$external$5d$__$28$react$2d$chartjs$2d$2$2c$__esm_import$29$__["Bar"], {
-                                    data: chartData,
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                            legend: {
-                                                display: true,
-                                                labels: {
-                                                    color: "#222",
-                                                    font: {
-                                                        family: "BR Sonoma Semibold",
-                                                        size: 14
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        scales: {
-                                            x: {
-                                                ticks: {
-                                                    color: "#444444",
-                                                    font: {
-                                                        family: "BR Sonoma Semibold"
-                                                    }
-                                                },
-                                                grid: {
-                                                    color: "#e0dbdd"
-                                                }
-                                            },
-                                            y: {
-                                                ticks: {
-                                                    color: "#1a7f6b",
-                                                    font: {
-                                                        family: "BR Sonoma Semibold"
-                                                    }
-                                                },
-                                                grid: {
-                                                    color: "#e0dbdd"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    height: 120
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                    style: {
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 32,
+                        width: "100%",
+                        alignItems: "flex-start",
+                        marginBottom: 32
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                            style: {
+                                flex: 1,
+                                minWidth: 0
+                            },
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].header,
+                                    children: "Rapports"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/administration/reports.tsx",
-                                    lineNumber: 181,
+                                    lineNumber: 268,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                    style: {
+                                        background: "#fff",
+                                        borderRadius: 24,
+                                        padding: 32,
+                                        width: "100%",
+                                        maxWidth: 700,
+                                        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                                        marginBottom: 24
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                            children: "Profit de marché"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 282,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                            style: {
+                                                background: "#DBDFE0",
+                                                borderRadius: 18,
+                                                padding: 18
+                                            },
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$chartjs$2d$2__$5b$external$5d$__$28$react$2d$chartjs$2d$2$2c$__esm_import$29$__["Bar"], {
+                                                ref: barChartRef,
+                                                data: chartData,
+                                                options: {
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            display: true,
+                                                            labels: {
+                                                                color: "#222",
+                                                                font: {
+                                                                    family: "BR Sonoma Semibold",
+                                                                    size: 14
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    scales: {
+                                                        x: {
+                                                            ticks: {
+                                                                color: "#444444",
+                                                                font: {
+                                                                    family: "BR Sonoma Semibold"
+                                                                }
+                                                            },
+                                                            grid: {
+                                                                color: "#e0dbdd"
+                                                            }
+                                                        },
+                                                        y: {
+                                                            ticks: {
+                                                                color: "#1a7f6b",
+                                                                font: {
+                                                                    family: "BR Sonoma Semibold"
+                                                                }
+                                                            },
+                                                            grid: {
+                                                                color: "#e0dbdd"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                height: 120
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/reports.tsx",
+                                                lineNumber: 284,
+                                                columnNumber: 17
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 283,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/administration/reports.tsx",
+                                    lineNumber: 270,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                    style: {
+                                        background: "#fff",
+                                        borderRadius: 24,
+                                        padding: 32,
+                                        width: "100%",
+                                        maxWidth: 700,
+                                        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                                        marginTop: 24
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h2", {
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                            children: "Influence"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 325,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dropdown, {
+                                            options: [
+                                                {
+                                                    value: "day",
+                                                    label: "Jour (heures)"
+                                                },
+                                                {
+                                                    value: "week",
+                                                    label: "Semaine (jours)"
+                                                },
+                                                {
+                                                    value: "month",
+                                                    label: "Mois (jours)"
+                                                },
+                                                {
+                                                    value: "year",
+                                                    label: "Année (mois)"
+                                                },
+                                                {
+                                                    value: "all",
+                                                    label: "Tout"
+                                                }
+                                            ],
+                                            value: influencePeriod,
+                                            onChange: (val)=>setInfluencePeriod(val),
+                                            placeholder: "Sélectionner une période"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 327,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                            style: {
+                                                background: "#DBDFE0",
+                                                borderRadius: 18,
+                                                padding: 18
+                                            },
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$chartjs$2d$2__$5b$external$5d$__$28$react$2d$chartjs$2d$2$2c$__esm_import$29$__["Bar"], {
+                                                ref: influenceChartRef,
+                                                data: {
+                                                    labels: influencePeriod === "day" ? Array.from({
+                                                        length: 24
+                                                    }, (_, h)=>`${h}h`) : influencePeriod === "week" ? influenceWeekDays.map((h)=>new Date(h.date).toLocaleDateString("fr-FR", {
+                                                            weekday: "short",
+                                                            day: "2-digit",
+                                                            month: "2-digit"
+                                                        })) : influencePeriod === "month" ? influenceMonthDays.map((h)=>new Date(h.date).toLocaleDateString("fr-FR", {
+                                                            day: "2-digit",
+                                                            month: "2-digit"
+                                                        })) : influencePeriod === "year" ? influenceYearMonths.map((m)=>m.month) : influenceHistory.map((h)=>new Date(h.date).toLocaleDateString("fr-FR", {
+                                                            day: "2-digit",
+                                                            month: "2-digit"
+                                                        })),
+                                                    datasets: [
+                                                        {
+                                                            label: "Marcheurs uniques",
+                                                            data: influencePeriod === "day" ? influenceDayHours : influencePeriod === "week" ? influenceWeekDays.map((h)=>h.count) : influencePeriod === "month" ? influenceMonthDays.map((h)=>h.count) : influencePeriod === "year" ? influenceYearMonths.map((m)=>m.count) : influenceHistory.map((h)=>h.count),
+                                                            backgroundColor: "#1a7f6b",
+                                                            borderRadius: 8
+                                                        }
+                                                    ]
+                                                },
+                                                options: {
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            display: false
+                                                        }
+                                                    },
+                                                    scales: {
+                                                        x: {
+                                                            ticks: {
+                                                                color: "#444444",
+                                                                font: {
+                                                                    family: "BR Sonoma Semibold"
+                                                                }
+                                                            },
+                                                            grid: {
+                                                                color: "#e0dbdd"
+                                                            }
+                                                        },
+                                                        y: {
+                                                            beginAtZero: true,
+                                                            ticks: {
+                                                                color: "#1a7f6b",
+                                                                font: {
+                                                                    family: "BR Sonoma Semibold"
+                                                                }
+                                                            },
+                                                            grid: {
+                                                                color: "#e0dbdd"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                height: 120
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/reports.tsx",
+                                                lineNumber: 344,
+                                                columnNumber: 17
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 343,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                            style: {
+                                                display: "flex",
+                                                gap: 16,
+                                                flexWrap: "wrap",
+                                                marginTop: 16
+                                            },
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        "Jour : ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("b", {
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                                            children: influence.day
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/reports.tsx",
+                                                            lineNumber: 424,
+                                                            columnNumber: 26
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 423,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        "Semaine : ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("b", {
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                                            children: influence.week
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/reports.tsx",
+                                                            lineNumber: 427,
+                                                            columnNumber: 29
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 426,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        "Mois : ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("b", {
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                                            children: influence.month
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/reports.tsx",
+                                                            lineNumber: 430,
+                                                            columnNumber: 26
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 429,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        "An : ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("b", {
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                                            children: influence.year
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/reports.tsx",
+                                                            lineNumber: 433,
+                                                            columnNumber: 24
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 432,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        "Total : ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("b", {
+                                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                                            children: influence.all
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/reports.tsx",
+                                                            lineNumber: 436,
+                                                            columnNumber: 27
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 435,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 415,
+                                            columnNumber: 15
+                                        }, this),
+                                        topUsers.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                            style: {
+                                                background: "#DBDFE0",
+                                                borderRadius: 18,
+                                                marginTop: 32,
+                                                padding: 24,
+                                                boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                                                maxWidth: 4010,
+                                                marginLeft: "auto",
+                                                marginRight: "auto"
+                                            },
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
+                                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                                    children: "Top clients du mois"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 452,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$chartjs$2d$2__$5b$external$5d$__$28$react$2d$chartjs$2d$2$2c$__esm_import$29$__["Doughnut"], {
+                                                    ref: topUsersChartRef,
+                                                    data: {
+                                                        labels: topUsers.map((u)=>u.name),
+                                                        datasets: [
+                                                            {
+                                                                data: topUsers.map((u)=>u.count),
+                                                                backgroundColor: [
+                                                                    "#1a7f6b",
+                                                                    "#444444",
+                                                                    "#DBDFE0",
+                                                                    "#bfc4c5ff",
+                                                                    "#e0dbdd"
+                                                                ],
+                                                                borderWidth: 2
+                                                            }
+                                                        ]
+                                                    },
+                                                    options: {
+                                                        plugins: {
+                                                            legend: {
+                                                                display: true,
+                                                                position: "bottom",
+                                                                labels: {
+                                                                    color: "#222",
+                                                                    font: {
+                                                                        family: "BR Sonoma Semibold",
+                                                                        size: 14
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/administration/reports.tsx",
+                                                    lineNumber: 453,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/administration/reports.tsx",
+                                            lineNumber: 440,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/administration/reports.tsx",
+                                    lineNumber: 313,
                                     columnNumber: 13
                                 }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/pages/administration/reports.tsx",
+                            lineNumber: 267,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                            style: {
+                                minWidth: 420,
+                                maxWidth: 420,
+                                alignSelf: "flex-start"
+                            },
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ReportsList, {
+                                reports: reportPeriods
                             }, void 0, false, {
                                 fileName: "[project]/pages/administration/reports.tsx",
-                                lineNumber: 180,
-                                columnNumber: 11
+                                lineNumber: 490,
+                                columnNumber: 13
                             }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/pages/administration/reports.tsx",
-                        lineNumber: 169,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
+                        }, void 0, false, {
+                            fileName: "[project]/pages/administration/reports.tsx",
+                            lineNumber: 489,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/pages/administration/reports.tsx",
+                    lineNumber: 256,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
                 fileName: "[project]/pages/administration/reports.tsx",
-                lineNumber: 162,
+                lineNumber: 254,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/pages/administration/reports.tsx",
-                lineNumber: 210,
+                lineNumber: 494,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/administration/reports.tsx",
-        lineNumber: 157,
+        lineNumber: 249,
         columnNumber: 5
     }, this);
 }
