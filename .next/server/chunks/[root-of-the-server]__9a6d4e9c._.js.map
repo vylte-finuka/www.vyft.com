@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 25, "column": 0}, "map": {"version":3,"sources":["file://D%3A/Downloads/Vyft_product/Vyft%20program/app/components/reportvyft.tsx"],"sourcesContent":["import { Page, Document, Text } from '@react-pdf/renderer';\r\n\r\nexport type ReportVyftProps = {\r\n  title: string;\r\n  author: string;\r\n  description: string;\r\n};\r\n\r\nexport const ReportVyft = (props: ReportVyftProps) => (\r\n  <Document title={props.title} author={props.author} subject={props.description}>\r\n    <Page>\r\n      <Text>Hello, World!</Text>\r\n    </Page>\r\n  </Document>\r\n);"],"names":[],"mappings":";;;;AAAA;;;;;;;AAQO,MAAM,aAAa,CAAC,sBACzB,qKAAC,oJAAA,CAAA,WAAQ;QAAC,OAAO,MAAM,KAAK;QAAE,QAAQ,MAAM,MAAM;QAAE,SAAS,MAAM,WAAW;kBAC5E,cAAA,qKAAC,oJAAA,CAAA,OAAI;sBACH,cAAA,qKAAC,oJAAA,CAAA,OAAI;0BAAC","debugId":null}}]
-}

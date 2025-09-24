@@ -1,4 +1,4 @@
-// File: D:\Downloads\Vyft program\app\layout.tsx
+// File: D:\Downloads\Vyft_product\Vyft program\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

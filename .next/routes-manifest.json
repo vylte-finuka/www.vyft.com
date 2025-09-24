@@ -40,6 +40,12 @@
       "namedRegex": "^/administration/reports(?:/)?$"
     },
     {
+      "page": "/administration/reportsList",
+      "regex": "^/administration/reportsList(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/administration/reportsList(?:/)?$"
+    },
+    {
       "page": "/administration/settings",
       "regex": "^/administration/settings(?:/)?$",
       "routeKeys": {},
@@ -52,10 +58,10 @@
       "namedRegex": "^/cancel(?:/)?$"
     },
     {
-      "page": "/conditions-generals-de-vente",
-      "regex": "^/conditions\\-generals\\-de\\-vente(?:/)?$",
+      "page": "/conditions-generales-de-vente",
+      "regex": "^/conditions\\-generales\\-de\\-vente(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/conditions\\-generals\\-de\\-vente(?:/)?$"
+      "namedRegex": "^/conditions\\-generales\\-de\\-vente(?:/)?$"
     },
     {
       "page": "/events/management",
