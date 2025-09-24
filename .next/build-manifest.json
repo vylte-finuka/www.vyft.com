@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/eHZX9Ev_J5Wcmnvz-Bpbp/_buildManifest.js",
-    "static/eHZX9Ev_J5Wcmnvz-Bpbp/_ssgManifest.js"
+    "static/z1kc6LCpd_gdxFT--uo0F/_buildManifest.js",
+    "static/z1kc6LCpd_gdxFT--uo0F/_ssgManifest.js"
   ],
   "rootMainFiles": [
     "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -38,7 +38,7 @@
       "static/chunks/92-962f309f96491ee9.js",
       "static/chunks/273-79a9972b4a77d490.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/administration/main-management-6c1346d531ed1c67.js"
+      "static/chunks/pages/administration/main-management-e0bc3487d0793c92.js"
     ],
     "/administration/reports": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -51,7 +51,7 @@
       "static/chunks/92-962f309f96491ee9.js",
       "static/chunks/150-b2dec5dfe8694501.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/administration/reports-2cb64c2b26e3a715.js"
+      "static/chunks/pages/administration/reports-271bc93791b4a7bd.js"
     ],
     "/administration/reportsList": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -71,7 +71,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/administration/settings-ba4bb8ba662126bd.js"
+      "static/chunks/pages/administration/settings-697cca86ea3a4424.js"
     ],
     "/cancel": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -91,7 +91,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/conditions-generales-de-vente-2ca6dabeb7eb661b.js"
+      "static/chunks/pages/conditions-generales-de-vente-f7583fad5dcc13cd.js"
     ],
     "/events/management": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -102,7 +102,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/events/management-206825f364aa5a75.js"
+      "static/chunks/pages/events/management-a65d062185e6981d.js"
     ],
     "/events/statistics": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -113,7 +113,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/events/statistics-dc3ab6d0939a16d3.js"
+      "static/chunks/pages/events/statistics-7dead456b1814981.js"
     ],
     "/login": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -150,7 +150,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/regulations/aml-e651cbf7babf35e5.js"
+      "static/chunks/pages/regulations/aml-f3da71ac52b76975.js"
     ],
     "/regulations/kyc": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -161,7 +161,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/regulations/kyc-19b820bbec42e71d.js"
+      "static/chunks/pages/regulations/kyc-52931a33c7786b4b.js"
     ],
     "/regulations/pci-dss": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -172,7 +172,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/regulations/pci-dss-a2eac08a1051075d.js"
+      "static/chunks/pages/regulations/pci-dss-71c46fe35c060c2a.js"
     ],
     "/risk-management/accounting": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -183,7 +183,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/risk-management/accounting-c5708cc53418d82f.js"
+      "static/chunks/pages/risk-management/accounting-73193f059bc022c2.js"
     ],
     "/risk-management/cashback": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
@@ -194,7 +194,7 @@
       "static/chunks/40-c35f76d1fcf2284e.js",
       "static/chunks/92-962f309f96491ee9.js",
       "static/css/758e9678153ab6e8.css",
-      "static/chunks/pages/risk-management/cashback-84e7e27474e4c3f1.js"
+      "static/chunks/pages/risk-management/cashback-5101c31032b7d9b8.js"
     ],
     "/success": [
       "static/chunks/webpack-a9b4ccaa158a7891.js",
