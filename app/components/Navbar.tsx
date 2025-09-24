@@ -76,7 +76,7 @@ const Navbar = () => {
           <Link legacyBehavior href="/">
             <a>
               <Image 
-              src="/Vyft_program.png" 
+              src="/vyft_program.png" 
               alt="Vyftprogram" 
               width={166} 
               height={74} 

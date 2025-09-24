@@ -12,7 +12,7 @@ import {
 // Enregistrement de la police personnalisée (local)
 Font.register({
   family: "BR Sonoma",
-  src: "/font/BRSonomaSemibold.ttf", // Chemin public Netlify
+  src: "/font/brsonomasemibold.ttf", // Chemin public Netlify
   fontStyle: "normal",
   fontWeight: "normal",
 });
@@ -253,7 +253,7 @@ const ReportVyft = ({
 }) => (
   <Document>
     <Page size="A4" style={pdfStyles.page}>
-      <Image src="/Vyft_program.png" style={pdfStyles.logo} />
+      <Image src="/vyft_program.png" style={pdfStyles.logo} />
       <Text style={pdfStyles.title}>
         Rapport{" "}
         {reportType === "weekly"
