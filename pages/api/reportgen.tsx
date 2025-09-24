@@ -9,15 +9,22 @@ export default async function vyftreport(req: NextApiRequest, res: NextApiRespon
     return;
   }
 
-  const props = req.body;
+  try {
+    const props = req.body;
+    // Utilise createElement pour éviter les erreurs JSX côté Node
+    const pdfBlob = await pdf(<ReportVyft {...props} />).toBlob();
 
-  // Utilise createElement pour éviter les erreurs JSX côté Node
-  const pdfBlob = await pdf(<ReportVyft {...props} />).toBlob();
-
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader(
-    "Content-Disposition",
-    "attachment; filename=vyft-program-report.pdf"
-  );
-  res.end(Buffer.from(await pdfBlob.arrayBuffer()));
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=vyft-program-report.pdf"
+    );
+    res.end(Buffer.from(await pdfBlob.arrayBuffer()));
+  } catch (error: any) {
+    console.error("Erreur reportgen :", error);
+    res.status(500).json({
+      error: "Erreur interne lors de la génération du PDF",
+      details: error?.message || error?.toString() || error
+    });
+  }
 }
