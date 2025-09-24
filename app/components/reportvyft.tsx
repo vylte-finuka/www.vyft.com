@@ -9,10 +9,13 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
+import { join } from "path";
+const fontPath = join(process.cwd(), "public", "font", "brsonomasemibold.ttf");
+
 // Enregistrement de la police personnalisée (local)
 Font.register({
   family: "BR Sonoma",
-  src: "public/font/brsonomasemibold.ttf",
+  src: fontPath,
   fontStyle: "normal",
   fontWeight: "normal",
 });
