@@ -87,7 +87,7 @@ export default function CGVU() {
                         <h3 className={styles.bodyonwhite}>
                             Pour toute question, contactez-nous à support@vylte-finuka.com ou à l’adresse du siège social : 60 rue François 1er, 75008 Paris.
                         </h3>
-                        <h2 className={styles.headeronwhite}>À propos du rapport PDF et de la grille d'influence</h2>
+                        <h2 className={styles.headeronwhite}>À propos du rapport PDF et de la grille d&apos;influence</h2>
                         <h3 className={styles.bodyonwhite}>
                             Le rapport PDF généré par Vyft Program contient un tableau de suivi de l’influence et de la fréquentation sur 800 jours :
                             <ul>
