@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../page.module.css";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
-import dictMG from "./dict_mg.txt"; // Nécessite un parseur ou conversion en JSON
 
 type Message = { from: "ai" | "user"; text: string };
 
@@ -39,16 +38,6 @@ async function getComptaData(enseigne: string, stripeCustomerId: string) {
   }
 }
 
-// Fonction pour parser le dictionnaire texte en objet JS
-function parseDictMG(dictText: string) {
-  const dict: Record<string, string> = {};
-  dictText.split('\n').forEach(line => {
-    const [fr, mg] = line.split(' : ');
-    if (fr && mg) dict[fr.trim()] = mg.trim();
-  });
-  return dict;
-}
-
 export default function SquareAIFloat() {
   const [open, setOpen] = useState(false);
   type Message = { from: "ai" | "user"; text: string };
@@ -66,7 +55,6 @@ export default function SquareAIFloat() {
   const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
   const [comptaData, setComptaData] = useState<any>(null);
   const [cgvu, setCgvu] = useState<string>("");
-  const [dictMGObj, setDictMGObj] = useState<Record<string, string>>({});
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -164,13 +152,6 @@ export default function SquareAIFloat() {
     }
   }, []);
 
-  // Chargement du dictionnaire français-malgache
-  useEffect(() => {
-    fetch('/app/components/dict_mg.txt')
-      .then(res => res.text())
-      .then(text => setDictMGObj(parseDictMG(text)));
-  }, []);
-
   async function sendMessage() {
     if (!input.trim()) return;
     const userMessage: Message = { from: "user", text: input };
@@ -217,10 +198,6 @@ export default function SquareAIFloat() {
 
     // Préparation du contexte enrichi pour l'IA
     let context = "";
-    context += "Voici un dictionnaire français-malgache pour t'aider à répondre ou traduire en malgache :\n";
-    Object.entries(dictMGObj).slice(0, 200).forEach(([fr, mg]) => {
-      context += `- ${fr} : ${mg}\n`;
-    });
     if (comptaData) {
       const influence = comptaData.influence || {};
 
@@ -253,8 +230,8 @@ export default function SquareAIFloat() {
         : "";
 
       // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
-      context +=
-        `\n\nTu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` +
+      context =
+        `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` +
         `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` +
         `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` +
         `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` +
