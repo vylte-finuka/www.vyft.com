@@ -157,7 +157,6 @@ const Login = () => {
           alt="Vyft Program"
           width={400}
           height={180}
-          className={styles.logo}
         />
         <form className={styles.form} onSubmit={handleLogin}>
           <div className={styles.formGroup}>

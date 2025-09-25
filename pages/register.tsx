@@ -372,7 +372,6 @@ const Register = () => {
           alt="Vyft Program"
           width={400}
           height={180}
-          className={styles.logo}
         />
         <form className={styles.form} onSubmit={handleRegister}>
           <div className={styles.formGroup}>

@@ -1186,11 +1186,13 @@ function SquareAIFloat() {
             fetchUserInfo();
         }
     }["SquareAIFloat.useEffect"], []);
+    // Scroll automatique vers le bas uniquement lors de la génération (loading)
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SquareAIFloat.useEffect": ()=>{
             if (loading && messagesEndRef.current) {
                 messagesEndRef.current.scrollIntoView({
-                    behavior: "smooth"
+                    behavior: "auto",
+                    block: "end"
                 });
             }
         }
@@ -1388,12 +1390,12 @@ function SquareAIFloat() {
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 312,
+                            lineNumber: 313,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 296,
+                        lineNumber: 297,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1408,7 +1410,7 @@ function SquareAIFloat() {
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 314,
+                        lineNumber: 315,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1424,13 +1426,13 @@ function SquareAIFloat() {
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 325,
+                        lineNumber: 326,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 295,
+                lineNumber: 296,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1470,12 +1472,12 @@ function SquareAIFloat() {
                                             text: msg.text
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 369,
+                                            lineNumber: 370,
                                             columnNumber: 19
                                         }, this)
                                     }, idx, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 368,
+                                        lineNumber: 369,
                                         columnNumber: 17
                                     }, this);
                                 }
@@ -1484,7 +1486,7 @@ function SquareAIFloat() {
                                     text: msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 373,
+                                    lineNumber: 374,
                                     columnNumber: 20
                                 }, this);
                             }),
@@ -1522,23 +1524,23 @@ function SquareAIFloat() {
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 400,
+                                            lineNumber: 401,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 384,
+                                        lineNumber: 385,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 402,
+                                        lineNumber: 403,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 376,
+                                lineNumber: 377,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1546,13 +1548,13 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 405,
+                                lineNumber: 406,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 353,
+                        lineNumber: 354,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1589,7 +1591,7 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 419,
+                                lineNumber: 420,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1611,19 +1613,19 @@ function SquareAIFloat() {
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 438,
+                                lineNumber: 439,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 407,
+                        lineNumber: 408,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 338,
+                lineNumber: 339,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1633,7 +1635,7 @@ function SquareAIFloat() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 272,
+        lineNumber: 273,
         columnNumber: 5
     }, this);
 }
@@ -1669,7 +1671,7 @@ function TypingText({ text }) {
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 491,
+        lineNumber: 492,
         columnNumber: 10
     }, this);
 }
@@ -1680,8 +1682,9 @@ function Bubble({ from, text, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             alignSelf: from === "user" ? "flex-end" : "flex-start",
-            background: from === "ai" ? "rgba(255,255,255,0.10)" : "#e0dbdd",
-            color: from === "ai" ? "#f5f6fa" : "#222",
+            // Inversion des couleurs :
+            background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
+            color: from === "ai" ? "#222" : "#f5f6fa",
             borderRadius: 12,
             padding: "10px 16px",
             maxWidth: "80%",
@@ -1690,12 +1693,12 @@ function Bubble({ from, text, children }) {
             boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
             transition: "transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)",
             transform: "translateY(0)",
-            border: from === "ai" ? "1px solid #353a40" : "none"
+            border: from === "ai" ? "none" : "1px solid #353a40"
         },
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 505,
+        lineNumber: 506,
         columnNumber: 5
     }, this);
 }
@@ -1724,18 +1727,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 544,
+                lineNumber: 546,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 545,
+                lineNumber: 547,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 528,
+        lineNumber: 530,
         columnNumber: 5
     }, this);
 }
@@ -1751,27 +1754,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 553,
+                lineNumber: 555,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 554,
+                lineNumber: 556,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 555,
+                lineNumber: 557,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 552,
+        lineNumber: 554,
         columnNumber: 5
     }, this);
 }
@@ -1791,7 +1794,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 562,
+        lineNumber: 564,
         columnNumber: 5
     }, this);
 }
@@ -1936,15 +1939,99 @@ function CGVU() {
                                     children: "Dernière mise à jour : 25 septembre 2025"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 16,
-                                    columnNumber: 115
+                                    lineNumber: 17,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].headeronwhite,
+                                    children: "Définitions à connaître"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                    lineNumber: 22,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite,
+                                    style: {
+                                        marginBottom: 24
+                                    },
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                                    children: "Vyft Program"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                                    lineNumber: 25,
+                                                    columnNumber: 33
+                                                }, this),
+                                                " : plateforme SaaS de gestion de la relation client (CRM) et d’analyse d’activité physique."
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 24,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                                    children: "Utilisateur"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                                    lineNumber: 28,
+                                                    columnNumber: 33
+                                                }, this),
+                                                " : toute personne physique ou morale utilisant Vyft Program."
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 27,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                                    children: "Prestataire sécurisé"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                                    lineNumber: 31,
+                                                    columnNumber: 33
+                                                }, this),
+                                                " : service tiers spécialisé et certifié pour la gestion des comptes, abonnements et paiements (ex : Stripe)."
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 30,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                                    children: "Dénomination"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                                    lineNumber: 34,
+                                                    columnNumber: 33
+                                                }, this),
+                                                " : la société éditrice du service, à savoir Vylte-finuka SARL, SIRET 92978865100016, 60 rue François 1er, 75008 Paris, France."
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 33,
+                                            columnNumber: 29
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                    lineNumber: 23,
+                                    columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].headeronwhite,
                                     children: "À propos de Vyft Program"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 19,
+                                    lineNumber: 38,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1953,20 +2040,20 @@ function CGVU() {
                                         "Vyft Program est un outil conçu pour l’application Vyft, une solution de suivi et d’analyse des pas et de l’activité physique de vos clients.",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 21,
+                                            lineNumber: 40,
                                             columnNumber: 170
                                         }, this),
                                         "Il permet aux entreprises de suivre les pas réalisés dans leurs établissements, d’analyser la fréquentation, de générer des statistiques de performance et d’automatiser la gestion de la relation client.",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 22,
+                                            lineNumber: 41,
                                             columnNumber: 231
                                         }, this),
                                         "Il permet aussi aux services de la commune d’organiser des marchés ou événements dans des lieux spécifiques et de suivre la fréquentation grâce à l’application."
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 20,
+                                    lineNumber: 39,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1974,7 +2061,7 @@ function CGVU() {
                                     children: "Fonctionnalités principales"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 25,
+                                    lineNumber: 44,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1987,62 +2074,72 @@ function CGVU() {
                                             children: "Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 27,
+                                            lineNumber: 46,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Analyse des données de fréquentation et de l’engagement client."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 28,
+                                            lineNumber: 47,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Tableau de bord pour visualiser les réclamations et les statistiques d’activité."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 29,
+                                            lineNumber: 48,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                            children: 'Gestion des abonnements via Stripe en mode "pay as you go".'
-                                        }, void 0, false, {
+                                            children: [
+                                                "Gestion des abonnements via un ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                                    children: "prestataire sécurisé"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                                    lineNumber: 49,
+                                                    columnNumber: 64
+                                                }, this),
+                                                ' (Stripe) en mode "pay as you go".'
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 30,
+                                            lineNumber: 49,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™)."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 31,
+                                            lineNumber: 50,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Export et impression des statistiques et des tags pour vos opérations marketing."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 32,
+                                            lineNumber: 51,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Support technique dédié et gestion des accès utilisateurs."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 33,
+                                            lineNumber: 52,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: "Outils pour les services de la commune afin de suivre la fréquentation lors d’événements ou marchés dans des lieux spécifiques."
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 34,
+                                            lineNumber: 53,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 26,
+                                    lineNumber: 45,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2050,15 +2147,25 @@ function CGVU() {
                                     children: "1. Objet"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 36,
+                                    lineNumber: 55,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite,
-                                    children: "Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société Vylte-finuka SARL."
-                                }, void 0, false, {
+                                    children: [
+                                        "Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                            children: "Vylte-finuka SARL"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 57,
+                                            columnNumber: 235
+                                        }, this),
+                                        " (SIRET 92978865100016), 60 rue François 1er, 75008 Paris, France, conforme à la réglementation de l’Union Européenne."
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 37,
+                                    lineNumber: 56,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2066,15 +2173,25 @@ function CGVU() {
                                     children: "2. Accès au service"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 40,
+                                    lineNumber: 59,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite,
-                                    children: "L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement."
-                                }, void 0, false, {
+                                    children: [
+                                        "L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement géré par un ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                            children: "prestataire sécurisé"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 61,
+                                            columnNumber: 262
+                                        }, this),
+                                        "."
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 41,
+                                    lineNumber: 60,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2082,7 +2199,7 @@ function CGVU() {
                                     children: "3. Description du service"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 44,
+                                    lineNumber: 63,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2090,7 +2207,7 @@ function CGVU() {
                                     children: "Vyft Program permet la gestion des contacts, des réclamations, des interactions commerciales et l’analyse de données clients. Les fonctionnalités peuvent évoluer à tout moment."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 45,
+                                    lineNumber: 64,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2098,15 +2215,25 @@ function CGVU() {
                                     children: "4. Commande et abonnement"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 48,
+                                    lineNumber: 67,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite,
-                                    children: 'L’abonnement fonctionne aujourd’hui en mode "pay as you go" via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.'
-                                }, void 0, false, {
+                                    children: [
+                                        'L’abonnement fonctionne aujourd’hui en mode "pay as you go" via un ',
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("b", {
+                                            children: "prestataire sécurisé"
+                                        }, void 0, false, {
+                                            fileName: "[project]/pages/conditions-generales-de-vente.tsx",
+                                            lineNumber: 69,
+                                            columnNumber: 106
+                                        }, this),
+                                        " (Stripe). Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com."
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 49,
+                                    lineNumber: 68,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2114,7 +2241,7 @@ function CGVU() {
                                     children: "5. Prix et paiement"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 52,
+                                    lineNumber: 71,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2122,7 +2249,7 @@ function CGVU() {
                                     children: "Les tarifs sont indiqués en euros hors taxes sur le site. Vylte-finuka se réserve le droit de modifier les prix à tout moment, les abonnés en seront informés par email."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 53,
+                                    lineNumber: 72,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2130,7 +2257,7 @@ function CGVU() {
                                     children: "6. Résiliation"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 56,
+                                    lineNumber: 75,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2138,7 +2265,7 @@ function CGVU() {
                                     children: "L’utilisateur peut demander la révocation de son abonnement à tout moment en contactant le support à support@vylte-finuka.com. Toute période entamée reste due. Vylte-finuka peut suspendre ou résilier l’accès en cas de non-respect des CGVU."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 57,
+                                    lineNumber: 76,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2146,7 +2273,7 @@ function CGVU() {
                                     children: "7. Propriété intellectuelle"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 60,
+                                    lineNumber: 79,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2154,7 +2281,7 @@ function CGVU() {
                                     children: "Tous les éléments du service (logiciel, interface, contenus, marques) sont la propriété exclusive de Vylte-finuka. Toute reproduction ou utilisation non autorisée est interdite."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 61,
+                                    lineNumber: 80,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2162,7 +2289,7 @@ function CGVU() {
                                     children: "8. Données personnelles"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 83,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2170,7 +2297,7 @@ function CGVU() {
                                     children: "Les données personnelles sont traitées conformément à la réglementation en vigueur (RGPD). L’utilisateur dispose d’un droit d’accès, de rectification et de suppression de ses données."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 84,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2178,7 +2305,7 @@ function CGVU() {
                                     children: "9. Confidentialité et sécurité"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 68,
+                                    lineNumber: 87,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2186,7 +2313,7 @@ function CGVU() {
                                     children: "Vylte-finuka met en œuvre les mesures techniques et organisationnelles pour assurer la sécurité des données. L’utilisateur s’engage à préserver la confidentialité de ses identifiants."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 69,
+                                    lineNumber: 88,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2194,7 +2321,7 @@ function CGVU() {
                                     children: "10. Responsabilité"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 72,
+                                    lineNumber: 91,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2202,7 +2329,7 @@ function CGVU() {
                                     children: "Vylte-finuka ne saurait être tenue responsable des dommages indirects, pertes de données ou interruption de service. L’utilisateur est responsable de l’usage qu’il fait du service."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 73,
+                                    lineNumber: 92,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2210,7 +2337,7 @@ function CGVU() {
                                     children: "11. Support et maintenance"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 76,
+                                    lineNumber: 95,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2218,7 +2345,7 @@ function CGVU() {
                                     children: "Un support technique est accessible par email à support@vylte-finuka.com. Vylte-finuka s’efforce d’assurer la disponibilité du service, sans garantie d’absence d’interruption."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 96,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2226,7 +2353,7 @@ function CGVU() {
                                     children: "12. Modifications des CGVU"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 80,
+                                    lineNumber: 99,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2234,7 +2361,7 @@ function CGVU() {
                                     children: "Vylte-finuka se réserve le droit de modifier les présentes CGVU à tout moment. Les utilisateurs seront informés par email ou notification sur la plateforme."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 81,
+                                    lineNumber: 100,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2242,15 +2369,15 @@ function CGVU() {
                                     children: "13. Droit applicable et juridiction"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 84,
+                                    lineNumber: 103,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite,
-                                    children: "Les présentes CGVU sont soumises au droit français. Tout litige sera porté devant les tribunaux compétents de Paris."
+                                    children: "Les présentes CGVU sont soumises au droit français et à la réglementation de l’Union Européenne. Tout litige sera porté devant les tribunaux compétents de Paris."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 85,
+                                    lineNumber: 104,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2258,7 +2385,7 @@ function CGVU() {
                                     children: "14. Contact"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 88,
+                                    lineNumber: 107,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2266,7 +2393,7 @@ function CGVU() {
                                     children: "Pour toute question, contactez-nous à support@vylte-finuka.com ou à l’adresse du siège social : 60 rue François 1er, 75008 Paris."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 89,
+                                    lineNumber: 108,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2274,7 +2401,7 @@ function CGVU() {
                                     children: "À propos du rapport PDF et de la grille d'influence"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 92,
+                                    lineNumber: 111,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2289,7 +2416,7 @@ function CGVU() {
                                                             children: "Ligne supérieure (1 à 32)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                            lineNumber: 97,
+                                                            lineNumber: 116,
                                                             columnNumber: 37
                                                         }, this),
                                                         " : chaque colonne correspond à un jour du mois (du 1",
@@ -2297,7 +2424,7 @@ function CGVU() {
                                                             children: "er"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                            lineNumber: 97,
+                                                            lineNumber: 116,
                                                             columnNumber: 121
                                                         }, this),
                                                         " au 32",
@@ -2305,14 +2432,14 @@ function CGVU() {
                                                             children: "e"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                            lineNumber: 97,
+                                                            lineNumber: 116,
                                                             columnNumber: 140
                                                         }, this),
                                                         " jour, pour couvrir tous les cas de mois)."
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 96,
+                                                    lineNumber: 115,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2321,34 +2448,34 @@ function CGVU() {
                                                             children: "Légende inférieure (M1, M2, ...)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                            lineNumber: 100,
+                                                            lineNumber: 119,
                                                             columnNumber: 37
                                                         }, this),
                                                         " : chaque “M” indique le numéro du mois affiché (M1 = premier mois, M2 = deuxième mois, etc.)."
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 99,
+                                                    lineNumber: 118,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                     children: "Chaque case du tableau représente l’activité d’un jour donné, la couleur indiquant le niveau d’influence ou de fréquentation."
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 102,
+                                                    lineNumber: 121,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 95,
+                                            lineNumber: 114,
                                             columnNumber: 29
                                         }, this),
                                         "Ce format permet de visualiser rapidement l’évolution de l’activité jour par jour et mois par mois."
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 93,
+                                    lineNumber: 112,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2356,7 +2483,7 @@ function CGVU() {
                                     children: "15. Utilisation de l’Intelligence Artificielle (IA)"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 108,
+                                    lineNumber: 127,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2367,13 +2494,13 @@ function CGVU() {
                                             children: "Vyft Nérethense"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 110,
+                                            lineNumber: 129,
                                             columnNumber: 124
                                         }, this),
                                         ", permettant de répondre à vos questions, d’analyser vos données et de vous conseiller sur l’utilisation de la plateforme.",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 110,
+                                            lineNumber: 129,
                                             columnNumber: 268
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -2382,40 +2509,40 @@ function CGVU() {
                                                     children: "Les réponses fournies par l’IA Vyft Nérethense sont générées automatiquement à partir de vos données et des informations disponibles sur la plateforme. Elles sont données à titre indicatif et ne sauraient se substituer à un conseil professionnel personnalisé."
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 112,
+                                                    lineNumber: 131,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                     children: "L’utilisateur s’engage à ne pas soumettre de données sensibles, confidentielles ou à caractère personnel non nécessaires lors de l’utilisation de l’IA."
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 115,
+                                                    lineNumber: 134,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                     children: "Vylte-finuka ne pourra être tenue responsable des décisions prises sur la base des réponses de l’IA."
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 118,
+                                                    lineNumber: 137,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                     children: "L’utilisation de l’IA Vyft Nérethense est soumise au respect des présentes CGVU et à la politique de confidentialité de Vyft Program."
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                                    lineNumber: 121,
+                                                    lineNumber: 140,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                            lineNumber: 111,
+                                            lineNumber: 130,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 109,
+                                    lineNumber: 128,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -2426,6 +2553,12 @@ function CGVU() {
                                             cgvu: `
 Conditions Générales de Vente et d’Utilisation
 
+Définitions à connaître
+- "Vyft Program" : plateforme SaaS de gestion de la relation client (CRM) et d’analyse d’activité physique.
+- "Utilisateur" : toute personne physique ou morale utilisant Vyft Program.
+- "Prestataire sécurisé" : service tiers spécialisé et certifié pour la gestion des comptes, abonnements et paiements (ex : Stripe).
+- "Dénomination" : la société éditrice du service, à savoir Vylte-finuka SARL, SIRET 92978865100016, 60 rue François 1er, 75008 Paris, France.
+
 À propos de Vyft Program
 Vyft Program est un outil conçu pour l’application Vyft, une solution de suivi et d’analyse des pas et de l’activité physique de vos clients.
 Il permet aux entreprises de suivre les pas réalisés dans leurs établissements, d’analyser la fréquentation, de générer des statistiques de performance et d’automatiser la gestion de la relation client.
@@ -2435,23 +2568,23 @@ Fonctionnalités principales
 - Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne.
 - Analyse des données de fréquentation et de l’engagement client.
 - Tableau de bord pour visualiser les réclamations et les statistiques d’activité.
-- Gestion des abonnements via Stripe en mode "pay as you go".
+- Gestion des abonnements via un prestataire sécurisé (Stripe) en mode "pay as you go".
 - Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™).
 - Export et impression des statistiques et des tags pour vos opérations marketing.
 - Support technique dédié et gestion des accès utilisateurs.
 - Outils pour les services de la commune afin de suivre la fréquentation lors d’événements ou marchés dans des lieux spécifiques.
 
 1. Objet
-Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société Vylte-finuka SARL.
+Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société Vylte-finuka SARL (SIRET 92978865100016), 60 rue François 1er, 75008 Paris, France, conforme à la réglementation de l’Union Européenne.
 
 2. Accès au service
-L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement.
+L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement géré par un prestataire sécurisé.
 
 3. Description du service
 Vyft Program permet la gestion des contacts, des réclamations, des interactions commerciales et l’analyse de données clients. Les fonctionnalités peuvent évoluer à tout moment.
 
 4. Commande et abonnement
-L’abonnement fonctionne aujourd’hui en mode "pay as you go" via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
+L’abonnement fonctionne aujourd’hui en mode "pay as you go" via un prestataire sécurisé (Stripe). Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
 
 5. Prix et paiement
 Les tarifs sont indiqués en euros hors taxes sur le site. Vylte-finuka se réserve le droit de modifier les prix à tout moment, les abonnés en seront informés par email.
@@ -2478,7 +2611,7 @@ Un support technique est accessible par email à support@vylte-finuka.com. Vylte
 Vylte-finuka se réserve le droit de modifier les présentes CGVU à tout moment. Les utilisateurs seront informés par email ou notification sur la plateforme.
 
 13. Droit applicable et juridiction
-Les présentes CGVU sont soumises au droit français. Tout litige sera porté devant les tribunaux compétents de Paris.
+Les présentes CGVU sont soumises au droit français et à la réglementation de l’Union Européenne. Tout litige sera porté devant les tribunaux compétents de Paris.
 
 14. Contact
 Pour toute question, contactez-nous à support@vylte-finuka.com ou à l’adresse du siège social : 60 rue François 1er, 75008 Paris.
@@ -2496,12 +2629,14 @@ Vyft Program propose une fonctionnalité d’assistance par intelligence artific
 - L’utilisateur s’engage à ne pas soumettre de données sensibles, confidentielles ou à caractère personnel non nécessaires lors de l’utilisation de l’IA.
 - Vylte-finuka ne pourra être tenue responsable des décisions prises sur la base des réponses de l’IA.
 - L’utilisation de l’IA Vyft Nérethense est soumise au respect des présentes CGVU et à la politique de confidentialité de Vyft Program.
+
+Dernière mise à jour : 25 septembre 2025
                                     `
                                         })
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                                    lineNumber: 128,
+                                    lineNumber: 147,
                                     columnNumber: 25
                                 }, this)
                             ]
@@ -2512,7 +2647,7 @@ Vyft Program propose une fonctionnalité d’assistance par intelligence artific
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/pages/conditions-generales-de-vente.tsx",
-                            lineNumber: 211,
+                            lineNumber: 238,
                             columnNumber: 21
                         }, this)
                     ]
