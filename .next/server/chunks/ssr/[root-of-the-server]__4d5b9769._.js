@@ -712,6 +712,15 @@ async function getComptaData(enseigne, stripeCustomerId) {
         throw new Error(data.message || "Erreur API");
     }
 }
+// Fonction pour parser le dictionnaire texte en objet JS
+function parseDictMG(dictText) {
+    const dict = {};
+    dictText.split('\n').forEach((line)=>{
+        const [fr, mg] = line.split(' : ');
+        if (fr && mg) dict[fr.trim()] = mg.trim();
+    });
+    return dict;
+}
 function SquareAIFloat() {
     const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([
@@ -727,6 +736,7 @@ function SquareAIFloat() {
     const [stripeCustomerId, setStripeCustomerId] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
     const [comptaData, setComptaData] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
     const [cgvu, setCgvu] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const [dictMGObj, setDictMGObj] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({});
     const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
     // Récupération des infos utilisateur depuis Auth0 (comme dans reports.tsx)
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
@@ -810,6 +820,10 @@ function SquareAIFloat() {
             });
         }
     }, []);
+    // Chargement du dictionnaire français-malgache
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        fetch('/app/components/dict_mg.txt').then((res)=>res.text()).then((text)=>setDictMGObj(parseDictMG(text)));
+    }, []);
     async function sendMessage() {
         if (!input.trim()) return;
         const userMessage = {
@@ -858,6 +872,10 @@ function SquareAIFloat() {
         }
         // Préparation du contexte enrichi pour l'IA
         let context = "";
+        context += "Voici un dictionnaire français-malgache pour t'aider à répondre ou traduire en malgache :\n";
+        Object.entries(dictMGObj).slice(0, 200).forEach(([fr, mg])=>{
+            context += `- ${fr} : ${mg}\n`;
+        });
         if (comptaData) {
             const influence = comptaData.influence || {};
             // Historique par jour (exemple)
@@ -870,7 +888,7 @@ function SquareAIFloat() {
             const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
             const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
             // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
-            context = `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` + `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` + `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` + `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` + `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` + `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${history7Days}\n` + (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") + `${mostInfluentialDayStr}\n\n`;
+            context += `\n\nTu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` + `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` + `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` + `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` + `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` + `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${history7Days}\n` + (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") + `${mostInfluentialDayStr}\n\n`;
         }
         // Ajoute le CGVU au contexte IA
         if (cgvu) {
@@ -950,12 +968,12 @@ function SquareAIFloat() {
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 313,
+                            lineNumber: 336,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 297,
+                        lineNumber: 320,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
@@ -970,7 +988,7 @@ function SquareAIFloat() {
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 315,
+                        lineNumber: 338,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
@@ -986,13 +1004,13 @@ function SquareAIFloat() {
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 326,
+                        lineNumber: 349,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 296,
+                lineNumber: 319,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1032,12 +1050,12 @@ function SquareAIFloat() {
                                             text: msg.text
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 370,
+                                            lineNumber: 393,
                                             columnNumber: 19
                                         }, this)
                                     }, idx, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 369,
+                                        lineNumber: 392,
                                         columnNumber: 17
                                     }, this);
                                 }
@@ -1046,7 +1064,7 @@ function SquareAIFloat() {
                                     text: msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 374,
+                                    lineNumber: 397,
                                     columnNumber: 20
                                 }, this);
                             }),
@@ -1084,23 +1102,23 @@ function SquareAIFloat() {
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 401,
+                                            lineNumber: 424,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 385,
+                                        lineNumber: 408,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 403,
+                                        lineNumber: 426,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 377,
+                                lineNumber: 400,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1108,13 +1126,13 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 406,
+                                lineNumber: 429,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 354,
+                        lineNumber: 377,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("form", {
@@ -1151,7 +1169,7 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 420,
+                                lineNumber: 443,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -1173,19 +1191,19 @@ function SquareAIFloat() {
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 439,
+                                lineNumber: 462,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 408,
+                        lineNumber: 431,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 339,
+                lineNumber: 362,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__["default"], {
@@ -1195,7 +1213,7 @@ function SquareAIFloat() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 273,
+        lineNumber: 296,
         columnNumber: 5
     }, this);
 }
@@ -1220,7 +1238,7 @@ function TypingText({ text }) {
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 492,
+        lineNumber: 515,
         columnNumber: 10
     }, this);
 }
@@ -1245,7 +1263,7 @@ function Bubble({ from, text, children }) {
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 506,
+        lineNumber: 529,
         columnNumber: 5
     }, this);
 }
@@ -1273,18 +1291,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 546,
+                lineNumber: 569,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 547,
+                lineNumber: 570,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 530,
+        lineNumber: 553,
         columnNumber: 5
     }, this);
 }
@@ -1299,27 +1317,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 555,
+                lineNumber: 578,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 556,
+                lineNumber: 579,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 557,
+                lineNumber: 580,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 554,
+        lineNumber: 577,
         columnNumber: 5
     }, this);
 }
@@ -1338,7 +1356,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 564,
+        lineNumber: 587,
         columnNumber: 5
     }, this);
 }
