@@ -101,7 +101,7 @@ export default function SubscribeModal({
             }}
             onClick={onClose}
           >
-            Explorer d'abord
+            Explorer d&apos;abord
           </button>
         </div>
         <div style={{ marginTop: 10, color: "#bfc4c5", fontSize: 14, textAlign: "center" }}>
