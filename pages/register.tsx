@@ -368,7 +368,7 @@ const Register = () => {
       <title>Vyft - Inscription - Vyft program: Manage your own market.</title>
       <div className={`${styles.container3} ${styles.center}`}>
         <Image
-          src="/Vyft_program.png"
+          src="/vyft_program.png"
           alt="Vyft Program"
           width={400}
           height={180}
