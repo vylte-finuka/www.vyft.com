@@ -6,9 +6,10 @@ import axios from "axios";
 import styles from "../../app/page.module.css";
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
-import { useQRCode } from "next-qrcode"; // Importer la bibliothèque next-qrcode
+import { useQRCode } from "next-qrcode";
 import secureLocalStorage from "react-secure-storage";
 import { useReactToPrint } from "react-to-print";
+import SubscribeModal from "@/app/components/SubscribeModal"; // Assure-toi que ce chemin est correct
 
 type MetricsData = {
   growth: MetricsData | null;
@@ -34,21 +35,20 @@ type Currency = typeof SUPPORTED_CURRENCIES[number];
 export default function Funds_management() {
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [storeName, setStoreName] = useState<string>(); // Nom de l'enseigne par défaut
-  const { Canvas } = useQRCode(); // Utilisation de next-qrcode
-  const [storeNamefact, setStoreNamefact] = useState<string>(); // Nom de l'enseigne par défaut
-  const qr1 = useRef<HTMLDivElement>(null); // Référence pour le QR code de départ
+  const [storeName, setStoreName] = useState<string>();
+  const { Canvas } = useQRCode();
+  const [storeNamefact, setStoreNamefact] = useState<string>();
+  const qr1 = useRef<HTMLDivElement>(null);
   const QrT1 = useReactToPrint({
-    contentRef: qr1, // Utilisation de contentRef pour spécifier la référence au QR code de départ
-    documentTitle: "QR Code de départ", // Titre du document imprimé
+    contentRef: qr1,
+    documentTitle: "QR Code de départ",
   });
-  
-  const qr2 = useRef<HTMLDivElement>(null); // Référence pour le QR code d'arrivée
+  const qr2 = useRef<HTMLDivElement>(null);
   const QrT2 = useReactToPrint({
-    contentRef: qr2, // Utilisation de contentRef pour spécifier la référence au QR code d'arrivée
-    documentTitle: "QR Code d'arrivée", // Titre du document imprimé
+    contentRef: qr2,
+    documentTitle: "QR Code d'arrivée",
   });
-
+  const API_KEY = process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY;
   const [metricsHistory, setMetricsHistory] = useState<MetricsHistory>([]);
   const [currency, setCurrency] = useState<Currency>("€");
   const [rates, setRates] = useState<Record<Currency, number>>({
@@ -57,14 +57,18 @@ export default function Funds_management() {
     "$": 0,
     "£": 0,
   });
+  const [hasExplored, setHasExplored] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("vyft_hasExplored") === "1";
+    }
+    return false;
+  });
+  const [stripeCustomerId, setStripeCustomerId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    // Simuler la récupération du nom de l'enseigne
-    const denomination = storeNamefact;
-    setStoreName(denomination); // Mettre à jour l'état avec le nom de l'enseigne
-  }, []); // Exécuté une seule fois après le premier rendu
+    setStoreName(storeNamefact);
+  }, []);
 
-  // Récupérer les taux de change à chaque changement de devise
   useEffect(() => {
     const fetchRates = async () => {
       try {
@@ -84,7 +88,6 @@ export default function Funds_management() {
     fetchRates();
   }, []);
 
-  // Fonction de conversion
   const convert = (amount: number | string | undefined) => {
     if (amount === null || amount === undefined || isNaN(Number(amount))) return "0.00";
     const rate = rates[currency] || 1;
@@ -98,13 +101,8 @@ export default function Funds_management() {
     const fetchStoreNameAndMetrics = async () => {
       try {
         const userToken = secureLocalStorage.getItem("userToken") as string | null;
+        if (!userToken) return;
 
-        if (!userToken) {
-          console.error("Token utilisateur manquant.");
-          return;
-        }
-
-        // Récupérer les informations utilisateur depuis l'API /userinfo d'Auth0
         const userInfoResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/userinfo`,
           {
@@ -114,11 +112,7 @@ export default function Funds_management() {
             },
           }
         );
-
-        const userId = userInfoResponse.data.sub; // Récupérer l'ID utilisateur depuis la réponse
-        console.log("User ID récupéré :", userId);
-
-        // Effectuer une requête pour récupérer les métadonnées utilisateur depuis Auth0
+        const userId = userInfoResponse.data.sub;
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`,
           {
@@ -128,56 +122,54 @@ export default function Funds_management() {
             },
           }
         );
-
-        if (!response.data) {
-          console.error("Impossible de récupérer les métadonnées utilisateur.");
-          return;
-        }
-
-        // Toujours récupérer la valeur, même si les métadonnées utilisateur sont absentes
         const denomination = response.data?.user_metadata?.denomination?.trim();
-        const stripeCustomerId = response.data?.user_metadata?.subid?.trim();
+        let stripeCustomerIdValue = response.data?.user_metadata?.subid?.trim();
 
-        setStoreName(denomination); // Mettre à jour l'état avec le nom de l'enseigne
-        console.log("Nom de l'enseigne récupéré :", denomination);
-        console.log("Stripe Customer ID récupéré :", stripeCustomerId);
-
-        if (!denomination) {
-          console.error("Denomination manquante dans les métadonnées utilisateur.");
-          return;
+        // Si subid absent, essayer de le retrouver/créer côté Stripe
+        if (!stripeCustomerIdValue && userId) {
+          try {
+            const stripeRes = await axios.post(
+              "/api/create-or-retrieve-customer",
+              {
+                auth0UserId: userId,
+                userToken,
+                action: "create",
+              },
+              {
+                headers: {
+                  "x-vyftprogram-api-key": API_KEY || "",
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            stripeCustomerIdValue = stripeRes.data.customerId;
+          } catch (err) {
+            console.error("Impossible de retrouver/créer le client Stripe :", err);
+          }
         }
 
-        if (!stripeCustomerId) {
-          console.error("Stripe Customer ID manquant dans les métadonnées utilisateur.");
-          return;
-        }
+        setStoreName(denomination);
+        setStripeCustomerId(stripeCustomerIdValue);
 
-        // Récupérer les données filtrées depuis l'API /api/vyfthealth_proc
+        if (!denomination || !stripeCustomerIdValue) return;
+
         const apiResponse = await fetch(
           `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(
-            stripeCustomerId
+            stripeCustomerIdValue
           )}`,
           {
             method: "GET",
+            headers: {
+              "x-vyftprogram-api-key": API_KEY || "",
+            },
           }
         );
-
-        if (!apiResponse.ok) {
-          const errorText = await apiResponse.text();
-          console.error("Erreur lors de la récupération des données filtrées :", errorText);
-          throw new Error("Erreur lors de la récupération des données filtrées.");
-        }
-
+        if (!apiResponse.ok) return;
         const apiData = await apiResponse.json();
-        console.log("Données filtrées récupérées :", apiData);
-
         if (apiData.success) {
-          setMetrics(apiData.data); // Mettre à jour l'état avec les données filtrées
-
-          // Ajout à l'historique (max 7 jours)
+          setMetrics(apiData.data);
           setMetricsHistory((prev) => {
             const today = new Date().toISOString().slice(0, 10);
-            // Évite les doublons pour la même date
             const filtered = prev.filter((h) => h.date !== today);
             return [
               ...filtered,
@@ -187,117 +179,67 @@ export default function Funds_management() {
                 dailySteps: apiData.data.dailySteps,
                 dailyDistance: apiData.data.dailyDistance,
               },
-            ].slice(-7); // Garde les 7 derniers jours
+            ].slice(-7);
           });
-        } else {
-          console.error("Erreur lors de la récupération des données :", apiData.message);
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération du nom de l'enseigne ou des données :", error);
         setStoreNamefact("Erreur lors de la récupération");
       }
     };
 
-    fetchStoreNameAndMetrics(); // Appel initial
-    const interval = setInterval(fetchStoreNameAndMetrics, 4000); // Actualisation toutes les 4 secondes
-    return () => clearInterval(interval); // Nettoyage de l'intervalle
-  }, []); // Exécuté une seule fois après le premier rendu
+    fetchStoreNameAndMetrics();
+    const interval = setInterval(fetchStoreNameAndMetrics, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-  useEffect(() => {
-    const fetchMetricsAndCompare = async () => {
-      try {
-        if (!storeName) {
-          console.error("Denomination non disponible pour la comparaison.");
-          return;
-        }
-  
-        const apiResponse = await fetch("/api/vyfthealth_proc", {
-          method: "GET",
-        });
-  
-        if (!apiResponse.ok) {
-          const errorText = await apiResponse.text();
-          console.error("Erreur lors de la récupération des données :", errorText);
-          throw new Error("Erreur lors de la récupération des données.");
-        }
-  
-        const apiData = await apiResponse.json();
-        console.log("Données de l'API récupérées :", apiData);
-  
-        if (apiData.success) {
-          // Comparer enseigne avec denomination
-          const enseigneNormalized = apiData.data.enseigne?.trim().toLowerCase();
-          const denominationNormalized = storeName.toLowerCase();
-          console.log(`Comparaison : "${enseigneNormalized}" === "${denominationNormalized}"`);
-  
-          if (enseigneNormalized === denominationNormalized) {
-            setMetrics(apiData.data); // Mettre à jour l'état avec les données correspondantes
-          } else {
-            console.error(
-              `Erreur : Aucune correspondance trouvée entre l'enseigne "${apiData.data.enseigne}" et la denomination "${storeName}"`
-            );
-          }
-        } else {
-          console.error("Erreur lors de la récupération des données :", apiData.message);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données ou de la comparaison :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    if (storeName) {
-      fetchMetricsAndCompare(); // Appel initial si `denomination` est disponible
-      const interval = setInterval(fetchMetricsAndCompare, 10000); // Actualisation toutes les 10 secondes
-      return () => clearInterval(interval); // Nettoyage de l'intervalle
-    }
-  }, [storeName]);
+  // Design & charte graphique harmonisés
   return (
-    <>
-      <div className={styles.container2}>
-        <head>
-          <title>Gestion principale - Vyft program: Manage your own market.</title>
-        </head>
-        <Navbar />
-        <main className={styles.main}>
-          {/* Sélecteur de devise */}
-          <div style={{ marginBottom: "1rem" }}>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              width: "100%",
-            }}
-          >
-            {/* Left Section */}
-            <div>
-              <h1 className={styles.header}>Gestion principale</h1>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  width: "100%",
-                }}
-              ></div>
-                          <label htmlFor="currency" className={styles.body}>Devise : </label>
-            <select
-              id="currency"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value as Currency)}
-              className={styles.selectCurrency}
+    <div className={styles.container2}>
+      <head>
+        <title>Gestion principale - Vyft program: Manage your own market.</title>
+      </head>
+      <Navbar />
+      <main className={styles.main} style={{ alignItems: "flex-start" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 32,
+            width: "100%",
+            alignItems: "flex-start",
+            marginBottom: 32,
+          }}
+        >
+          {/* Partie principale à gauche */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h1 className={styles.headeronwhiteX2}>Gestion principale</h1>
+            <section
+              className={styles.bodyonwhite}
+              style={{
+                background: "#fff",
+                borderRadius: 24,
+                padding: 32,
+                width: "100%",
+                maxWidth: 700,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                marginBottom: 24,
+              }}
             >
-              <option value="€">EUR (€)</option>
-              <option value="$">USD ($)</option>
-              <option value="£">GBP (£)</option>
-              <option value="Ar">MGA (Ar)</option>
-            </select>
-              <h2
-                className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
-              >
+              <div style={{ marginBottom: "1rem" }}>
+                <label htmlFor="currency" className={styles.body}>Devise : </label>
+                <select
+                  id="currency"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value as Currency)}
+                  className={styles.selectCurrency}
+                >
+                  <option value="€">EUR (€)</option>
+                  <option value="$">USD ($)</option>
+                  <option value="£">GBP (£)</option>
+                  <option value="Ar">MGA (Ar)</option>
+                </select>
+              </div>
+              <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
                 Informations de consommations additionnelles :
               </h2>
               <div className={styles.statviewers}>
@@ -316,15 +258,7 @@ export default function Funds_management() {
                       : "0.00 " + currency}
                   </p>
                   <h3 className={styles.body}>Pourcentage de croissance dans la semaine :</h3>
-                  <p
-                    className={
-                      metrics && metrics.growth
-                        ? parseFloat(String(metrics.growth).replace(",", ".").replace("%", "")) > 0
-                          ? styles.body
-                          : styles.body
-                        : styles.body
-                    }
-                  >
+                  <p className={styles.body}>
                     {metrics && metrics.growth !== undefined && metrics.growth !== null
                       ? String(metrics.growth).replace(".", ",")
                       : "0 %"}
@@ -346,79 +280,146 @@ export default function Funds_management() {
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Right Section */}
-            <div>
-              <h2
-                className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
-              >
-                Vyft tag™ :
-              </h2>
-              <div>
-                <h2
-                  className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
-                >
-                  QR Code de départ :
-                </h2>
-                {storeName && (
-                  <div ref={qr1} className={styles.qrCodeContainer}>
-                    <Canvas
-                      text={JSON.stringify({
-                        message: "Vyft Tag on",
-                        enseigne: storeName,
-                      })}
-                      logo={{src: "https://avatars.githubusercontent.com/u/123649969?v=4", options : { width: 88 }}}
-                      options={{
-                        errorCorrectionLevel: "M",
-                        margin: 3,
-                        scale: 4,
-                        width: 200,
-                        color: {
-                          dark: "#e0dbdd", // Couleur sombre (noir pour le texte du QR code)
-                          light: "#a5a3a3", // Couleur claire (fond gris clair pour correspondre à .container2)
-                        },
-                      }}
-                    />
-                  </div>
-                )}
-                <button onClick={QrT1} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
-
-                <h2
-                  className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}
-                  style={{ marginTop: "2rem" }}
-                >
-                  QR Code d&apos;arrivée :
-                </h2>
-                {storeName && (
-                  <div ref={qr2} className={styles.qrCodeContainer}>
-                    <Canvas
-                      text={JSON.stringify({
-                        message: "Vyft Tag off",
-                        enseigne: storeName,
-                      })}
-                      logo={{src: "https://avatars.githubusercontent.com/u/123649969?v=4", options : { width: 88 }}}
-                      options={{
-                        errorCorrectionLevel: "M",
-                        margin: 3,
-                        scale: 4,
-                        width: 200,
-                        color: {
-                          dark: "#e0dbdd", // Couleur sombre (noir pour le texte du QR code)
-                          light: "#a5a3a3", // Couleur claire (fond gris clair pour correspondre à .container2)
-                        },
-                      }}
-                    />
-                  </div>
-                )}
-                <button onClick={QrT2} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
-              </div>
-            </div>
+            </section>
           </div>
-          <div className={styles.bodyattract}></div>
-        </main>
-        <Footer />
-      </div>
-    </>
+          {/* Partie QR Codes à droite */}
+          <div style={{ minWidth: 420, maxWidth: 420, alignSelf: "flex-start" }}>
+            <section
+              className={styles.bodyonwhite}
+              style={{
+                background: "#fff",
+                borderRadius: 24,
+                padding: 32,
+                width: "100%",
+                maxWidth: 420,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                marginBottom: 24,
+                position: "relative",
+                minHeight: 420,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {/* Si pas d'abonnement, on masque les QR codes et affiche le modal centré */}
+              {(!stripeCustomerId && !hasExplored) && (
+                <SubscribeModal
+                  onClose={() => {
+                    setHasExplored(true);
+                    localStorage.setItem("vyft_hasExplored", "1");
+                  }}
+                  onSubscribe={() => window.location.href = "/"}
+
+                />
+              )}
+              {(!stripeCustomerId && hasExplored) ? (
+                <div
+                  style={{
+                    background: "#23272e",
+                    borderRadius: 24,
+                    padding: 36,
+                    minWidth: 340,
+                    width: "90%",
+                    maxWidth: 420,
+                    boxShadow: "0 2px 32px rgba(0,0,0,0.18)",
+                    color: "#fff",
+                    textAlign: "center",
+                    margin: "0 auto",
+                  }}
+                >
+                  <h2 style={{ color: "#1a7f6b", fontWeight: 700, fontSize: 26, marginBottom: 14 }}>
+                    Abonnement requis
+                  </h2>
+                  <p style={{ fontSize: 17, color: "#e0dbdd", marginBottom: 28 }}>
+                    Vous devez être abonné pour accéder aux QR codes Vyft.
+                  </p>
+                  <button
+                    style={{
+                      background: "#1a7f6b",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 16,
+                      padding: "14px 38px",
+                      fontWeight: 700,
+                      fontSize: 17,
+                      cursor: "pointer",
+                      fontFamily: "BR Sonoma, sans-serif",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                      transition: "background 0.2s",
+                      letterSpacing: 0.2,
+                    }}
+                    onClick={() => window.location.href = "/"}
+                  >
+                    S'abonner
+                  </button>
+                </div>
+              ) : null}
+              {/* QR codes visibles seulement si abonnement trouvé */}
+              {stripeCustomerId && (
+                <>
+                  <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
+                    Vyft tag™ :
+                  </h2>
+                  <div>
+                    <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
+                      QR Code de départ :
+                    </h2>
+                    {storeName && (
+                      <div ref={qr1} className={styles.qrCodeContainer}>
+                        <Canvas
+                          text={JSON.stringify({
+                            message: "Vyft Tag on",
+                            enseigne: storeName,
+                          })}
+                          logo={{ src: "https://avatars.githubusercontent.com/u/123649969?v=4", options: { width: 88 } }}
+                          options={{
+                            errorCorrectionLevel: "M",
+                            margin: 3,
+                            scale: 4,
+                            width: 200,
+                            color: {
+                              dark: "#e0dbdd",
+                              light: "#a5a3a3",
+                            },
+                          }}
+                        />
+                      </div>
+                    )}
+                    <button onClick={QrT1} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
+                    <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`} style={{ marginTop: "2rem" }}>
+                      QR Code d&apos;arrivée :
+                    </h2>
+                    {storeName && (
+                      <div ref={qr2} className={styles.qrCodeContainer}>
+                        <Canvas
+                          text={JSON.stringify({
+                            message: "Vyft Tag off",
+                            enseigne: storeName,
+                          })}
+                          logo={{ src: "https://avatars.githubusercontent.com/u/123649969?v=4", options: { width: 88 } }}
+                          options={{
+                            errorCorrectionLevel: "M",
+                            margin: 3,
+                            scale: 4,
+                            width: 200,
+                            color: {
+                              dark: "#e0dbdd",
+                              light: "#a5a3a3",
+                            },
+                          }}
+                        />
+                      </div>
+                    )}
+                    <button onClick={QrT2} className={styles.ActionEbuttonoveron}>Imprimer ce tag</button>
+                  </div>
+                </>
+              )}
+            </section>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -20,6 +20,12 @@ export default async function vyfthealth_receive(
       res.setHeader("Expires", "0");
       res.setHeader("Surrogate-Control", "no-store");
 
+        // Vérification de la clé API
+  const apiKey = req.headers["x-vyftprogram-api-key"];
+  if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
+    return res.status(401).json({ error: "Clé API invalide ou manquante." });
+  }
+
       // Connexion à MongoDB
       const client = await clientPromise;
       const db = client.db("vyfbase"); // Nom de la base de données

@@ -6,7 +6,7 @@ import styles from "../../app/page.module.css";
 import Footer from '@/app/components/Footer';
 import Navbar from '@/app/components/Navbar';
 
-export default function Management() {
+export default function Settings() {
     const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
     const handle2FAToggle = () => {
@@ -16,50 +16,15 @@ export default function Management() {
             : "Double facteur activé. Veuillez suivre les instructions envoyées par email.");
     };
 
+    // Ajoute la navigation vers la page d'historique de connexion
     const handleShowLoginHistory = () => {
-        alert("Historique de connexions : fonctionnalité à venir.");
-    };
-
-    const handleShowApiKey = () => {
-        alert("Clé API : fonctionnalité à venir.");
-    };
-
-    const handleAccountLock = () => {
-        alert("Verrouillage du compte : fonctionnalité à venir.");
-    };
-
-    const handleCreateLoginAlerts = () => {
-        alert("Créer des alertes de connexions : fonctionnalité à venir.");
-    };
-
-    const handleThirdPartyApp = () => {
-        alert("Application tiers : fonctionnalité à venir.");
-    };
-
-    // Fiscalité
-    const handleTaxDocs = () => {
-        alert("Suivi des documents fiscaux : fonctionnalité à venir.");
-    };
-
-    const handleAddOrEditTaxNumber = () => {
-        alert("Ajouter ou modifier un numéro fiscal : fonctionnalité à venir.");
-    };
-
-    const handleDownloadInvoices = () => {
-        alert("Télécharger les factures : fonctionnalité à venir.");
-    };
-
-    const handleVATSettings = () => {
-        alert("Paramètres de TVA : fonctionnalité à venir.");
-    };
-
-    const handleFiscalExport = () => {
-        alert("Exporter les données fiscales : fonctionnalité à venir.");
+        window.location.href = "/administration/settings/connecthist";
     };
 
     // Couleur unique pour tous les boutons secondaires (vert) et primaire (gris)
     const secondaryBtnColor = "#1a7f6b";
     const primaryBtnColor = "#444444";
+    const disabledBtnColor = "#bfc4c5"; // gris clair pour désactivé
 
     return (
         <>
@@ -91,15 +56,15 @@ export default function Management() {
                             marginTop: 16
                         }}>
                             <button
-                                onClick={handle2FAToggle}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: is2FAEnabled ? secondaryBtnColor : primaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -127,15 +92,15 @@ export default function Management() {
                                 Historique de connexions
                             </button>
                             <button
-                                onClick={handleShowApiKey}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -145,15 +110,15 @@ export default function Management() {
                                 Clé API
                             </button>
                             <button
-                                onClick={handleAccountLock}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -163,15 +128,15 @@ export default function Management() {
                                 Verrouillage du compte
                             </button>
                             <button
-                                onClick={handleCreateLoginAlerts}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -181,15 +146,15 @@ export default function Management() {
                                 Créer des alertes de connexions
                             </button>
                             <button
-                                onClick={handleThirdPartyApp}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -221,15 +186,15 @@ export default function Management() {
                             marginTop: 16
                         }}>
                             <button
-                                onClick={handleTaxDocs}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -239,15 +204,15 @@ export default function Management() {
                                 Suivi des documents fiscaux
                             </button>
                             <button
-                                onClick={handleAddOrEditTaxNumber}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -257,15 +222,15 @@ export default function Management() {
                                 Ajouter ou modifier un numéro fiscal
                             </button>
                             <button
-                                onClick={handleDownloadInvoices}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -275,15 +240,15 @@ export default function Management() {
                                 Télécharger les factures
                             </button>
                             <button
-                                onClick={handleVATSettings}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",
@@ -293,15 +258,15 @@ export default function Management() {
                                 Paramètres de TVA
                             </button>
                             <button
-                                onClick={handleFiscalExport}
+                                disabled
                                 className={styles.button}
                                 style={{
-                                    background: secondaryBtnColor,
-                                    color: "#fff",
+                                    background: disabledBtnColor,
+                                    color: "#888",
                                     borderRadius: 18,
                                     padding: "12px 32px",
                                     fontSize: 16,
-                                    cursor: "pointer",
+                                    cursor: "not-allowed",
                                     width: 260,
                                     fontFamily: "BR Sonoma Semibold, BRSonoma Semibold, sans-serif",
                                     border: "none",

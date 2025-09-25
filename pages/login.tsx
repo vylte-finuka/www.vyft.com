@@ -74,7 +74,7 @@ const Login = () => {
         throw new Error("Jeton d'accès non retourné par Auth0.");
       }
   
-
+  
   
       // Récupérer les informations utilisateur
       const userInfoResponse = await axios.get(
@@ -97,6 +97,29 @@ const Login = () => {
         // Stocker le jeton utilisateur dans secureLocalStorage
       secureLocalStorage.setItem("userToken", access_token);
       setToken(access_token);
+
+      // Après login réussi :
+      // Récupérer l'IP publique
+      const ipRes = await axios.get("https://api.ipify.org?format=json");
+      const ip = ipRes.data.ip;
+
+      // Récupérer le navigateur et le système
+      const userAgent = window.navigator.userAgent;
+
+      // Date précise
+      const loginDate = new Date().toISOString();
+
+      // Historique local
+      const loginHistoryRaw = secureLocalStorage.getItem("loginHistory");
+      const prevHistory = JSON.parse(typeof loginHistoryRaw === "string" ? loginHistoryRaw : "[]");
+      prevHistory.unshift({
+        date: loginDate,
+        ip,
+        device: userAgent,
+        status: "Succès"
+      });
+      secureLocalStorage.setItem("loginHistory", JSON.stringify(prevHistory));
+  
       // Mettre à jour l'état pour rediriger vers Home
       setIsLoggedIn(true);
     } catch (err: any) {

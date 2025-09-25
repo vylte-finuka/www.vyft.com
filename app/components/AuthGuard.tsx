@@ -17,7 +17,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
   useEffect(() => {
     const checkAuthentication = () => {
       // Exclure la route /conditions-generals-de-vente de la vérification
-      if (pathname === "/conditions-generals-de-vente") {
+      if (pathname === "/conditions-generales-de-vente") {
         setIsLoading(false); // Ne pas bloquer le rendu pour cette route
         return;
       }

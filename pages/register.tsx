@@ -153,6 +153,12 @@ const ModalMarkdown: React.FC<ModalMarkdownProps> = ({ visible, onClose, markdow
 const CGVU_MARKDOWN = `
 # Conditions Générales de Vente et d’Utilisation
 
+## Définitions à connaître
+- **Vyft Program** : plateforme SaaS de gestion de la relation client (CRM) et d’analyse d’activité physique.
+- **Utilisateur** : toute personne physique ou morale utilisant Vyft Program.
+- **Prestataire sécurisé** : service tiers spécialisé et certifié pour la gestion des comptes, abonnements et paiements (ex : Stripe).
+- **Dénomination** : la société éditrice du service, à savoir Vylte-finuka SARL, SIRET 92978865100016, 60 rue François 1er, 75008 Paris, France.
+
 ## À propos de Vyft Program
 Vyft Program est un outil conçu pour l’application Vyft, une solution de suivi et d’analyse des pas et de l’activité physique de vos clients.  
 Il permet aux entreprises de suivre les pas réalisés dans leurs établissements, d’analyser la fréquentation, de générer des statistiques de performance et d’automatiser la gestion de la relation client.  
@@ -162,23 +168,23 @@ Il permet aussi aux services de la commune d’organiser des marchés ou événe
 - Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne.
 - Analyse des données de fréquentation et de l’engagement client.
 - Tableau de bord pour visualiser les réclamations et les statistiques d’activité.
-- Gestion des abonnements via Stripe en mode "pay as you go".
+- Gestion des abonnements via un **prestataire sécurisé** (Stripe) en mode "pay as you go".
 - Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™).
 - Export et impression des statistiques et des tags pour vos opérations marketing.
 - Support technique dédié et gestion des accès utilisateurs.
 - Outils pour les services de la commune afin de suivre la fréquentation lors d’événements ou marchés dans des lieux spécifiques.
 
 ## 1. Objet
-Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société Vylte-finuka SARL.
+Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société **Vylte-finuka SARL** (SIRET 92978865100016), 60 rue François 1er, 75008 Paris, France, conforme à la réglementation de l’Union Européenne.
 
 ## 2. Accès au service
-L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement.
+L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement géré par un **prestataire sécurisé**.
 
 ## 3. Description du service
 Vyft Program permet la gestion des contacts, des réclamations, des interactions commerciales et l’analyse de données clients. Les fonctionnalités peuvent évoluer à tout moment.
 
 ## 4. Commande et abonnement
-L’abonnement fonctionne aujourd’hui en mode "pay as you go" via Stripe. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
+L’abonnement fonctionne aujourd’hui en mode "pay as you go" via un **prestataire sécurisé** (Stripe). Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
 
 ## 5. Prix et paiement
 Les tarifs sont indiqués en euros hors taxes sur le site. Vylte-finuka se réserve le droit de modifier les prix à tout moment, les abonnés en seront informés par email.
@@ -205,7 +211,7 @@ Un support technique est accessible par email à support@vylte-finuka.com. Vylte
 Vylte-finuka se réserve le droit de modifier les présentes CGVU à tout moment. Les utilisateurs seront informés par email ou notification sur la plateforme.
 
 ## 13. Droit applicable et juridiction
-Les présentes CGVU sont soumises au droit français. Tout litige sera porté devant les tribunaux compétents de Paris.
+Les présentes CGVU sont soumises au droit français et à la réglementation de l’Union Européenne. Tout litige sera porté devant les tribunaux compétents de Paris.
 
 ## 14. Contact
 Pour toute question, contactez-nous à support@vylte-finuka.com ou à l’adresse du siège social : 60 rue François 1er, 75008 Paris.
@@ -219,6 +225,15 @@ Le rapport PDF généré par Vyft Program contient un tableau de suivi de l’in
 - Chaque case du tableau représente l’activité d’un jour donné, la couleur indiquant le niveau d’influence ou de fréquentation.
 
 Ce format permet de visualiser rapidement l’évolution de l’activité jour par jour et mois par mois.
+
+## 15. Utilisation de l’Intelligence Artificielle (IA)
+
+Vyft Program propose une fonctionnalité d’assistance par intelligence artificielle (IA) nommée **Vyft Nérethense**, permettant de répondre à vos questions, d’analyser vos données et de vous conseiller sur l’utilisation de la plateforme.
+
+- Les réponses fournies par l’IA Vyft Nérethense sont générées automatiquement à partir de vos données et des informations disponibles sur la plateforme. Elles sont données à titre indicatif et ne sauraient se substituer à un conseil professionnel personnalisé.
+- L’utilisateur s’engage à ne pas soumettre de données sensibles, confidentielles ou à caractère personnel non nécessaires lors de l’utilisation de l’IA.
+- Vylte-finuka ne pourra être tenue responsable des décisions prises sur la base des réponses de l’IA.
+- L’utilisation de l’IA Vyft Nérethense est soumise au respect des présentes CGVU et à la politique de confidentialité de Vyft Program.
 `;
 
 const Register = () => {

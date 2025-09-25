@@ -80,6 +80,12 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
   res.setHeader("Expires", "0");
   res.setHeader("Surrogate-Control", "no-store");
 
+  // Vérification de la clé API
+  const apiKey = req.headers["x-vyftprogram-api-key"];
+  if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
+    return res.status(401).json({ success: false, message: "Clé API invalide ou manquante." });
+  }
+
   if (req.method === "GET") {
     try {
       const { enseigne: enseigneFilter, stripeCustomerId } = req.query;
@@ -383,33 +389,35 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
       ]);
 
       // Historique 7 derniers jours (jour par jour)
-      const influenceHistory7Days: Array<{ date: string; count: number }> = [];
+      const influenceHistory7Days: Array<{ date: string; count: number; users: string[] }> = [];
       for (let i = 6; i >= 0; i--) {
         const day = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate() - i);
         const nextDay = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate() - i + 1);
-        const count = await collection.distinct("name", {
+        const users = await collection.distinct("name", {
           enseigne: { $regex: `^${enseigneFilter.trim()}$`, $options: "i" },
           date: { $gte: day.toISOString(), $lt: nextDay.toISOString() },
         });
         influenceHistory7Days.push({
           date: day.toISOString(),
-          count: count.length,
+          count: users.length,
+          users, // <-- AJOUTE la liste des noms ici
         });
       }
 
       // Historique du mois courant (jour par jour)
-      const influenceHistoryMonth: Array<{ date: string; count: number }> = [];
+      const influenceHistoryMonth: Array<{ date: string; count: number; users: string[] }> = [];
       const daysInMonth = new Date(nowTime.getFullYear(), nowTime.getMonth() + 1, 0).getDate();
       for (let i = 1; i <= daysInMonth; i++) {
         const day = new Date(nowTime.getFullYear(), nowTime.getMonth(), i);
         const nextDay = new Date(nowTime.getFullYear(), nowTime.getMonth(), i + 1);
-        const count = await collection.distinct("name", {
+        const users = await collection.distinct("name", {
           enseigne: { $regex: `^${enseigneFilter.trim()}$`, $options: "i" },
           date: { $gte: day.toISOString(), $lt: nextDay.toISOString() },
         });
         influenceHistoryMonth.push({
           date: day.toISOString(),
-          count: count.length,
+          count: users.length,
+          users, // <-- AJOUTE la liste des noms ici aussi
         });
       }
 

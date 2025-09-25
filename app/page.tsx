@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer1 from "./components/Footer";
 import Login from "../pages/login";
 import { loadStripe } from "@stripe/stripe-js";
+import SubscribeModal from "./components/SubscribeModal";
 import axios from "axios";
 
 const stripePromise = loadStripe("pk_test_51OlpeQDrg8ui7gWsxtoc9bVcIDCCSm0CD5gRKP1GJW6Dt917sBHbmGPt9cQnz0SRBthZ15JF1md3IkiGDzdjFkPO00TbFIA05L");
@@ -29,6 +30,13 @@ export default function Home() {
   const [auth0UserId, setAuth0UserId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false); // État pour la fenêtre modale
   const [connectedAccountId, setConnectedAccountId] = useState<string | null>("acct_123456789"); // Ajouter l'ID du compte connecté
+  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+  const [hasExplored, setHasExplored] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("vyft_hasExplored") === "1";
+    }
+    return false;
+  });
 
   // Récupérer les informations utilisateur depuis Auth0
   const fetchAuth0UserId = useCallback(async () => {
@@ -93,12 +101,11 @@ export default function Home() {
         return;
       }
 
-      console.log("Appel à l'API pour vérifier l'état actif de l'abonnement avec :", { userToken, customerId: subid, connectedAccountId });
-
       const response = await fetch("/api/create-or-retrieve-customer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
         },
         body: JSON.stringify({
           userToken,
@@ -121,6 +128,8 @@ export default function Home() {
     }
   }, [auth0UserId, subid, connectedAccountId]);
 
+  const API_KEY = process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY;
+
   const startStripeSession = useCallback(async () => {
     const stripe = await stripePromise;
     const userToken = secureLocalStorage.getItem("userToken");
@@ -136,6 +145,7 @@ export default function Home() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-vyftprogram-api-key": API_KEY || "",
         },
         body: JSON.stringify({
           userToken,
@@ -158,12 +168,11 @@ export default function Home() {
         return;
       }
 
-// Remplacez l'appel Stripe SDK par une redirection directe
-if (session.url) {
-  window.location.href = session.url;
-} else {
-  console.error("URL de session Stripe manquante dans la réponse");
-}
+      if (session.url) {
+        window.location.href = session.url;
+      } else {
+        console.error("URL de session Stripe manquante dans la réponse");
+      }
     } catch (error) {
       console.error("Erreur lors du démarrage de la session Stripe :", error);
     }
@@ -215,7 +224,8 @@ if (session.url) {
             },
           }
         );
-  
+          
+
         // Toujours récupérer la valeur, même si les métadonnées utilisateur sont absentes
         const denomination = response.data?.user_metadata?.denomination?.trim();
         if (!denomination) {
@@ -227,6 +237,9 @@ if (session.url) {
         // Récupérer les visiteurs depuis l'API /api/vyfthealth_receive
         const visitorsResponse = await fetch("/api/vyfthealth_receive", {
           method: "GET",
+          headers: {
+            "x-vyftprogram-api-key": API_KEY || "",
+          },
         });
   
         if (!visitorsResponse.ok) {
@@ -286,6 +299,7 @@ if (session.url) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-vyftprogram-api-key": API_KEY || "",
           },
           body: JSON.stringify({
             userToken,
@@ -314,87 +328,138 @@ if (session.url) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (!subid) {
+      setShowSubscribeModal(true);
+    } else {
+      setShowSubscribeModal(false);
+    }
+  }, [subid]);
+
   if (!isLoggedIn) {
     return <Login />;
   }
 
   return (
     <div>
-      <div className={styles.container}>
+      <div className={styles.container2}>
         <Navbar />
-        <main className={styles.main}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
-            <div>
-              <h1 className={styles.header}>Tableau de bord</h1>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%" }}></div>
-              <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
-                Dernières réclamations :
-              </h2>
-              {transactions.length > 0 ? (
-                // Trier les transactions par date décroissante avant de les afficher
-                [...transactions]
-                  .sort((a, b) => {
-                    const dateA = new Date(a.time).getTime();
-                    const dateB = new Date(b.time).getTime();
-                    return dateB - dateA; // Plus récent en premier
-                  })
-                  .map((transaction, index) => {
-                    let formattedDate = "Date invalide";
-                    let formattedTime = "Heure invalide";
-
-                    if (transaction.time) {
-                      try {
-                        const rawDate = new Date(transaction.time);
-                        if (!isNaN(rawDate.getTime())) {
-                          formattedDate = rawDate.toLocaleDateString("fr-FR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          });
-                          formattedTime = rawDate.toLocaleTimeString("fr-FR", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          });
-                        }
-                      } catch {
-                        // Les valeurs par défaut restent "Date invalide" et "Heure invalide"
-                      }
-                    }
-
-                    return (
-                      <div key={index}>
-                        <p className={styles.date}>{formattedDate}</p>
-                        <div className={styles.ActionEbutton}>
-                          <p className={styles.ActionE}>
-                            <p className={styles.time}>{formattedTime}</p>
-                            <span className={styles.personName}>{transaction.name}</span>
-                            <span className={styles.personDetails}>
-                              {transaction.steps} pas • {transaction.distance} mètres
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })
-              ) : (
-                <p className={styles.date}>Pas de visiteurs pour l&apos;instant.</p>
-              )}
-              <button
-                className={styles.ActionEbutton}
-                onClick={subid ? cancelSubscription : startStripeSession}
+        <main className={styles.main} style={{ alignItems: "flex-start" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 32,
+              width: "100%",
+              alignItems: "flex-start",
+              marginBottom: 32,
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h1 className={styles.headeronwhiteX2}>Tableau de bord</h1>
+              <section
+                className={styles.bodyonwhite}
                 style={{
-                  fontFamily: "BR Sonoma, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  color: "#000",
+                  background: "#fff",
+                  borderRadius: 24,
+                  padding: 32,
+                  width: "100%",
+                  maxWidth: 700,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                  marginBottom: 24,
                 }}
               >
-                {subid ? "Arrêter l'abonnement" : "Se lancer avec Vyft Program"}
-              </button>
+                <h2 className={styles.headeronwhite} style={{ fontSize: 22, marginBottom: 18 }}>
+                  Dernières réclamations
+                </h2>
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  {transactions.length > 0 ? (
+                    [...transactions]
+                      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+                      .map((transaction, index) => {
+                        let formattedDate = "Date invalide";
+                        let formattedTime = "Heure invalide";
+                        if (transaction.time) {
+                          try {
+                            const rawDate = new Date(transaction.time);
+                            if (!isNaN(rawDate.getTime())) {
+                              formattedDate = rawDate.toLocaleDateString("fr-FR", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              });
+                              formattedTime = rawDate.toLocaleTimeString("fr-FR", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              });
+                            }
+                          } catch {}
+                        }
+                        return (
+                          <li
+                            key={index}
+                            className={styles.bodyonwhite}
+                            style={{
+                              marginBottom: 18,
+                              background: "#DBDFE0",
+                              borderRadius: 18,
+                              padding: 18,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <div>
+                              <h3
+                                className={styles.headeronwhite}
+                                style={{
+                                  fontSize: 20,
+                                  margin: 0,
+                                  fontWeight: "bold",
+                                  color: "#1a7f6b",
+                                }}
+                              >
+                                {transaction.name}
+                              </h3>
+                              <p
+                                className={styles.headeronwhite}
+                                style={{
+                                  fontSize: 15,
+                                  margin: "4px 0 0 0",
+                                  fontWeight: 500,
+                                  color: "#444444",
+                                }}
+                              >
+                                {formattedDate} à {formattedTime}
+                              </p>
+                              <p
+                                className={styles.bodyonwhite}
+                                style={{
+                                  fontSize: 14,
+                                  margin: "4px 0 0 0",
+                                  color: "#222",
+                                }}
+                              >
+                                <b>Distance :</b> {transaction.distance} m — <b>Pas :</b> {transaction.steps}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })
+                  ) : (
+                    <li>
+                      <p className={styles.date}>Pas de visiteurs pour l&apos;instant.</p>
+                    </li>
+                  )}
+                </ul>
+                {/* Plus de bouton d'abonnement, la modale s'affiche automatiquement si pas abonné */}
+              </section>
             </div>
           </div>
         </main>
+        <Footer1 />
       </div>
+      {/* Modal support désabonnement */}
       {showModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -411,10 +476,13 @@ if (session.url) {
           </div>
         </div>
       )}
-      <div className={styles.container1}>
-        <main className={styles.main}></main>
-        <Footer1 />
-      </div>
+      {/* Modal abonnement */}
+      {showSubscribeModal && (
+        <SubscribeModal
+          onClose={() => {}} // Empêche la fermeture
+          onSubscribe={startStripeSession}
+        />
+      )}
     </div>
   );
 }

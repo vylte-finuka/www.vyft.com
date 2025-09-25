@@ -6,9 +6,10 @@ import secureLocalStorage from "react-secure-storage";
 
 // Fonction pour télécharger le PDF généré côté serveur via l'API reportgen
 async function downloadServerPDF(report: any, companyName: string) {
+    const API_KEY = process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY;
   const res = await fetch("/api/reportgen", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-vyftprogram-api-key": API_KEY || "" },
     body: JSON.stringify({
       reportType: report.type,
       period: report.period,

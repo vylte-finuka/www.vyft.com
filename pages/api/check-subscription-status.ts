@@ -4,8 +4,15 @@ import Stripe from "stripe";
 const stripe = new Stripe("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", { apiVersion: "2025-04-30.basil" });
 
 export default async function checkSubrcriptionStatus(req: NextApiRequest, res: NextApiResponse) {
+
+    // Vérification de la clé API
+  const apiKey = req.headers["x-vyftprogram-api-key"];
+  if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
+    return res.status(401).json({ success: false, message: "Clé API invalide ou manquante." });
+  }
+  
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Méthode non autorisée" });
+    return res.status(405).json({ success: false, message: "Méthode non autorisée" });
   }
 
   const { userToken, auth0UserId } = req.body;

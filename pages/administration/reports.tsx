@@ -10,6 +10,7 @@ import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
 import { Bar, Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
+import SquareAIFloat from "@/app/components/SquareAIFloat";
 
 const ReportsList = dynamic(() => import("./reportsList"), { ssr: false });
 
@@ -81,10 +82,17 @@ export default function Reports() {
           setLoading(false);
           return;
         }
+        
+        const API_KEY = process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY;
 
         // Récupérer les vraies données depuis l'API
         const apiResponse = await fetch(
-          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`
+          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`,
+          {
+            headers: {
+              "x-vyftprogram-api-key": API_KEY || "",
+            },
+          }
         );
         const data = await apiResponse.json();
 
@@ -220,7 +228,7 @@ export default function Reports() {
               borderRadius: 18,
               height: 48,
               fontSize: 16,
-              fontFamily: "BR Sonoma, BRSonoma, sans-serif",
+              fontFamily: "BR Sonoma Semibold",
               cursor: "pointer",
               transition: "background 0.2s, color 0.2s",
               boxShadow: value === opt.value ? "0 2px 8px rgba(0,0,0,0.07)" : "none"
@@ -252,6 +260,7 @@ export default function Reports() {
       </head>
       <Navbar />
       <main className={styles.main} style={{ alignItems: "flex-start" }}>
+
         {/* Section horizontale : Liste des rapports à gauche, historique à droite */}
         <div
           style={{
@@ -265,7 +274,7 @@ export default function Reports() {
         >
           {/* Liste des rapports générés */}
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h1 className={styles.header}>Rapports</h1>
+            <h1 className={styles.headeronwhiteX2}>Rapports</h1>
             {/* Partie principale avec les graphiques */}
             <section
               className={styles.bodyonwhite}

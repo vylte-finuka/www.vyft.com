@@ -1,0 +1,223 @@
+/* [project]/app/components/Navbar.module.css [client] (css) */
+.Navbar-module__pSp8Ga__navbar {
+  backdrop-filter: blur(10px);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  display: flex;
+  position: relative;
+}
+
+.Navbar-module__pSp8Ga__ActionEbutton {
+  background-color: #fff;
+  border: none;
+  border-radius: 18px;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  display: flex;
+  position: absolute;
+  top: 18px;
+  right: -740px;
+  transform: translateY(-32px);
+}
+
+.Navbar-module__pSp8Ga__logo {
+  align-items: center;
+  display: flex;
+}
+
+@font-face {
+  font-family: BR Sonoma Semibold;
+  src: url("../media/BRSonomaSemibold.b68ad701.otf");
+}
+
+.Navbar-module__pSp8Ga__fontstyle {
+  color: #000;
+  margin-left: 10px;
+  font-family: BR Sonoma Semibold;
+  font-weight: 15;
+}
+
+.Navbar-module__pSp8Ga__fontstyle1 {
+  margin-left: 40px;
+  font-family: BR Sonoma Semibold;
+  font-weight: 15;
+}
+
+.Navbar-module__pSp8Ga__fontstyle2 {
+  color: #fff;
+  margin-left: 8px;
+  font-family: BR Sonoma Semibold;
+  font-weight: 15;
+}
+
+.Navbar-module__pSp8Ga__fontstyle3 {
+  color: #fff;
+  margin-left: 40px;
+  font-family: BR Sonoma Semibold;
+  font-weight: 15;
+}
+
+.Navbar-module__pSp8Ga__navLinks {
+  justify-content: center;
+  gap: 1rem;
+  list-style: none;
+  display: flex;
+  position: relative;
+  top: -36px;
+  left: 25vw;
+}
+
+.Navbar-module__pSp8Ga__navLinks li {
+  margin: 0;
+  position: relative;
+}
+
+.Navbar-module__pSp8Ga__navLinks a {
+  color: #000;
+  text-decoration: none;
+}
+
+.Navbar-module__pSp8Ga__navLinks a:hover {
+  text-decoration: underline;
+}
+
+.Navbar-module__pSp8Ga__subMenu {
+  visibility: hidden;
+  z-index: 1000;
+  background-color: #00cb9e;
+  border-radius: 10px;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: max-height .3s, visibility .3s;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  overflow: hidden;
+}
+
+.Navbar-module__pSp8Ga__navLinks li:hover .Navbar-module__pSp8Ga__subMenu {
+  visibility: visible;
+  max-height: 200px;
+  display: block;
+  overflow: visible;
+}
+
+.Navbar-module__pSp8Ga__navLinks li:nth-child(5) .Navbar-module__pSp8Ga__subMenu {
+  top: 38px;
+  left: -50%;
+  transform: translateX(270%);
+}
+
+.Navbar-module__pSp8Ga__subMenu li {
+  width: 200px;
+}
+
+.Navbar-module__pSp8Ga__subMenu a {
+  padding: .5rem 1rem;
+}
+
+.Navbar-module__pSp8Ga__subSubMenu {
+  visibility: hidden;
+  background-color: #00cb9e;
+  border-radius: 10px;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: max-height .3s, visibility .3s;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  overflow: hidden;
+}
+
+.Navbar-module__pSp8Ga__subMenu li:hover .Navbar-module__pSp8Ga__subSubMenu {
+  visibility: visible;
+  max-height: 200px;
+  display: block;
+  overflow: visible;
+}
+
+.Navbar-module__pSp8Ga__subSubMenu li {
+  width: 200px;
+}
+
+.Navbar-module__pSp8Ga__subSubMenu a {
+  padding: .5rem 1rem;
+}
+
+@media (width <= 700px) {
+  .Navbar-module__pSp8Ga__navLinks {
+    flex-direction: row;
+    gap: 1rem;
+    top: 0;
+    left: 0;
+  }
+
+  .Navbar-module__pSp8Ga__navLinks li a {
+    white-space: nowrap;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    width: 20vw;
+    display: flex;
+  }
+
+  .Navbar-module__pSp8Ga__navLinks li a:hover {
+    background-color: #00cb9e;
+    border-radius: 5px;
+    width: auto;
+    padding: .5rem;
+  }
+
+  .Navbar-module__pSp8Ga__subMenu, .Navbar-module__pSp8Ga__subSubMenu {
+    background-color: #00cb9e;
+    border-radius: 10px;
+    width: auto;
+    position: static;
+  }
+
+  .Navbar-module__pSp8Ga__subMenu.Navbar-module__pSp8Ga__open, .Navbar-module__pSp8Ga__subSubMenu.Navbar-module__pSp8Ga__open {
+    visibility: visible;
+    max-height: 200px;
+  }
+
+  .Navbar-module__pSp8Ga__subMenu li, .Navbar-module__pSp8Ga__subSubMenu li {
+    padding: .5rem 1rem;
+  }
+
+  .Navbar-module__pSp8Ga__footer {
+    text-align: end;
+  }
+
+  .Navbar-module__pSp8Ga__links {
+    gap: 1rem;
+    margin-bottom: .5rem;
+    display: flex;
+  }
+
+  .Navbar-module__pSp8Ga__links a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .Navbar-module__pSp8Ga__links a:hover {
+    text-decoration: underline;
+  }
+
+  .Navbar-module__pSp8Ga__copyright {
+    font-size: .875rem;
+    top: 15px;
+  }
+}
+
+
+/*# sourceMappingURL=app_components_Navbar_module_24784910.css.map*/

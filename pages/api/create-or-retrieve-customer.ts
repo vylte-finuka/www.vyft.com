@@ -4,6 +4,12 @@ import Stripe from "stripe";
 const stripe = new Stripe("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", { apiVersion: "2025-04-30.basil" });
 
 export default async function createOrRetriveCustomer(req: NextApiRequest, res: NextApiResponse) {
+  // Authentification par clé API locale
+  const apiKey = req.headers["x-vyftprogram-api-key"];
+  if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
+    return res.status(401).json({ success: false, message: "Clé API invalide ou manquante." });
+  }
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ error: "Méthode non autorisée" });
@@ -87,7 +93,7 @@ export default async function createOrRetriveCustomer(req: NextApiRequest, res: 
       console.log("Session Stripe Checkout créée :", session.id);
 
       // Après la création de la session Stripe Checkout
-return res.status(200).json({ sessionId: session.id, customerId: customer.id, url: session.url });
+      return res.status(200).json({ sessionId: session.id, customerId: customer.id, url: session.url });
     } else if (action === "unsubscribe") {
       console.log("Annulation d'un abonnement Stripe...");
 

@@ -1,9 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { pdf } from "@react-pdf/renderer";
-import { createElement } from "react";
 import ReportVyft from "../../app/components/reportvyft";
 
 export default async function vyftreport(req: NextApiRequest, res: NextApiResponse) {
+  // Sécurité par clé API
+  const apiKey = req.headers["x-vyftprogram-api-key"];
+  if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
+    return res.status(401).json({ error: "Clé API invalide ou manquante." });
+  }
+
   if (req.method !== "POST") {
     res.status(405).end("Method Not Allowed");
     return;
@@ -11,7 +16,6 @@ export default async function vyftreport(req: NextApiRequest, res: NextApiRespon
 
   try {
     const props = req.body;
-    // Utilise createElement pour éviter les erreurs JSX côté Node
     const pdfBlob = await pdf(<ReportVyft {...props} />).toBlob();
 
     res.setHeader("Content-Type", "application/pdf");
