@@ -351,7 +351,7 @@ export default function Funds_management() {
                     }}
                     onClick={() => window.location.href = "/"}
                   >
-                    S'abonner
+                    S&apos;abonner
                   </button>
                 </div>
               ) : null}
