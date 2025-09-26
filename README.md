@@ -1,6 +1,6 @@
 # Vyft Program
 
-![Vyft Program](public/Vyft_program.png)
+![Vyft Program](public/vyft_program.png)
 
 Vyft Program est une plateforme SaaS de gestion de la relation client (CRM) moderne, pensée pour les entreprises souhaitant centraliser et optimiser le marché à l'intermédiare de l'application Vyft.
 

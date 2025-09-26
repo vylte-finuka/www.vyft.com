@@ -1,4 +1,5 @@
 __turbopack_load_page_chunks__("/login", [
+  "static/chunks/[root-of-the-server]__8415ba10._.js",
   "static/chunks/node_modules_next_dist_compiled_2d271c52._.js",
   "static/chunks/node_modules_next_dist_shared_lib_629c25b9._.js",
   "static/chunks/node_modules_next_dist_client_fb970f24._.js",
@@ -10,8 +11,7 @@ __turbopack_load_page_chunks__("/login", [
   "static/chunks/node_modules_axios_lib_9aa2336a._.js",
   "static/chunks/node_modules_micromark-core-commonmark_dev_lib_4ec537ec._.js",
   "static/chunks/node_modules_36d82b37._.js",
-  "static/chunks/[root-of-the-server]__c21e0d9f._.js",
   "static/chunks/app_77bb0f70._.css",
   "static/chunks/pages_login_5771e187._.js",
-  "static/chunks/pages_login_a505303e._.js"
+  "static/chunks/pages_login_c15eca85._.js"
 ])

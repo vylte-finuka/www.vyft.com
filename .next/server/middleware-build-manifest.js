@@ -10,9 +10,19 @@ globalThis.__BUILD_MANIFEST = {
       "static/chunks/pages__app_5771e187._.js",
       "static/chunks/pages__app_d4364763._.js"
     ],
-    "/conditions-generales-de-vente": [
-      "static/chunks/[root-of-the-server]__29997cc8._.js",
-      "static/chunks/node_modules_next_dist_compiled_a5334b94._.js",
+    "/_error": [
+      "static/chunks/[root-of-the-server]__527cd323._.js",
+      "static/chunks/node_modules_react_b2385d85._.js",
+      "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+      "static/chunks/node_modules_react-dom_f14d0471._.js",
+      "static/chunks/node_modules_3bfdc6a4._.js",
+      "static/chunks/[root-of-the-server]__923cb372._.js",
+      "static/chunks/pages__error_5771e187._.js",
+      "static/chunks/pages__error_2957213b._.js"
+    ],
+    "/administration/main-management": [
+      "static/chunks/[root-of-the-server]__83edfae7._.js",
+      "static/chunks/node_modules_next_dist_compiled_62013b03._.js",
       "static/chunks/node_modules_next_dist_shared_lib_c6e9c76d._.js",
       "static/chunks/node_modules_next_dist_client_f131196d._.js",
       "static/chunks/node_modules_next_dist_74abe800._.js",
@@ -21,10 +31,44 @@ globalThis.__BUILD_MANIFEST = {
       "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
       "static/chunks/node_modules_react-dom_f14d0471._.js",
       "static/chunks/node_modules_axios_lib_9aa2336a._.js",
-      "static/chunks/node_modules_84b897e4._.js",
-      "static/chunks/app_cf6a6d6c._.css",
-      "static/chunks/pages_conditions-generales-de-vente_5771e187._.js",
-      "static/chunks/pages_conditions-generales-de-vente_474e0268._.js"
+      "static/chunks/node_modules_997b87fe._.js",
+      "static/chunks/app_77bb0f70._.css",
+      "static/chunks/pages_administration_main-management_tsx_5771e187._.js",
+      "static/chunks/pages_administration_main-management_tsx_68fb02cc._.js"
+    ],
+    "/conditions-generales-de-vente": [
+      "static/chunks/[root-of-the-server]__8415ba10._.js",
+      "static/chunks/node_modules_next_dist_compiled_2d271c52._.js",
+      "static/chunks/node_modules_next_dist_shared_lib_629c25b9._.js",
+      "static/chunks/node_modules_next_dist_client_fb970f24._.js",
+      "static/chunks/node_modules_next_dist_74abe800._.js",
+      "static/chunks/node_modules_next_95ab02ff._.js",
+      "static/chunks/node_modules_react_1cad9b0b._.js",
+      "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+      "static/chunks/node_modules_react-dom_f14d0471._.js",
+      "static/chunks/node_modules_axios_lib_9aa2336a._.js",
+      "static/chunks/node_modules_micromark-core-commonmark_dev_lib_4ec537ec._.js",
+      "static/chunks/node_modules_36d82b37._.js",
+      "static/chunks/app_77bb0f70._.css",
+      "static/chunks/pages_login_5771e187._.js",
+      "static/chunks/pages_login_c15eca85._.js"
+    ],
+    "/login": [
+      "static/chunks/[root-of-the-server]__8415ba10._.js",
+      "static/chunks/node_modules_next_dist_compiled_2d271c52._.js",
+      "static/chunks/node_modules_next_dist_shared_lib_629c25b9._.js",
+      "static/chunks/node_modules_next_dist_client_fb970f24._.js",
+      "static/chunks/node_modules_next_dist_74abe800._.js",
+      "static/chunks/node_modules_next_95ab02ff._.js",
+      "static/chunks/node_modules_react_1cad9b0b._.js",
+      "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+      "static/chunks/node_modules_react-dom_f14d0471._.js",
+      "static/chunks/node_modules_axios_lib_9aa2336a._.js",
+      "static/chunks/node_modules_micromark-core-commonmark_dev_lib_4ec537ec._.js",
+      "static/chunks/node_modules_36d82b37._.js",
+      "static/chunks/app_77bb0f70._.css",
+      "static/chunks/pages_login_5771e187._.js",
+      "static/chunks/pages_login_c15eca85._.js"
     ]
   },
   "devFiles": [],

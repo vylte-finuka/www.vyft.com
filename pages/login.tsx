@@ -7,22 +7,118 @@ import styles from "../app/page.module.css";
 import Image from "next/image";
 import axios from "axios";
 import Footer from "../app/components/Footer1";
-import Register from "./register"; // Importer le composant Register
-import Home from "../app/page"; // Importer le composant Home
-import { useRouter } from "next/navigation"; // Ajoutez ceci en haut
+import Register from "./register";
+import Home from "../app/page";
+import { useRouter } from "next/navigation";
+import { Resetpassword } from "./Resetpassword"; // Ajoute cet import
+
+// Ajout du composant ForgotPassword
+const ForgotPassword = ({
+  onBack,
+  onReset,
+}: {
+  onBack: () => void;
+  onReset: () => void;
+}) => {
+  const [email, setEmail] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  const handleForgot = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccess("");
+    setError("");
+    if (!email) {
+      setError("Veuillez entrer votre adresse email.");
+      return;
+    }
+    try {
+      // Appel Auth0 pour demander la réinitialisation du mot de passe
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/dbconnections/change_password`,
+        {
+          client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+          email,
+          connection: "Vyftbase",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setSuccess("Un email de réinitialisation a été envoyé si l'adresse existe.");
+    } catch (err: any) {
+      setError("Erreur lors de la demande de réinitialisation.");
+    }
+  };
+
+  return (
+    <>
+      <title>Mot de passe oublié - Vyft program</title>
+      <div className={`${styles.container3} ${styles.center}`}>
+        <Image
+          src="/vyft_program.png"
+          alt="Vyft Program"
+          width={400}
+          height={180}
+        />
+        <form className={styles.form} onSubmit={handleForgot}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email" className={styles.label}>
+              Adresse email :
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className={styles.input}
+              placeholder="Entrez votre adresse email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {success && <p style={{ color: "green" }}>{success}</p>}
+          <button type="submit" className={styles.button}>
+            Réinitialiser le mot de passe
+          </button>
+          <p
+            className={styles.signupText}
+            onClick={onBack}
+            style={{ cursor: "pointer" }}
+          >
+            <span className={styles.signupLink}>Retour à la connexion</span>
+          </p>
+          <p
+            className={styles.signupText}
+            onClick={onReset}
+            style={{ cursor: "pointer" }}
+          >
+            <span className={styles.signupLink}>
+              Accéder à la page de réinitialisation avancée
+            </span>
+          </p>
+        </form>
+        <Footer />
+      </div>
+    </>
+  );
+};
 
 const Login = () => {
-  const router = useRouter(); // Ajoutez ceci dans le composant
-  const { user, isLoading } = useUser(); // Récupère l'utilisateur connecté via Auth0
+  const router = useRouter();
+  const { user, isLoading } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [showRegister, setShowRegister] = useState(false); // État pour basculer entre Login et Register
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour vérifier si l'utilisateur est connecté
-  const [token, setToken] = useState(""); // État pour stocker le token utilisateur
+  const [showRegister, setShowRegister] = useState(false);
+  const [showForgot, setShowForgot] = useState(false); // Ajout pour l'écran mot de passe oublié
+  const [showReset, setShowReset] = useState(false); // Ajoute cet état
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    // Si l'utilisateur est connecté via Auth0, mettre à jour l'état
     if (user) {
       secureLocalStorage.setItem("isLoggedIn", "1");
       secureLocalStorage.setItem("username", user.name || "");
@@ -36,20 +132,19 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/"); // Redirige vers la page d'accueil
+      router.push("/");
     }
   }, [isLoggedIn, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       if (!email || !password) {
         setError("Veuillez remplir tous les champs.");
         return;
       }
-  
-      // Appeler Auth0 avec password-realm
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/oauth/token`,
         {
@@ -57,7 +152,7 @@ const Login = () => {
           client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
           username: email,
           password: password,
-          realm: "Vyftbase", // Nom du realm configuré dans Auth0
+          realm: "Vyftbase",
           scope: "openid profile email",
           audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
         },
@@ -67,16 +162,12 @@ const Login = () => {
           },
         }
       );
-  
-      // Vérifiez si le jeton d'accès est présent dans la réponse
+
       const { access_token } = response.data;
       if (!access_token) {
         throw new Error("Jeton d'accès non retourné par Auth0.");
       }
-  
-  
-  
-      // Récupérer les informations utilisateur
+
       const userInfoResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/userinfo`,
         {
@@ -85,49 +176,42 @@ const Login = () => {
           },
         }
       );
-  
+
       const userInfo = userInfoResponse.data;
-  
-      // Stocker les informations utilisateur dans secureLocalStorage
+
       secureLocalStorage.setItem("isLoggedIn", "1");
       secureLocalStorage.setItem("username", userInfo.name || "");
       secureLocalStorage.setItem("email", userInfo.email || "");
       secureLocalStorage.setItem("picture", userInfo.picture || "");
-      secureLocalStorage.setItem("auth0UserId", userInfo.sub || ""); // Stocker l'auth0UserId
-        // Stocker le jeton utilisateur dans secureLocalStorage
+      secureLocalStorage.setItem("auth0UserId", userInfo.sub || "");
       secureLocalStorage.setItem("userToken", access_token);
       setToken(access_token);
 
-      // Après login réussi :
-      // Récupérer l'IP publique
       const ipRes = await axios.get("https://api.ipify.org?format=json");
       const ip = ipRes.data.ip;
-
-      // Récupérer le navigateur et le système
       const userAgent = window.navigator.userAgent;
-
-      // Date précise
       const loginDate = new Date().toISOString();
-
-      // Historique local
       const loginHistoryRaw = secureLocalStorage.getItem("loginHistory");
-      const prevHistory = JSON.parse(typeof loginHistoryRaw === "string" ? loginHistoryRaw : "[]");
+      const prevHistory = JSON.parse(
+        typeof loginHistoryRaw === "string" ? loginHistoryRaw : "[]"
+      );
       prevHistory.unshift({
         date: loginDate,
         ip,
         device: userAgent,
-        status: "Succès"
+        status: "Succès",
       });
       secureLocalStorage.setItem("loginHistory", JSON.stringify(prevHistory));
-  
-      // Mettre à jour l'état pour rediriger vers Home
+
       setIsLoggedIn(true);
     } catch (err: any) {
       console.error("Erreur lors de la connexion :", err);
-  
-      // Capturer et afficher les détails de l'erreur
+
       if (err.response && err.response.data) {
-        setError(err.response.data.error_description || "Nom de société ou mot de passe incorrect.");
+        setError(
+          err.response.data.error_description ||
+            "Nom de société ou mot de passe incorrect."
+        );
       } else {
         setError("Une erreur inconnue est survenue.");
       }
@@ -135,22 +219,32 @@ const Login = () => {
   };
 
   if (isLoading) {
-    // Afficher un état de chargement pendant que les données utilisateur sont récupérées
     return <div>Chargement...</div>;
   }
 
-  // Supprimez ce bloc :
-  // if (isLoggedIn) {
-  //   return <Home />;
-  // }
-
   if (showRegister) {
-    // Retourner le composant Register si l'utilisateur clique sur le lien
     return <Register />;
   }
 
+  if (showForgot) {
+    return (
+      <ForgotPassword
+        onBack={() => setShowForgot(false)}
+        onReset={() => {
+          setShowForgot(false);
+          setShowReset(true);
+        }}
+      />
+    );
+  }
+
+  if (showReset) {
+    return <Resetpassword />;
+  }
+
   return (
-    <><title>Connexion - Vyft program: Manage your own market.</title>
+    <>
+      <title>Connexion - Vyft program: Manage your own market.</title>
       <div className={`${styles.container3} ${styles.center}`}>
         <Image
           src="/vyft_program.png"
@@ -193,12 +287,18 @@ const Login = () => {
           </button>
           <p
             className={styles.signupText}
-            onClick={() => setShowRegister(true)} // Basculer vers Register
+            onClick={() => setShowRegister(true)}
           >
             <span className={styles.signupLink}>Vous n&apos;avez pas de compte ?</span>
           </p>
+          <p
+            className={styles.signupText}
+            onClick={() => setShowForgot(true)}
+            style={{ cursor: "pointer" }}
+          >
+            <span className={styles.signupLink}>Mot de passe oublié&nbsp;?</span>
+          </p>
         </form>
-
         <Footer />
       </div>
     </>

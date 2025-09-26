@@ -44,7 +44,7 @@ export default function SquareAIFloat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       from: "ai",
-      text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre bussiness ? Posez-moi votre question ou réponse !",
+      text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !",
     },
   ]);
   const [input, setInput] = useState("");

@@ -1141,7 +1141,7 @@ function SquareAIFloat() {
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([
         {
             from: "ai",
-            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre bussiness ? Posez-moi votre question ou réponse !"
+            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !"
         }
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1639,7 +1639,7 @@ function SquareAIFloat() {
         columnNumber: 5
     }, this);
 }
-_s(SquareAIFloat, "5bduPc3+UMaMnmo7YrKyXzM5scU=");
+_s(SquareAIFloat, "aNd0AuKr0S+KAMBGHRz4gnpoGSs=");
 _c = SquareAIFloat;
 // Ajoute ce composant pour l'effet d'écriture lettre par lettre
 function TypingText({ text }) {

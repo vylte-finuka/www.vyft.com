@@ -1452,6 +1452,197 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
+"[project]/pages/Resetpassword.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+{
+__turbopack_context__.s({
+    "Resetpassword": (()=>Resetpassword)
+});
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [client] (css module)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer1.tsx [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
+"use client";
+;
+;
+;
+;
+;
+;
+const Resetpassword = ()=>{
+    _s();
+    const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const handleReset = async (e)=>{
+        e.preventDefault();
+        setSuccess("");
+        setError("");
+        if (!email) {
+            setError("Veuillez entrer votre adresse email.");
+            return;
+        }
+        try {
+            await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/dbconnections/change_password`, {
+                client_id: ("TURBOPACK compile-time value", "gnSYOUhQHV9hCZdKfNqIS7AoCgyRqv5C"),
+                email,
+                connection: "Vyftbase"
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            setSuccess("Un email de réinitialisation a été envoyé si l'adresse existe.");
+        } catch (err) {
+            setError("Erreur lors de la demande de réinitialisation.");
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("title", {
+                children: "Réinitialisation du mot de passe - Vyft program"
+            }, void 0, false, {
+                fileName: "[project]/pages/Resetpassword.tsx",
+                lineNumber: 46,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].container3} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].center}`,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                        src: "/vyft_program.png",
+                        alt: "Vyft Program",
+                        width: 400,
+                        height: 180
+                    }, void 0, false, {
+                        fileName: "[project]/pages/Resetpassword.tsx",
+                        lineNumber: 48,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].form,
+                        onSubmit: handleReset,
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].formGroup,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                        htmlFor: "email",
+                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].label,
+                                        children: "Adresse email :"
+                                    }, void 0, false, {
+                                        fileName: "[project]/pages/Resetpassword.tsx",
+                                        lineNumber: 56,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        type: "email",
+                                        id: "email",
+                                        name: "email",
+                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].input,
+                                        placeholder: "Entrez votre adresse email",
+                                        value: email,
+                                        onChange: (e)=>setEmail(e.target.value)
+                                    }, void 0, false, {
+                                        fileName: "[project]/pages/Resetpassword.tsx",
+                                        lineNumber: 59,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/pages/Resetpassword.tsx",
+                                lineNumber: 55,
+                                columnNumber: 11
+                            }, this),
+                            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                style: {
+                                    color: "red"
+                                },
+                                children: error
+                            }, void 0, false, {
+                                fileName: "[project]/pages/Resetpassword.tsx",
+                                lineNumber: 69,
+                                columnNumber: 21
+                            }, this),
+                            success && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                style: {
+                                    color: "green"
+                                },
+                                children: success
+                            }, void 0, false, {
+                                fileName: "[project]/pages/Resetpassword.tsx",
+                                lineNumber: 70,
+                                columnNumber: 23
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "submit",
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].button,
+                                children: "Réinitialiser le mot de passe"
+                            }, void 0, false, {
+                                fileName: "[project]/pages/Resetpassword.tsx",
+                                lineNumber: 71,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].signupText,
+                                onClick: ()=>router.push("/login"),
+                                style: {
+                                    cursor: "pointer"
+                                },
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].signupLink,
+                                    children: "Retour à la connexion"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/Resetpassword.tsx",
+                                    lineNumber: 79,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/Resetpassword.tsx",
+                                lineNumber: 74,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/pages/Resetpassword.tsx",
+                        lineNumber: 54,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                        fileName: "[project]/pages/Resetpassword.tsx",
+                        lineNumber: 82,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/pages/Resetpassword.tsx",
+                lineNumber: 47,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true);
+};
+_s(Resetpassword, "8jEgUS90Z2jPS5nMJBkhTjRLdsU=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
+    ];
+});
+_c = Resetpassword;
+var _c;
+__turbopack_context__.k.register(_c, "Resetpassword");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
+}
+}}),
 "[project]/pages/login.tsx [client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -1472,6 +1663,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer1.tsx [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/register.tsx [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$Resetpassword$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/pages/Resetpassword.tsx [client] (ecmascript)"); // Ajoute cet import
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 "use client";
@@ -1484,8 +1676,9 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 ;
 ;
 ;
+;
 // Ajout du composant ForgotPassword
-const ForgotPassword = ({ onBack })=>{
+const ForgotPassword = ({ onBack, onReset })=>{
     _s();
     const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1520,7 +1713,7 @@ const ForgotPassword = ({ onBack })=>{
                 children: "Mot de passe oublié - Vyft program"
             }, void 0, false, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 51,
+                lineNumber: 58,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1533,7 +1726,7 @@ const ForgotPassword = ({ onBack })=>{
                         height: 180
                     }, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 53,
+                        lineNumber: 60,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1549,7 +1742,7 @@ const ForgotPassword = ({ onBack })=>{
                                         children: "Adresse email :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 61,
+                                        lineNumber: 68,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1562,13 +1755,13 @@ const ForgotPassword = ({ onBack })=>{
                                         onChange: (e)=>setEmail(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 64,
+                                        lineNumber: 71,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 60,
+                                lineNumber: 67,
                                 columnNumber: 11
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1578,7 +1771,7 @@ const ForgotPassword = ({ onBack })=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 74,
+                                lineNumber: 81,
                                 columnNumber: 21
                             }, this),
                             success && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1588,7 +1781,7 @@ const ForgotPassword = ({ onBack })=>{
                                 children: success
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 75,
+                                lineNumber: 82,
                                 columnNumber: 23
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1597,7 +1790,7 @@ const ForgotPassword = ({ onBack })=>{
                                 children: "Réinitialiser le mot de passe"
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 76,
+                                lineNumber: 83,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1611,29 +1804,48 @@ const ForgotPassword = ({ onBack })=>{
                                     children: "Retour à la connexion"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/login.tsx",
-                                    lineNumber: 84,
+                                    lineNumber: 91,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 79,
+                                lineNumber: 86,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].signupText,
+                                onClick: onReset,
+                                style: {
+                                    cursor: "pointer"
+                                },
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].signupLink,
+                                    children: "Accéder à la page de réinitialisation avancée"
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/login.tsx",
+                                    lineNumber: 98,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/pages/login.tsx",
+                                lineNumber: 93,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 59,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 87,
+                        lineNumber: 103,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 52,
+                lineNumber: 59,
                 columnNumber: 7
             }, this)
         ]
@@ -1650,6 +1862,7 @@ const Login = ()=>{
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [showRegister, setShowRegister] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showForgot, setShowForgot] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false); // Ajout pour l'écran mot de passe oublié
+    const [showReset, setShowReset] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false); // Ajoute cet état
     const [isLoggedIn, setIsLoggedIn] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [token, setToken] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
@@ -1742,23 +1955,34 @@ const Login = ()=>{
             children: "Chargement..."
         }, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 200,
+            lineNumber: 222,
             columnNumber: 12
         }, this);
     }
     if (showRegister) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$register$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 204,
+            lineNumber: 226,
             columnNumber: 12
         }, this);
     }
     if (showForgot) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ForgotPassword, {
-            onBack: ()=>setShowForgot(false)
+            onBack: ()=>setShowForgot(false),
+            onReset: ()=>{
+                setShowForgot(false);
+                setShowReset(true);
+            }
         }, void 0, false, {
             fileName: "[project]/pages/login.tsx",
-            lineNumber: 208,
+            lineNumber: 231,
+            columnNumber: 7
+        }, this);
+    }
+    if (showReset) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$pages$2f$Resetpassword$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Resetpassword"], {}, void 0, false, {
+            fileName: "[project]/pages/login.tsx",
+            lineNumber: 242,
             columnNumber: 12
         }, this);
     }
@@ -1768,7 +1992,7 @@ const Login = ()=>{
                 children: "Connexion - Vyft program: Manage your own market."
             }, void 0, false, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 213,
+                lineNumber: 247,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1781,7 +2005,7 @@ const Login = ()=>{
                         height: 180
                     }, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 215,
+                        lineNumber: 249,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1797,7 +2021,7 @@ const Login = ()=>{
                                         children: "Adresse email :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 223,
+                                        lineNumber: 257,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1810,13 +2034,13 @@ const Login = ()=>{
                                         onChange: (e)=>setEmail(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 226,
+                                        lineNumber: 260,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 222,
+                                lineNumber: 256,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1828,7 +2052,7 @@ const Login = ()=>{
                                         children: "Mot de passe :"
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 237,
+                                        lineNumber: 271,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1841,13 +2065,13 @@ const Login = ()=>{
                                         onChange: (e)=>setPassword(e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/pages/login.tsx",
-                                        lineNumber: 240,
+                                        lineNumber: 274,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 236,
+                                lineNumber: 270,
                                 columnNumber: 11
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1857,7 +2081,7 @@ const Login = ()=>{
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 250,
+                                lineNumber: 284,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1866,7 +2090,7 @@ const Login = ()=>{
                                 children: "Se connecter"
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 251,
+                                lineNumber: 285,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1877,12 +2101,12 @@ const Login = ()=>{
                                     children: "Vous n'avez pas de compte ?"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/login.tsx",
-                                    lineNumber: 258,
+                                    lineNumber: 292,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 254,
+                                lineNumber: 288,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1896,35 +2120,35 @@ const Login = ()=>{
                                     children: "Mot de passe oublié ?"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/login.tsx",
-                                    lineNumber: 265,
+                                    lineNumber: 299,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/pages/login.tsx",
-                                lineNumber: 260,
+                                lineNumber: 294,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 221,
+                        lineNumber: 255,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/login.tsx",
-                        lineNumber: 268,
+                        lineNumber: 302,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/pages/login.tsx",
-                lineNumber: 214,
+                lineNumber: 248,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 };
-_s1(Login, "7qpdDYPPBB99cc0txcze1v1uMok=", false, function() {
+_s1(Login, "D2yo3exzqzIkjQBeJTMALoV+jG8=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$auth0$2f$nextjs$2d$auth0$2f$dist$2f$client$2f$hooks$2f$use$2d$user$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useUser"]
@@ -1969,4 +2193,4 @@ __turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages
 }}),
 }]);
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__c21e0d9f._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__8415ba10._.js.map

@@ -174,7 +174,7 @@ function SquareAIFloat() {
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([
         {
             from: "ai",
-            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre bussiness ? Posez-moi votre question ou réponse !"
+            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !"
         }
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
