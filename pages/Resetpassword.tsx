@@ -43,7 +43,7 @@ export const Resetpassword = () => {
 
   return (
     <>
-      <title>Réinitialisation du mot de passe - Vyft program</title>
+      <title>Réinitialisation du mot de passe - Vyft program: Manage your own market.</title>
       <div className={`${styles.container3} ${styles.center}`}>
         <Image
           src="/vyft_program.png"
