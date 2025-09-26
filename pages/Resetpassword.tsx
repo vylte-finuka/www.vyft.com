@@ -7,7 +7,7 @@ import axios from "axios";
 import Footer from "../app/components/Footer1";
 import { useRouter } from "next/navigation";
 
-export const Resetpassword = () => {
+export default function Resetpassword() {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -83,4 +83,4 @@ export const Resetpassword = () => {
       </div>
     </>
   );
-};
+}

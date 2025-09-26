@@ -8,9 +8,8 @@ import Image from "next/image";
 import axios from "axios";
 import Footer from "../app/components/Footer1";
 import Register from "./register";
-import Home from "../app/page";
 import { useRouter } from "next/navigation";
-import { Resetpassword } from "./Resetpassword"; // Ajoute cet import
+import Resetpassword  from "./Resetpassword"; // Ajoute cet import
 
 // Ajout du composant ForgotPassword
 const ForgotPassword = ({
