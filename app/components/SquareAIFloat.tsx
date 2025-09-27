@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../page.module.css";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import { Props } from "next/script";
 
 type Message = { from: "ai" | "user"; text: string };
 
@@ -269,7 +270,7 @@ async function generatePDF(docData: { title: string; content: string; props?: an
   }
 }
 
-const SquareAIFloat = () => {
+const SquareAIFloat: React.FC<Props> = () => {
   const [open, setOpen] = useState(false);
   const [docStudioOpen, setDocStudioOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
