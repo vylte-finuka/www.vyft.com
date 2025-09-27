@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../page.module.css";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
-import { Props } from "next/script";
 
 type Message = { from: "ai" | "user"; text: string };
 
@@ -270,7 +269,7 @@ async function generatePDF(docData: { title: string; content: string; props?: an
   }
 }
 
-const SquareAIFloat: React.FC<Props> = () => {
+export default function SquareAIFloat() {
   const [open, setOpen] = useState(false);
   const [docStudioOpen, setDocStudioOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -734,11 +733,7 @@ Données disponibles :
       `}</style>
     </div>
   );
-};
-
-SquareAIFloat.displayName = "SquareAIFloat"; // Ajout obligatoire
-
-export default SquareAIFloat;
+}
 
 const TypingText = React.memo(({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState("");
