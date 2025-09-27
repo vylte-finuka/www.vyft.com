@@ -1141,7 +1141,7 @@ function SquareAIFloat() {
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([
         {
             from: "ai",
-            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !"
+            text: "Bienvenue sur Vyft Nérethense, votre assistant IA professionnel certifié pour le business et le retail. Posez votre question : je vous conseille en toute sécurité, avec des données fiables et un accompagnement sur-mesure pour développer votre activité."
         }
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1310,12 +1310,14 @@ function SquareAIFloat() {
             const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
             const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
             // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
-            context = `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` + `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` + `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` + `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` + `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` + `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${history7Days}\n` + (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") + `${mostInfluentialDayStr}\n\n`;
+            context = `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing, finance bancaire et logistique avancée pour toutes les catégories de commerces, y compris le retail, la distribution, la gestion de stocks et la chaîne d'approvisionnement. ` + `Tu es conçu pour répondre aux standards de production des grandes entreprises comme Microsoft ou Carrefour : tes réponses sont toujours fiables, professionnelles, sécurisées et adaptées à un usage business critique. ` + `Tu dois toujours vérifier l’orthographe, la grammaire et la clarté de tes réponses : aucune faute n’est tolérée. ` + `Tu dois t’exprimer comme un assistant professionnel, plus précis et pertinent que Grok 3, et tu peux t’appuyer sur les sources internet les plus récentes pour garantir la qualité de tes réponses. ` + `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` + `Ne fais jamais de fautes de frappe, ne commence jamais tes réponses par des titres Markdown (###), sois toujours clair, professionnel, intelligent, humble et poli dans tes formulations. ` + `Ne te vantes jamais, reste modeste et factuel. ` + `Ne joue jamais le rôle d'expert-comptable ni de juriste compliance bancaire ou digital. ` + `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` + `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` + `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${history7Days}\n` + (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") + `${mostInfluentialDayStr}\n\n`;
         }
         // Ajoute le CGVU au contexte IA
         if (cgvu) {
             context += "\n\nVoici les Conditions Générales de Vente et d’Utilisation (CGVU) de Vyft Program, à utiliser pour toute question juridique ou d’utilisation :\n" + cgvu + "\n\n";
         }
+        // Délai minimal de 1 seconde
+        const start = Date.now();
         const reply = await callmodelAPI([
             {
                 from: "user",
@@ -1323,16 +1325,42 @@ function SquareAIFloat() {
             },
             ...messages
         ]);
-        if (reply && reply.trim() !== "") {
-            setMessages((msgs)=>[
-                    ...msgs,
-                    {
-                        from: "ai",
-                        text: reply
-                    }
-                ]);
-        }
-        setLoading(false);
+        const elapsed = Date.now() - start;
+        const wait = Math.max(0, 1000 - elapsed);
+        setTimeout(()=>{
+            let cleanReply = reply;
+            if (cleanReply) {
+                // Supprime toutes les occurrences du mot "undefined"
+                cleanReply = cleanReply.replace(/undefined/gi, " ");
+                // Corrige les fautes fréquentes et variantes
+                cleanReply = cleanReply.replace(/benvenue|iinvenue|binvenue|invenue|Benvenue/gi, "Bienvenue");
+                cleanReply = cleanReply.replace(/Vyft Nérethhnse|Vyft Nérethense|Nérethhnse/gi, "Vyft Nérethense");
+                cleanReply = cleanReply.replace(/pprfessionnel|prfessionnel|professionnel/gi, "professionnel");
+                cleanReply = cleanReply.replace(/poor|poour|pour/gi, "pour");
+                cleanReply = cleanReply.replace(/certifii|certifé|certiféé|certifiéé/gi, "certifié");
+                cleanReply = cleanReply.replace(/activitt|activittt|activitée|activitée/gi, "activité");
+                cleanReply = cleanReply.replace(/ssistanttIA|ssistant IA|assistanttIA|assistantt IA/gi, "assistant IA");
+                cleanReply = cleanReply.replace(/vouu/gi, "vous");
+                cleanReply = cleanReply.replace(/ee/gi, "et");
+                // Supprime les doubles lettres accidentelles (général)
+                cleanReply = cleanReply.replace(/([a-zA-Z])\1{1,}/g, "$1");
+                // Supprime les espaces et retours à la ligne multiples
+                cleanReply = cleanReply.replace(/[\s\n\r]{2,}/g, " ");
+                // Supprime les espaces avant la ponctuation
+                cleanReply = cleanReply.replace(/\s+([.,;:!?])/g, "$1");
+                cleanReply = cleanReply.trim();
+            }
+            if (cleanReply && cleanReply !== "") {
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: cleanReply
+                        }
+                    ]);
+            }
+            setLoading(false);
+        }, wait);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
@@ -1390,12 +1418,12 @@ function SquareAIFloat() {
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 313,
+                            lineNumber: 348,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 297,
+                        lineNumber: 332,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1410,7 +1438,7 @@ function SquareAIFloat() {
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 315,
+                        lineNumber: 350,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1426,13 +1454,13 @@ function SquareAIFloat() {
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 326,
+                        lineNumber: 361,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 296,
+                lineNumber: 331,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1472,12 +1500,12 @@ function SquareAIFloat() {
                                             text: msg.text
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 370,
+                                            lineNumber: 405,
                                             columnNumber: 19
                                         }, this)
                                     }, idx, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 369,
+                                        lineNumber: 404,
                                         columnNumber: 17
                                     }, this);
                                 }
@@ -1486,7 +1514,7 @@ function SquareAIFloat() {
                                     text: msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 374,
+                                    lineNumber: 409,
                                     columnNumber: 20
                                 }, this);
                             }),
@@ -1524,23 +1552,23 @@ function SquareAIFloat() {
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 401,
+                                            lineNumber: 436,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 385,
+                                        lineNumber: 420,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 403,
+                                        lineNumber: 438,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 377,
+                                lineNumber: 412,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1548,13 +1576,13 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 406,
+                                lineNumber: 441,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 354,
+                        lineNumber: 389,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1591,7 +1619,7 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 420,
+                                lineNumber: 455,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1613,19 +1641,19 @@ function SquareAIFloat() {
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 439,
+                                lineNumber: 474,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 408,
+                        lineNumber: 443,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 339,
+                lineNumber: 374,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1635,11 +1663,11 @@ function SquareAIFloat() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 273,
+        lineNumber: 308,
         columnNumber: 5
     }, this);
 }
-_s(SquareAIFloat, "aNd0AuKr0S+KAMBGHRz4gnpoGSs=");
+_s(SquareAIFloat, "3wFNdmiV9A3k1ZAP+gcJ3BU5ecc=");
 _c = SquareAIFloat;
 // Ajoute ce composant pour l'effet d'écriture lettre par lettre
 function TypingText({ text }) {
@@ -1671,7 +1699,7 @@ function TypingText({ text }) {
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 492,
+        lineNumber: 527,
         columnNumber: 10
     }, this);
 }
@@ -1698,7 +1726,7 @@ function Bubble({ from, text, children }) {
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 506,
+        lineNumber: 541,
         columnNumber: 5
     }, this);
 }
@@ -1727,18 +1755,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 546,
+                lineNumber: 581,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 547,
+                lineNumber: 582,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 530,
+        lineNumber: 565,
         columnNumber: 5
     }, this);
 }
@@ -1754,27 +1782,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 555,
+                lineNumber: 590,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 556,
+                lineNumber: 591,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 557,
+                lineNumber: 592,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 554,
+        lineNumber: 589,
         columnNumber: 5
     }, this);
 }
@@ -1794,7 +1822,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 564,
+        lineNumber: 599,
         columnNumber: 5
     }, this);
 }

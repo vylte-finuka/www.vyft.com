@@ -65,13 +65,6 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 const stripe = new __TURBOPACK__imported__module__$5b$externals$5d2f$stripe__$5b$external$5d$__$28$stripe$2c$__esm_import$29$__["default"]("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", {
     apiVersion: "2025-04-30.basil"
 });
-// Stocker les métriques précédentes pour éviter les envois redondants
-let previousMetrics = {
-    totalDistance: 0,
-    dailySteps: 0,
-    dailyRevenue: 0,
-    accumulatedValue: 0
-};
 /**
  * Envoie les métriques calculées à Stripe via un événement de facturation.
  *
@@ -199,15 +192,13 @@ async function Vyfthealth_proc(req, res) {
             // Vérifier si une nouvelle entrée est détectée
             if (lastEntry) {
                 const currentEntryId = lastEntry._id.toString();
-                const entryDate = new Date(lastEntry.date); // Convertir la date de l'entrée en objet Date
-                const now = new Date(); // Obtenir la date et l'heure actuelles;
                 // Vérifier si cette entrée est différente de la dernière traitée et non marquée comme traitée
                 if ((!lastProcessedId || currentEntryId !== lastProcessedId) && !lastEntry.processed) {
                     const lastSteps = lastEntry.steps || 0;
                     const lastDistance = parseFloat(lastEntry.distance) || 0;
                     // Calculer les valeurs incrémentales basées sur les dernières entrées
-                    const incrementalSteps = lastSteps * 0.3; // Ratio de 30 % sur les steps
-                    const incrementalDistance = lastDistance * 0.3; // Ratio de 30 % sur la distance
+                    const incrementalSteps = lastSteps * 0.3;
+                    const incrementalDistance = lastDistance * 0.3;
                     // Calculer la valeur incrémentale totale
                     const incrementalValue = Math.round(incrementalSteps + incrementalDistance);
                     // Envoyer les métriques calculées à Stripe
@@ -227,12 +218,12 @@ async function Vyfthealth_proc(req, res) {
                 } else {
                     // Si l'entrée est la même que la dernière traitée ou déjà marquée comme traitée
                     console.log("Aucune nouvelle entrée détectée ou entrée déjà traitée. Valeur reste à 0.");
-                    await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+                    await sendMetricsToStripe(stripeCustomerId, 0);
                 }
             } else {
                 // Si aucune entrée n'existe dans la base de données, envoyer 0 à Stripe
                 console.log("Aucune entrée trouvée dans la base de données. Valeur réinitialisée à 0.");
-                await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+                await sendMetricsToStripe(stripeCustomerId, 0);
             }
             // Calcul dynamique du prix du mètre selon la moyenne réelle
             const count = sensorData.length;

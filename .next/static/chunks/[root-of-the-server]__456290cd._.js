@@ -566,7 +566,7 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 ;
 ;
 ;
-// IA via OpenAI API (GPT-4o) via API interne sécurisée
+// Call Grok-3 via /api/ask-ai (OpenRouter with x-ai/grok-3)
 async function callmodelAPI(messages) {
     const res = await fetch("/api/ask-ai", {
         method: "POST",
@@ -578,9 +578,33 @@ async function callmodelAPI(messages) {
             messages
         })
     });
+    if (!res.ok) {
+        throw new Error(`Erreur API: ${res.statusText}`);
+    }
     const data = await res.json();
-    return data.reply || "";
+    if (data.error) {
+        throw new Error(data.error || "Erreur serveur IA");
+    }
+    let reply = data.reply || "";
+    let isDocument = false;
+    let docData;
+    try {
+        const parsed = JSON.parse(reply);
+        if (parsed.title && parsed.content) {
+            isDocument = true;
+            docData = parsed;
+            reply = `Document "${parsed.title}" prêt à être généré.`;
+        }
+    } catch (e) {
+    // Not JSON, treat as regular text response
+    }
+    return {
+        reply,
+        isDocument,
+        docData
+    };
 }
+// Fetch business data (expanded for product management)
 async function getComptaData(enseigne, stripeCustomerId) {
     const res = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(enseigne)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`, {
         headers: {
@@ -589,29 +613,71 @@ async function getComptaData(enseigne, stripeCustomerId) {
     });
     const data = await res.json();
     if (data.success) {
-        // Accès à toutes les métriques
-        return data.data; // contient dailySteps, dailyRevenue, monthlyInvestment, upcomingInvoiceAmount, etc.
+        return data.data;
     } else {
         throw new Error(data.message || "Erreur API");
+    }
+}
+// Génération PDF universelle selon le design IA
+async function generatePDF(docData) {
+    try {
+        // Ajoute le type et toutes les props pour le design IA
+        const userId = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].getItem("auth0UserId");
+        const payload = {
+            ...docData.props,
+            title: docData.title,
+            content: docData.content,
+            type: docData.type || "report",
+            userId,
+            design: docData.design || undefined
+        };
+        const res = await fetch("/api/reportgen", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-vyftprogram-api-key": ("TURBOPACK compile-time value", "vyftprogramwQvNtGG69p5olaIFWe4n6CBCnCVGu1m1jZvOaFi95laYqUx2xyBq68IEF2eKQXFS9ZoCTZFzYW6vmuGKe2bJLdmRpBr5Hqk456K5Z3noysX6ZlzYuclOqDWp4ZioCiYl5JyBDvA3p1pwCtbTadv9reB65haBGMeNCygcj36pYUPArQDOgP5tniS5h5604dQ4dB4ylxX2LpaDlYZMSdjpU7Zg9xekWm3pablpJ9FehT8vJfVBiuWyjlRcMSBAJHLLOJl31aVsTJjWix7UXRq7xAtDeWAnAM2ALnSWVEvlr5b2wfjawVYOJtXpNi8CO04qbskHmRw8cQc58L42X0WwqQQRgVLu3qT6lQwVuqZJgCNaZNyGc8HQa0thVu7FNOhO2sfeN7vujSK1wwpSkYBXpELSrCnkuo0dmHRz23DrgY1s5JWC7rthQBiRXCdbmHbIUoYafcgjUMLDJXvzLcMMSjWFs85kWDe0pmPn77YC3gjELkvDxVrRO") || ""
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+            throw new Error(`Échec de la génération du PDF: ${res.statusText}`);
+        }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${docData.title.replace(/\s/g, "_")}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error("Erreur génération PDF:", error);
+        throw error;
     }
 }
 function SquareAIFloat() {
     _s();
     const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [docStudioOpen, setDocStudioOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([
         {
             from: "ai",
-            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre bussiness ? Posez-moi votre question ou réponse !"
+            text: "Bienvenue sur Vyft Nérethense, assistant IA professionnel alimenté par Nérethense Z.S soit l'équivalent de Z.Setneshi. Je suis conçu pour les entreprises multinationales et d'autres entreprises comme les PME et TPE, avec création automatisée de documents professionnels, gestion de produits de grand marché. Posez votre question ou utilisez /compta, /manage-product, ou /generate-report."
         }
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    // Ajout pour stocker les infos utilisateur
+    const [docLoading, setDocLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [denomination, setDenomination] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [stripeCustomerId, setStripeCustomerId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [comptaData, setComptaData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [cgvu, setCgvu] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [docFormData, setDocFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])({
+        type: "report",
+        title: "",
+        params: {}
+    });
     const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    // Récupération des infos utilisateur depuis Auth0 (comme dans reports.tsx)
+    // Fetch user info from Auth0
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SquareAIFloat.useEffect": ()=>{
             const fetchUserInfo = {
@@ -619,7 +685,6 @@ function SquareAIFloat() {
                     try {
                         const userToken = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].getItem("userToken");
                         if (!userToken) return;
-                        // Récupérer les infos utilisateur depuis Auth0
                         const userInfoResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/userinfo`, {
                             headers: {
                                 Authorization: `Bearer ${userToken}`,
@@ -627,7 +692,6 @@ function SquareAIFloat() {
                             }
                         });
                         const userId = userInfoResponse.data.sub;
-                        // Récupérer les métadonnées utilisateur (enseigne et stripeCustomerId)
                         const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/api/v2/users/${userId}`, {
                             headers: {
                                 Authorization: `Bearer ${userToken}`,
@@ -645,20 +709,23 @@ function SquareAIFloat() {
             fetchUserInfo();
         }
     }["SquareAIFloat.useEffect"], []);
+    // Auto-scroll to bottom
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SquareAIFloat.useEffect": ()=>{
-            if (loading && messagesEndRef.current) {
+            if (messagesEndRef.current) {
                 messagesEndRef.current.scrollIntoView({
-                    behavior: "smooth"
+                    behavior: "smooth",
+                    block: "end"
                 });
             }
         }
     }["SquareAIFloat.useEffect"], [
+        messages,
         loading
     ]);
+    // Fetch business data
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SquareAIFloat.useEffect": ()=>{
-            // Dès que l'utilisateur est identifié, on charge les données de marcheurs
             if (denomination && stripeCustomerId) {
                 getComptaData(denomination, stripeCustomerId).then(setComptaData).catch({
                     "SquareAIFloat.useEffect": ()=>setComptaData(null)
@@ -669,6 +736,45 @@ function SquareAIFloat() {
         denomination,
         stripeCustomerId
     ]);
+    // Preload CGVU
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "SquareAIFloat.useEffect": ()=>{
+            async function fetchCGVU() {
+                try {
+                    const res = await fetch("/api/cgvu");
+                    const data = await res.json();
+                    setCgvu(data.cgvu || "");
+                } catch (e) {
+                    console.error("Failed to load CGVU:", e);
+                }
+            }
+            if (!cgvu) fetchCGVU();
+        }
+    }["SquareAIFloat.useEffect"], [
+        cgvu
+    ]);
+    function cleanObject(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(cleanObject).filter((v)=>v !== undefined && v !== null && v !== "undefined");
+        } else if (typeof obj === "object" && obj !== null) {
+            const newObj = {};
+            for(const k in obj){
+                // Supprime les clés d'image non supportées
+                if (k === "image" || k === "watermarkImg" || k === "logo" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i) || k === "qrCode" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i)) {
+                    continue;
+                }
+                const v = obj[k];
+                if (v !== undefined && v !== null && v !== "undefined") {
+                    newObj[k] = cleanObject(v);
+                }
+            }
+            return newObj;
+        }
+        if (typeof obj === "string") {
+            return obj.replace(/undefined/gi, "").trim();
+        }
+        return obj;
+    }
     async function sendMessage() {
         if (!input.trim()) return;
         const userMessage = {
@@ -681,74 +787,271 @@ function SquareAIFloat() {
             ]);
         setLoading(true);
         setInput("");
-        // Commande spéciale /compta
-        if (input.trim().toLowerCase() === "/compta") {
-            if (!comptaData) {
+        // Vérifie si l'input utilisateur est déjà un JSON valide
+        try {
+            const parsed = JSON.parse(input);
+            if (parsed.title && parsed.content) {
+                const cleaned = cleanObject(parsed); // Nettoie et retire les images non valides
+                await generatePDF(cleaned);
                 setMessages((msgs)=>[
                         ...msgs,
                         {
                             from: "ai",
-                            text: "Impossible de récupérer vos informations de compte."
+                            text: `Document "${cleaned.title}" généré avec succès.`
                         }
                     ]);
                 setLoading(false);
                 return;
             }
-            const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
-            const influenceWeek = comptaData.influence?.week ?? 0;
-            const influenceMonth = comptaData.influence?.month ?? 0;
+        } catch (e) {
+        // Ce n'est pas un JSON, on continue le flow normal
+        }
+        try {
+            // Handle /compta command
+            if (input.trim().toLowerCase() === "/compta") {
+                if (!comptaData) {
+                    throw new Error("Impossible de récupérer vos informations de compte.");
+                }
+                const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
+                const influenceWeek = comptaData.influence?.week ?? 0;
+                const influenceMonth = comptaData.influence?.month ?? 0;
+                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Comptabilité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Marcheur le plus fidèle : ${topUser}\n` + `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` + `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n` + `- Gestion produits : ${productSummary}\n`
+                        }
+                    ]);
+                setLoading(false);
+                return;
+            }
+            // Handle /manage-product command
+            if (input.trim().toLowerCase().startsWith("/manage-product")) {
+                const { reply } = await callmodelAPI([
+                    {
+                        from: "user",
+                        text: input
+                    }
+                ]);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: reply
+                        }
+                    ]);
+                setLoading(false);
+                return;
+            }
+            // Handle /generate-report command
+            if (input.trim().toLowerCase().startsWith("/generate-report")) {
+                const { reply, isDocument, docData } = await callmodelAPI([
+                    {
+                        from: "user",
+                        text: input
+                    }
+                ]);
+                if (isDocument && docData) {
+                    await generatePDF(docData);
+                    setMessages((msgs)=>[
+                            ...msgs,
+                            {
+                                from: "ai",
+                                text: `Rapport "${docData.title}" généré avec succès.`
+                            }
+                        ]);
+                } else {
+                    setMessages((msgs)=>[
+                            ...msgs,
+                            {
+                                from: "ai",
+                                text: reply || "Erreur : Aucun rapport généré. Veuillez préciser le contenu (ex: /generate-report invoice client:Acme title:Invoice123)."
+                            }
+                        ]);
+                }
+                setLoading(false);
+                return;
+            }
+            function formatDateFr(dateStr) {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString("fr-FR", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                });
+            }
+            // Build context for AI
+            let context = "";
+            if (comptaData) {
+                const influence = comptaData.influence || {};
+                const history7Days = (influence.history7Days || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
+                const historyMonth = (influence.historyMonth || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
+                const topUsers = (influence.topUsers || []).map((u, i)=>`${i + 1}. ${u.name} (${u.count} participations)`).join("\n");
+                const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
+                const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
+                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
+                context = `Tu es Vyft Nérethense, un assistant IA expert pour entreprises multinationales, alimenté par Grok-3 d'xAI via OpenRouter. Tu offres :
+- Création automatisée de documents professionnels (simples à complexes, ex: rapports, factures, propositions) via /api/reportgen (PDF via @react-pdf/renderer).
+- Gestion de produits scalable (CRUD via commandes).
+- Réponses sans fautes de frappe, conformes aux standards de Microsoft/Carrefour.
+Pour documents, output JSON : {"title": "Titre", "content": "Contenu", "props": {...}}. Exemple pour facture : {"title": "Facture #123", "content": "Détails facture...", "props": {"client": "Acme", "amount": 1000}}.
+Reste modeste, factuel, poli.
+Données disponibles :
+- Pas aujourd'hui : ${comptaData.dailySteps}
+- Distance aujourd'hui : ${comptaData.dailyDistance} km
+- Profit aujourd'hui : ${comptaData.dailyRevenue} €
+- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
+- Top marcheurs : ${topUsers}
+- Influence aujourd'hui : ${influence.day ?? 0}
+- Influence semaine : ${influence.week ?? 0}
+- Influence mois : ${influence.month ?? 0}
+- Historique 7 jours : ${history7Days}
+${historyMonth ? `- Historique mensuel : ${historyMonth}\n` : ""}
+${mostInfluentialDayStr}
+- Produits : ${productSummary}
+`;
+            }
+            if (cgvu) {
+                context += `\n\nCGVU : ${cgvu}\n\n`;
+            }
+            context += `
+Tu es un assistant IA expert en génération de documents administratifs pour entreprises (business plan, bilan, rapport annuel, contrat, PV d’AG, statuts, factures, devis, etc.), même les plus complexes et sur plusieurs pages.
+
+Pour chaque document, génère toujours un JSON structuré compatible avec le composant DynamicReport, incluant :
+- "title" : titre du document
+- "type" : type de document (ex : business_plan, bilan, contrat, etc.)
+- "design" : { "pages": [ ... ] } où chaque page contient "font", "sections" (tableaux, textes, signatures, images valides), "colors", "watermark", etc.
+
+Exemple de document complexe multi-pages :
+{
+  "title": "Business Plan 2025",
+  "type": "business_plan",
+  "design": {
+    "pages": [
+      {
+        "font": "Lato",
+        "sections": [
+          { "title": "Résumé exécutif", "content": "..." }
+        ]
+      },
+      {
+        "font": "Roboto",
+        "sections": [
+          { "title": "Analyse de marché", "table": { ... } }
+        ]
+      }
+    ],
+    "colors": { "background": "#f5f5f5", ... }
+  }
+}
+
+Génère toujours le JSON complet, même pour les documents longs ou complexes (plusieurs pages, tableaux, signatures, filigranes, etc.).
+Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
+`;
+            const { reply, isDocument, docData } = await callmodelAPI([
+                {
+                    from: "user",
+                    text: context + input
+                },
+                ...messages
+            ]);
+            let cleanReply = reply;
+            if (cleanReply) {
+                cleanReply = cleanReply.replace(/undefined/gi, " ");
+                cleanReply = cleanReply.replace(/benvenue|iinvenue|binvenue|invenue|Benvenue/gi, "Bienvenue");
+                cleanReply = cleanReply.replace(/Vyft Nérethhnse|Vyft Nérethense|Nérethhnse/gi, "Vyft Nérethense");
+                cleanReply = cleanReply.replace(/pprfessionnel|prfessionnel|professionnel/gi, "professionnel");
+                cleanReply = cleanReply.replace(/poor|poour|pour/gi, "pour");
+                cleanReply = cleanReply.replace(/certifii|certifé|certiféé|certifiéé/gi, "certifié");
+                cleanReply = cleanReply.replace(/activitt|activittt|activitée|activitée/gi, "activité");
+                cleanReply = cleanReply.replace(/ssistanttIA|ssistant IA|assistanttIA|assistantt IA/gi, "assistant IA");
+                cleanReply = cleanReply.replace(/vouu/gi, "vous");
+                cleanReply = cleanReply.replace(/ee/gi, "et");
+                cleanReply = cleanReply.replace(/([a-zA-Z])\1{1,}/g, "$1");
+                cleanReply = cleanReply.replace(/[\s\n\r]{2,}/g, " ");
+                cleanReply = cleanReply.replace(/\s+([.,;:!?])/g, "$1");
+                cleanReply = cleanReply.trim();
+            }
+            if (cleanReply && cleanReply !== "") {
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: cleanReply
+                        }
+                    ]);
+            }
+            if (isDocument && docData) {
+                await generatePDF(docData);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Document "${docData.title}" généré avec succès.`
+                        }
+                    ]);
+            }
+        } catch (error) {
             setMessages((msgs)=>[
                     ...msgs,
                     {
                         from: "ai",
-                        text: `Comptabilité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Marcheur le plus fidèle : ${topUser}\n` + `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` + `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n`
+                        text: "Une erreur est survenue. Veuillez réessayer."
                     }
                 ]);
+        } finally{
             setLoading(false);
-            return;
         }
-        function formatDateFr(dateStr) {
-            const d = new Date(dateStr);
-            return d.toLocaleDateString("fr-FR", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            });
-        }
-        // Préparation du contexte enrichi pour l'IA
-        let context = "";
-        if (comptaData) {
-            const influence = comptaData.influence || {};
-            // Historique par jour (exemple)
-            const history7Days = (influence.history7Days || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
-            // Historique par mois (si dispo)
-            const historyMonth = (influence.historyMonth || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
-            // Top marcheurs/mois
-            const topUsers = (influence.topUsers || []).map((u, i)=>`${i + 1}. ${u.name} (${u.count} participations)`).join("\n");
-            // Jours les plus influents
-            const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
-            const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
-            // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
-            context = `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` + `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` + `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` + `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` + `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` + `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${history7Days}\n` + (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") + `${mostInfluentialDayStr}\n\n`;
-        }
-        const reply = await callmodelAPI([
-            {
-                from: "user",
-                text: context + input
-            },
-            ...messages
-        ]);
-        if (reply && reply.trim() !== "") {
+    }
+    async function handleDocSubmit(e) {
+        e.preventDefault();
+        if (!docFormData.title || !docFormData.type) return;
+        setDocLoading(true);
+        try {
+            const docPrompt = `Générer un document de type ${docFormData.type} avec le titre "${docFormData.title}" et les paramètres : ${JSON.stringify(docFormData.params)}. Retourner JSON : {"title": "Titre", "content": "Contenu", "props": {...}}.`;
+            const { reply, isDocument, docData } = await callmodelAPI([
+                {
+                    from: "user",
+                    text: context + docPrompt
+                }
+            ]);
+            if (isDocument && docData) {
+                await generatePDF(docData);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Document "${docData.title}" généré avec succès.`
+                        }
+                    ]);
+            } else {
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: reply || "Erreur : Impossible de générer le document. Veuillez vérifier les paramètres."
+                        }
+                    ]);
+            }
+        } catch (error) {
             setMessages((msgs)=>[
                     ...msgs,
                     {
                         from: "ai",
-                        text: reply
+                        text: "Erreur lors de la génération du document. Veuillez réessayer."
                     }
                 ]);
+        } finally{
+            setDocLoading(false);
         }
-        setLoading(false);
     }
+    const context = comptaData ? `Données disponibles :
+- Pas aujourd'hui : ${comptaData.dailySteps}
+- Distance aujourd'hui : ${comptaData.dailyDistance} km
+- Profit aujourd'hui : ${comptaData.dailyRevenue} €
+- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
+- Produits : ${comptaData.products ? `Produits gérés : ${comptaData.products.length}` : "Aucun produit"}` : "";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             position: "fixed",
@@ -765,7 +1068,7 @@ function SquareAIFloat() {
             display: "flex",
             flexDirection: "column",
             transition: "height 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s",
-            height: open ? "500px" : "90px",
+            height: open ? docStudioOpen ? "700px" : "500px" : "90px",
             overflow: "hidden",
             cursor: "pointer"
         },
@@ -805,12 +1108,12 @@ function SquareAIFloat() {
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 265,
+                            lineNumber: 542,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 249,
+                        lineNumber: 526,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -825,7 +1128,7 @@ function SquareAIFloat() {
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 267,
+                        lineNumber: 544,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -841,13 +1144,13 @@ function SquareAIFloat() {
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 278,
+                        lineNumber: 555,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 248,
+                lineNumber: 525,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -877,34 +1180,21 @@ function SquareAIFloat() {
                         },
                         className: "jsx-7d37b0088d58e5a9",
                         children: [
-                            messages.map((msg, idx)=>{
-                                // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
-                                if (msg.from === "ai" && idx === messages.length - 1 && !loading) {
-                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Bubble, {
-                                        from: msg.from,
-                                        text: "",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingText, {
-                                            text: msg.text
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 322,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, idx, false, {
-                                        fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 321,
-                                        columnNumber: 17
-                                    }, this);
-                                }
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Bubble, {
+                            messages.map((msg, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Bubble, {
                                     from: msg.from,
-                                    text: msg.text
+                                    text: msg.text,
+                                    children: msg.from === "ai" && idx === messages.length - 1 && !loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingText, {
+                                        text: msg.text
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/SquareAIFloat.tsx",
+                                        lineNumber: 596,
+                                        columnNumber: 17
+                                    }, this) : msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 326,
-                                    columnNumber: 20
-                                }, this);
-                            }),
+                                    lineNumber: 594,
+                                    columnNumber: 13
+                                }, this)),
                             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 style: {
                                     display: "flex",
@@ -939,23 +1229,23 @@ function SquareAIFloat() {
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 353,
+                                            lineNumber: 620,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 337,
+                                        lineNumber: 604,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 355,
+                                        lineNumber: 622,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 329,
+                                lineNumber: 603,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -963,13 +1253,13 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 358,
+                                lineNumber: 625,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 306,
+                        lineNumber: 582,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -989,7 +1279,8 @@ function SquareAIFloat() {
                                 type: "text",
                                 value: input,
                                 onChange: (e)=>setInput(e.target.value),
-                                placeholder: "Votre question...",
+                                placeholder: "Votre demande...",
+                                "aria-label": "Saisir votre demande pour Vyft Nérethense",
                                 style: {
                                     flex: 1,
                                     borderRadius: 12,
@@ -1006,11 +1297,12 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 372,
+                                lineNumber: 634,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 type: "submit",
+                                "aria-label": "Envoyer la question",
                                 style: {
                                     borderRadius: 12,
                                     border: "none",
@@ -1028,19 +1320,19 @@ function SquareAIFloat() {
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 391,
+                                lineNumber: 654,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 360,
+                        lineNumber: 627,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 291,
+                lineNumber: 568,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1050,14 +1342,13 @@ function SquareAIFloat() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 225,
+        lineNumber: 502,
         columnNumber: 5
     }, this);
 }
-_s(SquareAIFloat, "RHdQTNTX3yFraJv24VVd0OWmfGs=");
+_s(SquareAIFloat, "/hSWkZ++gj6+h+oUPB/ZT3UcaLY=");
 _c = SquareAIFloat;
-// Ajoute ce composant pour l'effet d'écriture lettre par lettre
-function TypingText({ text }) {
+const TypingText = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].memo(_s1(({ text })=>{
     _s1();
     const [displayed, setDisplayed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const index = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRef"])(0);
@@ -1074,7 +1365,7 @@ function TypingText({ text }) {
                     index.current++;
                     if (index.current >= text.length) clearInterval(interval);
                 }
-            }["TypingText.useEffect.interval"], 18); // Vitesse d'écriture (ms)
+            }["TypingText.useEffect.interval"], 18);
             return ({
                 "TypingText.useEffect": ()=>clearInterval(interval)
             })["TypingText.useEffect"];
@@ -1086,19 +1377,17 @@ function TypingText({ text }) {
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 444,
+        lineNumber: 707,
         columnNumber: 10
     }, this);
-}
-_s1(TypingText, "vX7roFhzDmTMSRT2IyLXRVK/bXA=");
+}, "vX7roFhzDmTMSRT2IyLXRVK/bXA="));
 _c1 = TypingText;
-// Modifie Bubble pour accepter des enfants (children)
 function Bubble({ from, text, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             alignSelf: from === "user" ? "flex-end" : "flex-start",
-            background: from === "ai" ? "rgba(255,255,255,0.10)" : "#e0dbdd",
-            color: from === "ai" ? "#f5f6fa" : "#222",
+            background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
+            color: from === "ai" ? "#222" : "#f5f6fa",
             borderRadius: 12,
             padding: "10px 16px",
             maxWidth: "80%",
@@ -1107,12 +1396,12 @@ function Bubble({ from, text, children }) {
             boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
             transition: "transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)",
             transform: "translateY(0)",
-            border: from === "ai" ? "1px solid #353a40" : "none"
+            border: from === "ai" ? "none" : "1px solid #353a40"
         },
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 458,
+        lineNumber: 712,
         columnNumber: 5
     }, this);
 }
@@ -1141,18 +1430,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 497,
+                lineNumber: 751,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 498,
+                lineNumber: 752,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 481,
+        lineNumber: 735,
         columnNumber: 5
     }, this);
 }
@@ -1168,27 +1457,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 506,
+                lineNumber: 760,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 507,
+                lineNumber: 761,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 508,
+                lineNumber: 762,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 505,
+        lineNumber: 759,
         columnNumber: 5
     }, this);
 }
@@ -1208,7 +1497,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 515,
+        lineNumber: 769,
         columnNumber: 5
     }, this);
 }
@@ -1902,6 +2191,15 @@ function Funds_management() {
         "$": 0,
         "£": 0
     });
+    const [hasExplored, setHasExplored] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])({
+        "Funds_management.useState": ()=>{
+            if ("TURBOPACK compile-time truthy", 1) {
+                return localStorage.getItem("vyft_hasExplored") === "1";
+            }
+            "TURBOPACK unreachable";
+        }
+    }["Funds_management.useState"]);
+    const [stripeCustomerId, setStripeCustomerId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(undefined);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Funds_management.useEffect": ()=>{
             setStoreName(storeNamefact);
@@ -1956,10 +2254,29 @@ function Funds_management() {
                             }
                         });
                         const denomination = response.data?.user_metadata?.denomination?.trim();
-                        const stripeCustomerId = response.data?.user_metadata?.subid?.trim();
+                        let stripeCustomerIdValue = response.data?.user_metadata?.subid?.trim();
+                        // Si subid absent, essayer de le retrouver/créer côté Stripe
+                        if (!stripeCustomerIdValue && userId) {
+                            try {
+                                const stripeRes = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].post("/api/create-or-retrieve-customer", {
+                                    auth0UserId: userId,
+                                    userToken,
+                                    action: "create"
+                                }, {
+                                    headers: {
+                                        "x-vyftprogram-api-key": API_KEY || "",
+                                        "Content-Type": "application/json"
+                                    }
+                                });
+                                stripeCustomerIdValue = stripeRes.data.customerId;
+                            } catch (err) {
+                                console.error("Impossible de retrouver/créer le client Stripe :", err);
+                            }
+                        }
                         setStoreName(denomination);
-                        if (!denomination || !stripeCustomerId) return;
-                        const apiResponse = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`, {
+                        setStripeCustomerId(stripeCustomerIdValue);
+                        if (!denomination || !stripeCustomerIdValue) return;
+                        const apiResponse = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(stripeCustomerIdValue)}`, {
                             method: "GET",
                             headers: {
                                 "x-vyftprogram-api-key": API_KEY || ""
@@ -2008,17 +2325,17 @@ function Funds_management() {
                     children: "Gestion principale - Vyft program: Manage your own market."
                 }, void 0, false, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 166,
+                    lineNumber: 200,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/administration/main-management.tsx",
-                lineNumber: 165,
+                lineNumber: 199,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/pages/administration/main-management.tsx",
-                lineNumber: 168,
+                lineNumber: 202,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -2047,7 +2364,7 @@ function Funds_management() {
                                     children: "Gestion principale"
                                 }, void 0, false, {
                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                    lineNumber: 182,
+                                    lineNumber: 216,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2073,7 +2390,7 @@ function Funds_management() {
                                                     children: "Devise : "
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 196,
+                                                    lineNumber: 230,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2087,7 +2404,7 @@ function Funds_management() {
                                                             children: "EUR (€)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 203,
+                                                            lineNumber: 237,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2095,7 +2412,7 @@ function Funds_management() {
                                                             children: "USD ($)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 204,
+                                                            lineNumber: 238,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2103,7 +2420,7 @@ function Funds_management() {
                                                             children: "GBP (£)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 205,
+                                                            lineNumber: 239,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2111,19 +2428,19 @@ function Funds_management() {
                                                             children: "MGA (Ar)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 206,
+                                                            lineNumber: 240,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 197,
+                                                    lineNumber: 231,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 195,
+                                            lineNumber: 229,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2131,7 +2448,7 @@ function Funds_management() {
                                             children: "Informations de consommations additionnelles :"
                                         }, void 0, false, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 243,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2145,7 +2462,7 @@ function Funds_management() {
                                                             children: "Recette"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 214,
+                                                            lineNumber: 248,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2153,7 +2470,7 @@ function Funds_management() {
                                                             children: "Investissement dans le mois :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 215,
+                                                            lineNumber: 249,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2161,7 +2478,7 @@ function Funds_management() {
                                                             children: metrics && metrics.monthlyInvestment !== undefined && metrics.monthlyInvestment !== null ? `${convert(metrics.monthlyInvestment)} ${currency}` : "0.00 " + currency
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 216,
+                                                            lineNumber: 250,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2169,7 +2486,7 @@ function Funds_management() {
                                                             children: "Moyenne estimée de bénéfice en une journée :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 221,
+                                                            lineNumber: 255,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2177,7 +2494,7 @@ function Funds_management() {
                                                             children: metrics && metrics.dailyRevenue !== undefined && metrics.dailyRevenue !== null ? `${convert(metrics.dailyRevenue)} ${currency}` : "0.00 " + currency
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 222,
+                                                            lineNumber: 256,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2185,7 +2502,7 @@ function Funds_management() {
                                                             children: "Pourcentage de croissance dans la semaine :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 227,
+                                                            lineNumber: 261,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2193,13 +2510,13 @@ function Funds_management() {
                                                             children: metrics && metrics.growth !== undefined && metrics.growth !== null ? String(metrics.growth).replace(".", ",") : "0 %"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 228,
+                                                            lineNumber: 262,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 213,
+                                                    lineNumber: 247,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2210,7 +2527,7 @@ function Funds_management() {
                                                             children: "Usage de Vyft™"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 235,
+                                                            lineNumber: 269,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2218,7 +2535,7 @@ function Funds_management() {
                                                             children: "Total des pas de tout clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 236,
+                                                            lineNumber: 270,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2226,7 +2543,7 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.dailySteps} pas` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 237,
+                                                            lineNumber: 271,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2234,7 +2551,7 @@ function Funds_management() {
                                                             children: "Total parcourus de tout ces clients en 24 heures :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 240,
+                                                            lineNumber: 274,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2242,7 +2559,7 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.dailyDistance} mètres` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 241,
+                                                            lineNumber: 275,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2250,7 +2567,7 @@ function Funds_management() {
                                                             children: "Total de nombre de pas depuis un an de tout clients :"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 244,
+                                                            lineNumber: 278,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2258,31 +2575,31 @@ function Funds_management() {
                                                             children: metrics ? `${metrics.yearlySteps} pas` : "N/A"
                                                         }, void 0, false, {
                                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                                            lineNumber: 245,
+                                                            lineNumber: 279,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 234,
+                                                    lineNumber: 268,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/pages/administration/main-management.tsx",
-                                            lineNumber: 212,
+                                            lineNumber: 246,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/pages/administration/main-management.tsx",
-                                    lineNumber: 183,
+                                    lineNumber: 217,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/administration/main-management.tsx",
-                            lineNumber: 181,
+                            lineNumber: 215,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2300,165 +2617,312 @@ function Funds_management() {
                                     width: "100%",
                                     maxWidth: 420,
                                     boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
-                                    marginBottom: 24
+                                    marginBottom: 24,
+                                    position: "relative",
+                                    minHeight: 420,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center"
                                 },
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
-                                        children: "Vyft tag™ :"
-                                    }, void 0, false, {
-                                        fileName: "[project]/pages/administration/main-management.tsx",
-                                        lineNumber: 266,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    !stripeCustomerId && !hasExplored && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        style: {
+                                            background: "#23272e",
+                                            borderRadius: 24,
+                                            padding: 36,
+                                            minWidth: 340,
+                                            width: "90%",
+                                            maxWidth: 420,
+                                            boxShadow: "0 2px 32px rgba(0,0,0,0.18)",
+                                            color: "#fff",
+                                            textAlign: "center",
+                                            margin: "0 auto"
+                                        },
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
-                                                children: "QR Code de départ :"
-                                            }, void 0, false, {
-                                                fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 270,
-                                                columnNumber: 17
-                                            }, this),
-                                            storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                ref: qr1,
-                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].qrCodeContainer,
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Canvas, {
-                                                    text: JSON.stringify({
-                                                        message: "Vyft Tag on",
-                                                        enseigne: storeName
-                                                    }),
-                                                    logo: {
-                                                        src: "https://avatars.githubusercontent.com/u/123649969?v=4",
-                                                        options: {
-                                                            width: 88
-                                                        }
-                                                    },
-                                                    options: {
-                                                        errorCorrectionLevel: "M",
-                                                        margin: 3,
-                                                        scale: 4,
-                                                        width: 200,
-                                                        color: {
-                                                            dark: "#e0dbdd",
-                                                            light: "#a5a3a3"
-                                                        }
-                                                    }
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 275,
-                                                    columnNumber: 21
-                                                }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 274,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: QrT1,
-                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].ActionEbuttonoveron,
-                                                children: "Imprimer ce tag"
-                                            }, void 0, false, {
-                                                fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 294,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
                                                 style: {
-                                                    marginTop: "2rem"
+                                                    color: "#1a7f6b",
+                                                    fontWeight: 700,
+                                                    fontSize: 26,
+                                                    marginBottom: 14
                                                 },
-                                                children: "QR Code d'arrivée :"
+                                                children: "Abonnement requis"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 295,
-                                                columnNumber: 17
+                                                lineNumber: 322,
+                                                columnNumber: 19
                                             }, this),
-                                            storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                ref: qr2,
-                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].qrCodeContainer,
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Canvas, {
-                                                    text: JSON.stringify({
-                                                        message: "Vyft Tag off",
-                                                        enseigne: storeName
-                                                    }),
-                                                    logo: {
-                                                        src: "https://avatars.githubusercontent.com/u/123649969?v=4",
-                                                        options: {
-                                                            width: 88
-                                                        }
-                                                    },
-                                                    options: {
-                                                        errorCorrectionLevel: "M",
-                                                        margin: 3,
-                                                        scale: 4,
-                                                        width: 200,
-                                                        color: {
-                                                            dark: "#e0dbdd",
-                                                            light: "#a5a3a3"
-                                                        }
-                                                    }
-                                                }, void 0, false, {
-                                                    fileName: "[project]/pages/administration/main-management.tsx",
-                                                    lineNumber: 300,
-                                                    columnNumber: 21
-                                                }, this)
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                style: {
+                                                    fontSize: 17,
+                                                    color: "#e0dbdd",
+                                                    marginBottom: 28
+                                                },
+                                                children: "Vous devez être abonné pour accéder aux QR codes Vyft."
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 299,
+                                                lineNumber: 325,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: QrT2,
-                                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].ActionEbuttonoveron,
-                                                children: "Imprimer ce tag"
+                                                style: {
+                                                    background: "#1a7f6b",
+                                                    color: "#fff",
+                                                    border: "none",
+                                                    borderRadius: 16,
+                                                    padding: "14px 38px",
+                                                    fontWeight: 700,
+                                                    fontSize: 17,
+                                                    cursor: "pointer",
+                                                    fontFamily: "BR Sonoma, sans-serif",
+                                                    boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                                                    transition: "background 0.2s",
+                                                    letterSpacing: 0.2
+                                                },
+                                                onClick: ()=>{
+                                                    setHasExplored(true);
+                                                    localStorage.setItem("vyft_hasExplored", "1");
+                                                },
+                                                children: "Explorer d'abord"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/administration/main-management.tsx",
-                                                lineNumber: 319,
-                                                columnNumber: 17
+                                                lineNumber: 328,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/pages/administration/main-management.tsx",
-                                        lineNumber: 269,
-                                        columnNumber: 15
-                                    }, this)
+                                        lineNumber: 308,
+                                        columnNumber: 17
+                                    }, this),
+                                    !stripeCustomerId && hasExplored ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        style: {
+                                            background: "#23272e",
+                                            borderRadius: 24,
+                                            padding: 36,
+                                            minWidth: 340,
+                                            width: "90%",
+                                            maxWidth: 420,
+                                            boxShadow: "0 2px 32px rgba(0,0,0,0.18)",
+                                            color: "#fff",
+                                            textAlign: "center",
+                                            margin: "0 auto"
+                                        },
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                style: {
+                                                    color: "#1a7f6b",
+                                                    fontWeight: 700,
+                                                    fontSize: 26,
+                                                    marginBottom: 14
+                                                },
+                                                children: "Abonnement requis"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/main-management.tsx",
+                                                lineNumber: 368,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                style: {
+                                                    fontSize: 17,
+                                                    color: "#e0dbdd",
+                                                    marginBottom: 28
+                                                },
+                                                children: "Vous devez être abonné pour accéder aux QR codes Vyft."
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/main-management.tsx",
+                                                lineNumber: 371,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                style: {
+                                                    background: "#1a7f6b",
+                                                    color: "#fff",
+                                                    border: "none",
+                                                    borderRadius: 16,
+                                                    padding: "14px 38px",
+                                                    fontWeight: 700,
+                                                    fontSize: 17,
+                                                    cursor: "pointer",
+                                                    fontFamily: "BR Sonoma, sans-serif",
+                                                    boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                                                    transition: "background 0.2s",
+                                                    letterSpacing: 0.2
+                                                },
+                                                onClick: ()=>window.location.href = "/",
+                                                children: "S'abonner"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/main-management.tsx",
+                                                lineNumber: 374,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                        lineNumber: 354,
+                                        columnNumber: 17
+                                    }, this) : null,
+                                    stripeCustomerId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
+                                                children: "Vyft tag™ :"
+                                            }, void 0, false, {
+                                                fileName: "[project]/pages/administration/main-management.tsx",
+                                                lineNumber: 398,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                        className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
+                                                        children: "QR Code de départ :"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 402,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        ref: qr1,
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].qrCodeContainer,
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Canvas, {
+                                                            text: JSON.stringify({
+                                                                message: "Vyft Tag on",
+                                                                enseigne: storeName
+                                                            }),
+                                                            logo: {
+                                                                src: "https://avatars.githubusercontent.com/u/123649969?v=4",
+                                                                options: {
+                                                                    width: 88
+                                                                }
+                                                            },
+                                                            options: {
+                                                                errorCorrectionLevel: "M",
+                                                                margin: 3,
+                                                                scale: 4,
+                                                                width: 200,
+                                                                color: {
+                                                                    dark: "#e0dbdd",
+                                                                    light: "#a5a3a3"
+                                                                }
+                                                            }
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/main-management.tsx",
+                                                            lineNumber: 407,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 406,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: QrT1,
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].ActionEbuttonoveron,
+                                                        children: "Imprimer ce tag"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 426,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                        className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitle} ${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subtitleAligned}`,
+                                                        style: {
+                                                            marginTop: "2rem"
+                                                        },
+                                                        children: "QR Code d'arrivée :"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 427,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    storeName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        ref: qr2,
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].qrCodeContainer,
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Canvas, {
+                                                            text: JSON.stringify({
+                                                                message: "Vyft Tag off",
+                                                                enseigne: storeName
+                                                            }),
+                                                            logo: {
+                                                                src: "https://avatars.githubusercontent.com/u/123649969?v=4",
+                                                                options: {
+                                                                    width: 88
+                                                                }
+                                                            },
+                                                            options: {
+                                                                errorCorrectionLevel: "M",
+                                                                margin: 3,
+                                                                scale: 4,
+                                                                width: 200,
+                                                                color: {
+                                                                    dark: "#e0dbdd",
+                                                                    light: "#a5a3a3"
+                                                                }
+                                                            }
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/pages/administration/main-management.tsx",
+                                                            lineNumber: 432,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 431,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: QrT2,
+                                                        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].ActionEbuttonoveron,
+                                                        children: "Imprimer ce tag"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/pages/administration/main-management.tsx",
+                                                        lineNumber: 451,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/pages/administration/main-management.tsx",
+                                                lineNumber: 401,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/pages/administration/main-management.tsx",
-                                lineNumber: 254,
+                                lineNumber: 288,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/administration/main-management.tsx",
-                            lineNumber: 253,
+                            lineNumber: 287,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/administration/main-management.tsx",
-                    lineNumber: 170,
+                    lineNumber: 204,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/pages/administration/main-management.tsx",
-                lineNumber: 169,
+                lineNumber: 203,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/pages/administration/main-management.tsx",
-                lineNumber: 325,
+                lineNumber: 459,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/pages/administration/main-management.tsx",
-        lineNumber: 164,
+        lineNumber: 198,
         columnNumber: 5
     }, this);
 }
-_s(Funds_management, "kls9TtNAMv9pYxUZeCltu3LGqzg=", false, function() {
+_s(Funds_management, "tMdvNRAKRBql5scZwSJLVT6EBqI=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$qrcode$2f$dist$2f$next$2d$qrcode$2e$es$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useQRCode"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$to$2d$print$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useReactToPrint"],

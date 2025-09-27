@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-head-element */
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import * as React from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styles from "../../app/page.module.css";
 import Footer from "@/app/components/Footer";
@@ -302,17 +303,53 @@ export default function Funds_management() {
                 justifyContent: "center",
               }}
             >
-              {/* Si pas d'abonnement, on masque les QR codes et affiche le modal centré */}
+              {/* Si pas d'abonnement et pas exploré, affiche le bouton explorer et masque le QR code */}
               {(!stripeCustomerId && !hasExplored) && (
-                <SubscribeModal
-                  onClose={() => {
-                    setHasExplored(true);
-                    localStorage.setItem("vyft_hasExplored", "1");
+                <div
+                  style={{
+                    background: "#23272e",
+                    borderRadius: 24,
+                    padding: 36,
+                    minWidth: 340,
+                    width: "90%",
+                    maxWidth: 420,
+                    boxShadow: "0 2px 32px rgba(0,0,0,0.18)",
+                    color: "#fff",
+                    textAlign: "center",
+                    margin: "0 auto",
                   }}
-                  onSubscribe={() => window.location.href = "/"}
-
-                />
+                >
+                  <h2 style={{ color: "#1a7f6b", fontWeight: 700, fontSize: 26, marginBottom: 14 }}>
+                    Abonnement requis
+                  </h2>
+                  <p style={{ fontSize: 17, color: "#e0dbdd", marginBottom: 28 }}>
+                    Vous devez être abonné pour accéder aux QR codes Vyft.
+                  </p>
+                  <button
+                    style={{
+                      background: "#1a7f6b",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 16,
+                      padding: "14px 38px",
+                      fontWeight: 700,
+                      fontSize: 17,
+                      cursor: "pointer",
+                      fontFamily: "BR Sonoma, sans-serif",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                      transition: "background 0.2s",
+                      letterSpacing: 0.2,
+                    }}
+                    onClick={() => {
+                      setHasExplored(true);
+                      localStorage.setItem("vyft_hasExplored", "1");
+                    }}
+                  >
+                    Explorer d&apos;abord
+                  </button>
+                </div>
               )}
+              {/* Si pas d'abonnement mais exploré, affiche le reste mais masque les QR codes */}
               {(!stripeCustomerId && hasExplored) ? (
                 <div
                   style={{

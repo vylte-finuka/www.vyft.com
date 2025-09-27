@@ -8,10 +8,6 @@
     ]
   },
   "appUsingSizeAdjust": true,
-  "pages": {
-    "/administration/main-management": [],
-    "/conditions-generales-de-vente": [],
-    "/login": []
-  },
+  "pages": {},
   "pagesUsingSizeAdjust": false
 }

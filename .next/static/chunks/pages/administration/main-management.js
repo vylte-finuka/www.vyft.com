@@ -1,5 +1,5 @@
 __turbopack_load_page_chunks__("/administration/main-management", [
-  "static/chunks/[root-of-the-server]__83edfae7._.js",
+  "static/chunks/[root-of-the-server]__456290cd._.js",
   "static/chunks/node_modules_next_dist_compiled_62013b03._.js",
   "static/chunks/node_modules_next_dist_shared_lib_c6e9c76d._.js",
   "static/chunks/node_modules_next_dist_client_f131196d._.js",
@@ -12,5 +12,5 @@ __turbopack_load_page_chunks__("/administration/main-management", [
   "static/chunks/node_modules_997b87fe._.js",
   "static/chunks/app_77bb0f70._.css",
   "static/chunks/pages_administration_main-management_tsx_5771e187._.js",
-  "static/chunks/pages_administration_main-management_tsx_68fb02cc._.js"
+  "static/chunks/pages_administration_main-management_tsx_1eb0d4bd._.js"
 ])

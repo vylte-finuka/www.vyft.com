@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { pdf } from "@react-pdf/renderer";
+import DynamicReport from "../../app/components/DynamicReport";
 import ReportVyft from "../../app/components/reportvyft";
 
 export default async function vyftreport(req: NextApiRequest, res: NextApiResponse) {
@@ -16,12 +17,16 @@ export default async function vyftreport(req: NextApiRequest, res: NextApiRespon
 
   try {
     const props = req.body;
-    const pdfBlob = await pdf(<ReportVyft {...props} />).toBlob();
+    // Choix du composant selon le type/design IA
+    const useVyft = props.type === "vyft" || !props.design;
+    const pdfBlob = await pdf(
+      useVyft ? <ReportVyft {...props} /> : <DynamicReport {...props} />
+    ).toBlob();
 
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename=vyft-program-report.pdf"
+      `attachment; filename=${props.title ? props.title.replace(/\s/g, "_") : "document"}.pdf`
     );
     res.end(Buffer.from(await pdfBlob.arrayBuffer()));
   } catch (error: any) {
@@ -30,5 +35,6 @@ export default async function vyftreport(req: NextApiRequest, res: NextApiRespon
       error: "Erreur interne lors de la génération du PDF",
       details: error?.message || error?.toString() || error
     });
+    
   }
 }

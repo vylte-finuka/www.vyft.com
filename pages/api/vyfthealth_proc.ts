@@ -17,9 +17,9 @@ type ResponseData = {
     dailyRevenue: number;
     avgRevenue?: string;
     growth?: string;
-    monthlyInvestment?: number; // Ajouté ici
-    metricsHistory?: any; // Ajouté ici pour corriger l'erreur de propriété inconnue
-    upcomingInvoiceAmount?: number; // Montant de la prochaine facture Stripe
+    monthlyInvestment?: number;
+    metricsHistory?: any;
+    upcomingInvoiceAmount?: number;
     influence?: {
       day: number;
       week: number;
@@ -29,17 +29,9 @@ type ResponseData = {
       history7Days?: Array<{ date: string; count: number }>;
       historyMonth?: Array<{ date: string; count: number }>;
       historyYear?: Array<{ month: string; count: number }>;
-      topUsers?: Array<{ name: string; count: number }>; // Ajouté ici
+      topUsers?: Array<{ name: string; count: number }>;
     };
   };
-};
-
-// Stocker les métriques précédentes pour éviter les envois redondants
-let previousMetrics = {
-  totalDistance: 0,
-  dailySteps: 0,
-  dailyRevenue: 0,
-  accumulatedValue: 0, // Valeur accumulée envoyée à Stripe
 };
 
 /**
@@ -50,18 +42,15 @@ let previousMetrics = {
  */
 async function sendMetricsToStripe(stripeCustomerId: string, incrementalValue: number) {
   try {
-
     const timestamp = Math.floor(Date.now() / 1000);
-
     const meterEvent = await stripe.billing.meterEvents.create({
       event_name: "meterstep",
       timestamp,
       payload: {
         stripe_customer_id: stripeCustomerId,
-        value: Math.round(incrementalValue).toString(), // Envoyer la valeur accumulée arrondie
+        value: Math.round(incrementalValue).toString(),
       },
     });
-
     console.log("Meter Event envoyé à Stripe :", meterEvent);
     return meterEvent;
   } catch (error: any) {
@@ -189,49 +178,47 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
       const lastEntries = await collection
         .find({ enseigne: { $regex: `^${enseigneFilter.trim()}$`, $options: "i" } })
         .sort({ date: -1 })
-          .limit(1)
-          .toArray();
-        
+        .limit(1)
+        .toArray();
+
       const lastEntry = lastEntries[0];
-      
+
       // Vérifier si une nouvelle entrée est détectée
       if (lastEntry) {
         const currentEntryId = lastEntry._id.toString();
-        const entryDate = new Date(lastEntry.date); // Convertir la date de l'entrée en objet Date
-        const now = new Date(); // Obtenir la date et l'heure actuelles;
-      
+
         // Vérifier si cette entrée est différente de la dernière traitée et non marquée comme traitée
         if ((!lastProcessedId || currentEntryId !== lastProcessedId) && !lastEntry.processed) {
           const lastSteps: number = lastEntry.steps || 0;
           const lastDistance: number = parseFloat(lastEntry.distance) || 0;
-      
+
           // Calculer les valeurs incrémentales basées sur les dernières entrées
-          const incrementalSteps = lastSteps * 0.3; // Ratio de 30 % sur les steps
-          const incrementalDistance = lastDistance * 0.3; // Ratio de 30 % sur la distance
-      
+          const incrementalSteps = lastSteps * 0.3;
+          const incrementalDistance = lastDistance * 0.3;
+
           // Calculer la valeur incrémentale totale
           const incrementalValue = Math.round(incrementalSteps + incrementalDistance);
-      
+
           // Envoyer les métriques calculées à Stripe
           await sendMetricsToStripe(stripeCustomerId, incrementalValue);
-      
+
           console.log("Nouvelle entrée détectée. Valeur incrémentale envoyée à Stripe :", incrementalValue);
-      
+
           // Mettre à jour l'identifiant de la dernière entrée traitée
           lastProcessedId = currentEntryId;
-      
+
           // Marquer l'entrée comme traitée dans MongoDB
           await collection.updateOne({ _id: lastEntry._id }, { $set: { processed: true } });
           console.log("Entrée marquée comme traitée dans MongoDB :", currentEntryId);
         } else {
           // Si l'entrée est la même que la dernière traitée ou déjà marquée comme traitée
           console.log("Aucune nouvelle entrée détectée ou entrée déjà traitée. Valeur reste à 0.");
-          await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+          await sendMetricsToStripe(stripeCustomerId, 0);
         }
       } else {
         // Si aucune entrée n'existe dans la base de données, envoyer 0 à Stripe
         console.log("Aucune entrée trouvée dans la base de données. Valeur réinitialisée à 0.");
-        await sendMetricsToStripe(stripeCustomerId, 0); // Envoyer 0 à Stripe
+        await sendMetricsToStripe(stripeCustomerId, 0);
       }
 
       // Calcul dynamique du prix du mètre selon la moyenne réelle
@@ -248,7 +235,7 @@ export default async function Vyfthealth_proc(req: NextApiRequest, res: NextApiR
 
       // Récupération du prix du stepmeter (Stripe)
       const stepmeterPriceObj = await stripe.prices.list({
-        product: "prod_ScRMkxEBJt4ToK", // Remplace par l'ID réel Stripe de ton produit stepmeter
+        product: "prod_ScRMkxEBJt4ToK",
         active: true,
         limit: 1,
       });

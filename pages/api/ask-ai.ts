@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const completion = await openai.chat.completions.create({
       model: "x-ai/grok-4-fast:free",
       messages: formattedMessages as any,
-      max_tokens: 300,
+      max_tokens: 3000,
       temperature: 0.7,
       stream: false,
     });

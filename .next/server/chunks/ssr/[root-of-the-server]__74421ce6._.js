@@ -140,7 +140,7 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
-// IA via OpenAI API (GPT-4o) via API interne sécurisée
+// Call Grok-3 via /api/ask-ai (OpenRouter with x-ai/grok-3)
 async function callmodelAPI(messages) {
     const res = await fetch("/api/ask-ai", {
         method: "POST",
@@ -152,9 +152,134 @@ async function callmodelAPI(messages) {
             messages
         })
     });
+    if (!res.ok) {
+        throw new Error(`Erreur API: ${res.statusText}`);
+    }
     const data = await res.json();
-    return data.reply || "";
+    if (data.error) {
+        throw new Error(data.error || "Erreur serveur IA");
+    }
+    let reply = data.reply || "";
+    let isDocument = false;
+    let docData;
+    try {
+        const parsed = JSON.parse(reply);
+        // Vérifie le format DynamicReport (title, type, design à la racine)
+        if (parsed.title && parsed.type && parsed.design) {
+            isDocument = true;
+            docData = parsed;
+            reply = `Document "${parsed.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.title && parsed.report.type && parsed.report.design) {
+            isDocument = true;
+            docData = parsed.report;
+            reply = `Document "${parsed.report.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.title && parsed.report.pages) {
+            // Conversion flexible du format "report" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.title,
+                type: r.type || "business_plan",
+                content: r.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.font || "Arial",
+                            style: p.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.title || p.section || "",
+                                    content: p.content || "",
+                                    style: p.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData?.title ?? ""}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.metadata && parsed.report.pages) {
+            // Conversion du format "report" avec "metadata" et "pages" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.metadata.title || "Document",
+                type: r.metadata.format || "business_plan",
+                content: r.metadata.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.layout?.font || "Arial",
+                            style: p.layout?.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.section || p.title || "",
+                                    content: typeof p.content === "object" ? Object.entries(p.content).map(([k, v])=>Array.isArray(v) ? `${k}: ${v.join(", ")}` : `${k}: ${v}`).join("\n") : p.content || "",
+                                    style: p.layout?.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.metadata.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.format === "DynamicReport" && parsed.report.pages) {
+            // Conversion du format "report" avec "format": "DynamicReport" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.title || "Document",
+                type: r.format || "business_plan",
+                content: r.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.font || "Arial",
+                            style: p.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.section || p.title || "",
+                                    content: p.content || "",
+                                    style: p.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        }
+    } catch (e) {
+    // Not JSON, treat as regular text response
+    }
+    return {
+        reply,
+        isDocument,
+        docData
+    };
 }
+// Fetch business data (expanded for product management)
 async function getComptaData(enseigne, stripeCustomerId) {
     const res = await fetch(`/api/vyfthealth_proc?enseigne=${encodeURIComponent(enseigne)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`, {
         headers: {
@@ -163,34 +288,75 @@ async function getComptaData(enseigne, stripeCustomerId) {
     });
     const data = await res.json();
     if (data.success) {
-        // Accès à toutes les métriques
-        return data.data; // contient dailySteps, dailyRevenue, monthlyInvestment, upcomingInvoiceAmount, etc.
+        return data.data;
     } else {
         throw new Error(data.message || "Erreur API");
     }
 }
+// Génération PDF universelle selon le design IA
+async function generatePDF(docData) {
+    try {
+        // Ajoute le type et toutes les props pour le design IA
+        const userId = __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__["default"].getItem("auth0UserId");
+        const payload = {
+            ...docData.props,
+            title: docData.title,
+            content: docData.content,
+            type: docData.type || "report",
+            userId,
+            design: docData.design || undefined
+        };
+        const res = await fetch("/api/reportgen", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-vyftprogram-api-key": ("TURBOPACK compile-time value", "vyftprogramwQvNtGG69p5olaIFWe4n6CBCnCVGu1m1jZvOaFi95laYqUx2xyBq68IEF2eKQXFS9ZoCTZFzYW6vmuGKe2bJLdmRpBr5Hqk456K5Z3noysX6ZlzYuclOqDWp4ZioCiYl5JyBDvA3p1pwCtbTadv9reB65haBGMeNCygcj36pYUPArQDOgP5tniS5h5604dQ4dB4ylxX2LpaDlYZMSdjpU7Zg9xekWm3pablpJ9FehT8vJfVBiuWyjlRcMSBAJHLLOJl31aVsTJjWix7UXRq7xAtDeWAnAM2ALnSWVEvlr5b2wfjawVYOJtXpNi8CO04qbskHmRw8cQc58L42X0WwqQQRgVLu3qT6lQwVuqZJgCNaZNyGc8HQa0thVu7FNOhO2sfeN7vujSK1wwpSkYBXpELSrCnkuo0dmHRz23DrgY1s5JWC7rthQBiRXCdbmHbIUoYafcgjUMLDJXvzLcMMSjWFs85kWDe0pmPn77YC3gjELkvDxVrRO") || ""
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+            throw new Error(`Échec de la génération du PDF: ${res.statusText}`);
+        }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${docData.title.replace(/\s/g, "_")}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error("Erreur génération PDF:", error);
+        throw error;
+    }
+}
 function SquareAIFloat() {
     const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const [docStudioOpen, setDocStudioOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([
         {
             from: "ai",
-            text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre bussiness ? Posez-moi votre question ou réponse !"
+            text: "Bienvenue sur Vyft Nérethense, assistant IA professionnel alimenté par Nérethense Z.S soit l'équivalent de Z.Setneshi. Je suis conçu pour les entreprises multinationales et d'autres entreprises comme les PME et TPE, avec création automatisée de documents professionnels, gestion de produits de grand marché. Posez votre question ou utilisez /compta, /manage-product, ou /generate-report."
         }
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
-    // Ajout pour stocker les infos utilisateur
+    const [docLoading, setDocLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     const [denomination, setDenomination] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
     const [stripeCustomerId, setStripeCustomerId] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
     const [comptaData, setComptaData] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [cgvu, setCgvu] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const [docFormData, setDocFormData] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])({
+        type: "report",
+        title: "",
+        params: {}
+    });
     const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
-    // Récupération des infos utilisateur depuis Auth0 (comme dans reports.tsx)
+    // Fetch user info from Auth0
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
         const fetchUserInfo = async ()=>{
             try {
                 const userToken = __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__["default"].getItem("userToken");
                 if (!userToken) return;
-                // Récupérer les infos utilisateur depuis Auth0
                 const userInfoResponse = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/userinfo`, {
                     headers: {
                         Authorization: `Bearer ${userToken}`,
@@ -198,7 +364,6 @@ function SquareAIFloat() {
                     }
                 });
                 const userId = userInfoResponse.data.sub;
-                // Récupérer les métadonnées utilisateur (enseigne et stripeCustomerId)
                 const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${("TURBOPACK compile-time value", "https://vylte-finuka.eu.auth0.com")}/api/v2/users/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${userToken}`,
@@ -214,17 +379,20 @@ function SquareAIFloat() {
         };
         fetchUserInfo();
     }, []);
+    // Auto-scroll to bottom
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
-        if (loading && messagesEndRef.current) {
+        if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({
-                behavior: "smooth"
+                behavior: "smooth",
+                block: "end"
             });
         }
     }, [
+        messages,
         loading
     ]);
+    // Fetch business data
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
-        // Dès que l'utilisateur est identifié, on charge les données de marcheurs
         if (denomination && stripeCustomerId) {
             getComptaData(denomination, stripeCustomerId).then(setComptaData).catch(()=>setComptaData(null));
         }
@@ -232,6 +400,43 @@ function SquareAIFloat() {
         denomination,
         stripeCustomerId
     ]);
+    // Preload CGVU
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        async function fetchCGVU() {
+            try {
+                const res = await fetch("/api/cgvu");
+                const data = await res.json();
+                setCgvu(data.cgvu || "");
+            } catch (e) {
+                console.error("Failed to load CGVU:", e);
+            }
+        }
+        if (!cgvu) fetchCGVU();
+    }, [
+        cgvu
+    ]);
+    function cleanObject(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(cleanObject).filter((v)=>v !== undefined && v !== null && v !== "undefined");
+        } else if (typeof obj === "object" && obj !== null) {
+            const newObj = {};
+            for(const k in obj){
+                // Supprime les clés d'image non supportées
+                if (k === "image" || k === "watermarkImg" || k === "logo" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i) || k === "qrCode" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i)) {
+                    continue;
+                }
+                const v = obj[k];
+                if (v !== undefined && v !== null && v !== "undefined") {
+                    newObj[k] = cleanObject(v);
+                }
+            }
+            return newObj;
+        }
+        if (typeof obj === "string") {
+            return obj.replace(/undefined/gi, "").trim();
+        }
+        return obj;
+    }
     async function sendMessage() {
         if (!input.trim()) return;
         const userMessage = {
@@ -244,63 +449,300 @@ function SquareAIFloat() {
             ]);
         setLoading(true);
         setInput("");
-        // Commande spéciale /compta
-        if (input.trim().toLowerCase() === "/compta") {
-            if (!comptaData) {
+        // Vérifie si l'input utilisateur est déjà un JSON valide
+        try {
+            const parsed = JSON.parse(input);
+            // Vérifie le format DynamicReport (title, type, design à la racine)
+            if (parsed.title && parsed.type && parsed.design) {
+                const cleaned = cleanObject(parsed); // Nettoie et retire les images non valides
+                await generatePDF(cleaned);
                 setMessages((msgs)=>[
                         ...msgs,
                         {
                             from: "ai",
-                            text: "Impossible de récupérer vos informations de compte."
+                            text: `Document "${cleaned.title}" généré avec succès.`
                         }
                     ]);
                 setLoading(false);
                 return;
             }
-            const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
-            const influenceWeek = comptaData.influence?.week ?? 0;
-            const influenceMonth = comptaData.influence?.month ?? 0;
+        } catch (e) {
+        // Ce n'est pas un JSON, on continue le flow normal
+        }
+        try {
+            // Handle /compta command
+            if (input.trim().toLowerCase() === "/compta") {
+                if (!comptaData) {
+                    throw new Error("Impossible de récupérer vos informations de compte.");
+                }
+                const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
+                const influenceWeek = comptaData.influence?.week ?? 0;
+                const influenceMonth = comptaData.influence?.month ?? 0;
+                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Comptabilité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Marcheur le plus fidèle : ${topUser}\n` + `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` + `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n` + `- Gestion produits : ${productSummary}\n`
+                        }
+                    ]);
+                setLoading(false);
+                return;
+            }
+            // Handle /manage-product command
+            if (input.trim().toLowerCase().startsWith("/manage-product")) {
+                const { reply } = await callmodelAPI([
+                    {
+                        from: "user",
+                        text: input
+                    }
+                ]);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: reply
+                        }
+                    ]);
+                setLoading(false);
+                return;
+            }
+            // Handle /generate-report command
+            if (input.trim().toLowerCase().startsWith("/generate-report")) {
+                const { reply, isDocument, docData } = await callmodelAPI([
+                    {
+                        from: "user",
+                        text: input
+                    }
+                ]);
+                if (isDocument && docData) {
+                    await generatePDF(docData);
+                    setMessages((msgs)=>[
+                            ...msgs,
+                            {
+                                from: "ai",
+                                text: `Rapport "${docData.title}" généré avec succès.`
+                            }
+                        ]);
+                } else {
+                    setMessages((msgs)=>[
+                            ...msgs,
+                            {
+                                from: "ai",
+                                text: reply || "Erreur : Aucun rapport généré. Veuillez préciser le contenu (ex: /generate-report invoice client:Acme title:Invoice123)."
+                            }
+                        ]);
+                }
+                setLoading(false);
+                return;
+            }
+            function formatDateFr(dateStr) {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString("fr-FR", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                });
+            }
+            // Build context for AI
+            let context = "";
+            if (comptaData) {
+                const influence = comptaData.influence || {};
+                const history7Days = (influence.history7Days || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
+                const historyMonth = (influence.historyMonth || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
+                const topUsers = (influence.topUsers || []).map((u, i)=>`${i + 1}. ${u.name} (${u.count} participations)`).join("\n");
+                const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
+                const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
+                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
+                context = `Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises. Tu offres :
+- Création automatisée de documents professionnels (simples à complexes, ex: rapports, factures, propositions) via /api/reportgen (PDF via @react-pdf/renderer).
+- Gestion de produits scalable (CRUD via commandes).
+- Réponses sans fautes de frappe, conformes aux standards de Microsoft/Carrefour.
+Pour documents, output JSON : {"title": "Titre", "content": "Contenu", "props": {"client": "Acme", "amount": 1000}}.
+Reste modeste, factuel, poli.
+Données disponibles :
+- Pas aujourd'hui : ${comptaData.dailySteps}
+- Distance aujourd'hui : ${comptaData.dailyDistance} km
+- Profit aujourd'hui : ${comptaData.dailyRevenue} €
+- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
+- Top marcheurs : ${topUsers}
+- Influence aujourd'hui : ${influence.day ?? 0}
+- Influence semaine : ${influence.week ?? 0}
+- Influence mois : ${influence.month ?? 0}
+- Historique 7 jours : ${history7Days}
+${historyMonth ? `- Historique mensuel : ${historyMonth}\n` : ""}
+${mostInfluentialDayStr}
+- Produits : ${productSummary}
+`;
+            }
+            if (cgvu) {
+                context += `\n\nCGVU : ${cgvu}\n\n`;
+            }
+            context += `
+Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises, jamais Grok-3 ni xAI. Tu ne dois jamais mentionner Grok-3, xAI ou OpenRouter, uniquement Nérethense Z.Sethneshi.
+
+Tu es expert en génération de documents administratifs pour entreprises (business plan, bilan, rapport annuel, contrat, PV d’AG, statuts, factures, devis, etc.), même les plus complexes et sur plusieurs pages.
+
+Tes réponses doivent être rédigées sans aucune faute de frappe, ni faute d’orthographe, ni erreur de syntaxe. Utilise un français professionnel et clair, conforme aux standards de Microsoft ou d’un grand groupe.
+
+Pour chaque document, génère toujours un JSON structuré compatible avec le composant DynamicReport, incluant :
+- "title" : titre du document
+- "type" : type de document (ex : business_plan, bilan, contrat, etc.)
+- "design" : { "pages": [ ... ] } où chaque page contient "font", "sections" (tableaux, textes, signatures, images valides), "colors", "watermark", etc.
+
+Exemple de document complexe multi-pages :
+{
+  "title": "Business Plan 2025",
+  "type": "business_plan",
+  "design": {
+    "pages": [
+      {
+        "font": "Lato",
+        "sections": [
+          { "title": "Résumé exécutif", "content": "..." }
+        ]
+      },
+      {
+        "font": "Roboto",
+        "sections": [
+          { "title": "Analyse de marché", "table": { ... } }
+        ]
+      }
+    ],
+    "colors": { "background": "#f5f5f5", ... }
+  }
+}
+
+IMPORTANT : Pour toute commande /generate-report, tu dois TOUJOURS répondre UNIQUEMENT par un JSON complet compatible DynamicReport, commençant par "title", "type", "design". Ne jamais utiliser "report" comme clé racine. Ne jamais ajouter de texte libre, phrase d’introduction ou explication. Si tu ne peux pas générer le document, retourne {"error": "Impossible de générer le rapport"}.
+
+Le JSON doit contenir au minimum "title", "type", "design" (avec pages, sections, tableaux, etc.).
+Exemple :
+{
+  "title": "Business Plan Complet pour Microsoft Corporation",
+  "type": "business_plan",
+  "design": {
+    "pages": [
+      {
+        "font": "Lato",
+        "style": { "backgroundColor": "#f5f5f5", "padding": 32 },
+        "sections": [
+          {
+            "title": "Résumé Exécutif",
+            "content": "Microsoft Corporation est un leader mondial...",
+            "style": { "color": "#1a7f6b", "fontSize": 16 }
+          }
+        ]
+      }
+    ],
+    "colors": { "background": "#f5f5f5" }
+  }
+}
+Tu dois TOUJOURS inclure la clé "style" dans chaque page ET chaque section du JSON DynamicReport.
+Ne jamais utiliser une clé "report" à la racine. Ne jamais ajouter de texte libre, phrase d’introduction ou explication.
+Si tu ne peux pas générer le document, retourne {"error": "Impossible de générer le rapport"}.
+`;
+            const { reply, isDocument, docData } = await callmodelAPI([
+                {
+                    from: "user",
+                    text: context + input
+                },
+                ...messages
+            ]);
+            let cleanReply = reply;
+            if (cleanReply) {
+                cleanReply = cleanReply.replace(/undefined/gi, " ");
+                cleanReply = cleanReply.replace(/benvenue|iinvenue|binvenue|invenue|Benvenue/gi, "Bienvenue");
+                cleanReply = cleanReply.replace(/Vyft Nérethhnse|Vyft Nérethense|Nérethhnse/gi, "Vyft Nérethense");
+                cleanReply = cleanReply.replace(/pprfessionnel|prfessionnel|professionnel/gi, "professionnel");
+                cleanReply = cleanReply.replace(/poor|poour|pour/gi, "pour");
+                cleanReply = cleanReply.replace(/certifii|certifé|certiféé|certifiéé/gi, "certifié");
+                cleanReply = cleanReply.replace(/activitt|activittt|activitée|activitée/gi, "activité");
+                cleanReply = cleanReply.replace(/ssistanttIA|ssistant IA|assistanttIA|assistantt IA/gi, "assistant IA");
+                cleanReply = cleanReply.replace(/vouu/gi, "vous");
+                cleanReply = cleanReply.replace(/ee/gi, "et");
+                cleanReply = cleanReply.replace(/([a-zA-Z])\1{1,}/g, "$1");
+                cleanReply = cleanReply.replace(/[\s\n\r]{2,}/g, " ");
+                cleanReply = cleanReply.replace(/\s+([.,;:!?])/g, "$1");
+                cleanReply = cleanReply.trim();
+            }
+            if (cleanReply && cleanReply !== "") {
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: cleanReply
+                        }
+                    ]);
+            }
+            if (isDocument && docData) {
+                await generatePDF(docData);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Document "${docData.title}" généré avec succès.`
+                        }
+                    ]);
+            }
+        } catch (error) {
             setMessages((msgs)=>[
                     ...msgs,
                     {
                         from: "ai",
-                        text: `Comptabilité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Marcheur le plus fidèle : ${topUser}\n` + `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` + `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n`
+                        text: "Une erreur est survenue. Veuillez réessayer."
                     }
                 ]);
+        } finally{
             setLoading(false);
-            return;
         }
-        // Préparation du contexte enrichi pour l'IA
-        let context = "";
-        if (comptaData) {
-            // Top marcheurs/mois
-            const topUsers = (comptaData.influence?.topUsers || []).map((u, i)=>`${i + 1}. ${u.name} (${u.count} participations)`).join("\n");
-            // Influence par période
-            const influence = comptaData.influence || {};
-            const influenceHistory = (influence.history7Days || []).map((h)=>`${h.date}: ${h.count} marcheurs uniques`).join("\n");
-            // Jours les plus influents
-            const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
-            const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${mostInfluentialDay.date} (${mostInfluentialDay.count} marcheurs uniques)` : "";
-            context = `Voici toutes les données de marche et d'influence :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Top marcheurs du mois :\n${topUsers}\n` + `- Influence aujourd'hui : ${influence.day ?? 0}\n` + `- Influence cette semaine : ${influence.week ?? 0}\n` + `- Influence ce mois : ${influence.month ?? 0}\n` + `- Influence cette année : ${influence.year ?? 0}\n` + `- Influence totale : ${influence.all ?? 0}\n` + `- Historique des 7 derniers jours :\n${influenceHistory}\n` + `${mostInfluentialDayStr}\n\n`;
-        }
-        const reply = await callmodelAPI([
-            {
-                from: "user",
-                text: context + input
-            },
-            ...messages
-        ]);
-        if (reply && reply.trim() !== "") {
+    }
+    async function handleDocSubmit(e) {
+        e.preventDefault();
+        if (!docFormData.title || !docFormData.type) return;
+        setDocLoading(true);
+        try {
+            const { reply, isDocument, docData } = await callmodelAPI([
+                {
+                    from: "user",
+                    text: context + docPrompt
+                }
+            ]);
+            if (isDocument && docData) {
+                await generatePDF(docData);
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: `Document "${docData.title}" généré avec succès.`
+                        }
+                    ]);
+            } else {
+                setMessages((msgs)=>[
+                        ...msgs,
+                        {
+                            from: "ai",
+                            text: reply || "Erreur : Impossible de générer le document. Veuillez vérifier les paramètres."
+                        }
+                    ]);
+            }
+        } catch (error) {
             setMessages((msgs)=>[
                     ...msgs,
                     {
                         from: "ai",
-                        text: reply
+                        text: "Erreur lors de la génération du document. Veuillez réessayer."
                     }
                 ]);
+        } finally{
+            setDocLoading(false);
         }
-        setLoading(false);
     }
+    const context = comptaData ? `Données disponibles :
+- Pas aujourd'hui : ${comptaData.dailySteps}
+- Distance aujourd'hui : ${comptaData.dailyDistance} km
+- Profit aujourd'hui : ${comptaData.dailyRevenue} €
+- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
+- Produits : ${comptaData.products ? `Produits gérés : ${comptaData.products.length}` : "Aucun produit"}` : "";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         style: {
             position: "fixed",
@@ -317,7 +759,7 @@ function SquareAIFloat() {
             display: "flex",
             flexDirection: "column",
             transition: "height 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s",
-            height: open ? "500px" : "90px",
+            height: open ? docStudioOpen ? "700px" : "500px" : "90px",
             overflow: "hidden",
             cursor: "pointer"
         },
@@ -357,12 +799,12 @@ function SquareAIFloat() {
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 243,
+                            lineNumber: 657,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 227,
+                        lineNumber: 641,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
@@ -377,7 +819,7 @@ function SquareAIFloat() {
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 245,
+                        lineNumber: 659,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
@@ -393,13 +835,13 @@ function SquareAIFloat() {
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 256,
+                        lineNumber: 670,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 226,
+                lineNumber: 640,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -429,34 +871,21 @@ function SquareAIFloat() {
                         },
                         className: "jsx-7d37b0088d58e5a9",
                         children: [
-                            messages.map((msg, idx)=>{
-                                // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
-                                if (msg.from === "ai" && idx === messages.length - 1 && !loading) {
-                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Bubble, {
-                                        from: msg.from,
-                                        text: "",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingText, {
-                                            text: msg.text
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 300,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, idx, false, {
-                                        fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 299,
-                                        columnNumber: 17
-                                    }, this);
-                                }
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Bubble, {
+                            messages.map((msg, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Bubble, {
                                     from: msg.from,
-                                    text: msg.text
+                                    text: msg.text,
+                                    children: msg.from === "ai" && idx === messages.length - 1 && !loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingText, {
+                                        text: msg.text
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/SquareAIFloat.tsx",
+                                        lineNumber: 711,
+                                        columnNumber: 17
+                                    }, this) : msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 304,
-                                    columnNumber: 20
-                                }, this);
-                            }),
+                                    lineNumber: 709,
+                                    columnNumber: 13
+                                }, this)),
                             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 style: {
                                     display: "flex",
@@ -491,23 +920,23 @@ function SquareAIFloat() {
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 331,
+                                            lineNumber: 735,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 315,
+                                        lineNumber: 719,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 333,
+                                        lineNumber: 737,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 307,
+                                lineNumber: 718,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -515,13 +944,13 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 336,
+                                lineNumber: 740,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 284,
+                        lineNumber: 697,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("form", {
@@ -541,7 +970,8 @@ function SquareAIFloat() {
                                 type: "text",
                                 value: input,
                                 onChange: (e)=>setInput(e.target.value),
-                                placeholder: "Votre question...",
+                                placeholder: "Votre demande...",
+                                "aria-label": "Saisir votre demande pour Vyft Nérethense",
                                 style: {
                                     flex: 1,
                                     borderRadius: 12,
@@ -558,11 +988,12 @@ function SquareAIFloat() {
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 350,
+                                lineNumber: 749,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                 type: "submit",
+                                "aria-label": "Envoyer la question",
                                 style: {
                                     borderRadius: 12,
                                     border: "none",
@@ -580,19 +1011,19 @@ function SquareAIFloat() {
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 369,
+                                lineNumber: 769,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 338,
+                        lineNumber: 742,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 269,
+                lineNumber: 683,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__["default"], {
@@ -602,12 +1033,11 @@ function SquareAIFloat() {
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 203,
+        lineNumber: 617,
         columnNumber: 5
     }, this);
 }
-// Ajoute ce composant pour l'effet d'écriture lettre par lettre
-function TypingText({ text }) {
+const TypingText = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["default"].memo(({ text })=>{
     const [displayed, setDisplayed] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
     const index = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(0);
     (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
@@ -618,7 +1048,7 @@ function TypingText({ text }) {
             setDisplayed((prev)=>prev + text[index.current]);
             index.current++;
             if (index.current >= text.length) clearInterval(interval);
-        }, 18); // Vitesse d'écriture (ms)
+        }, 18);
         return ()=>clearInterval(interval);
     }, [
         text
@@ -627,17 +1057,16 @@ function TypingText({ text }) {
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 422,
+        lineNumber: 822,
         columnNumber: 10
     }, this);
-}
-// Modifie Bubble pour accepter des enfants (children)
+});
 function Bubble({ from, text, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         style: {
             alignSelf: from === "user" ? "flex-end" : "flex-start",
-            background: from === "ai" ? "rgba(255,255,255,0.10)" : "#e0dbdd",
-            color: from === "ai" ? "#f5f6fa" : "#222",
+            background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
+            color: from === "ai" ? "#222" : "#f5f6fa",
             borderRadius: 12,
             padding: "10px 16px",
             maxWidth: "80%",
@@ -646,12 +1075,12 @@ function Bubble({ from, text, children }) {
             boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
             transition: "transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)",
             transform: "translateY(0)",
-            border: from === "ai" ? "1px solid #353a40" : "none"
+            border: from === "ai" ? "none" : "1px solid #353a40"
         },
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 436,
+        lineNumber: 827,
         columnNumber: 5
     }, this);
 }
@@ -679,18 +1108,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 475,
+                lineNumber: 866,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 476,
+                lineNumber: 867,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 459,
+        lineNumber: 850,
         columnNumber: 5
     }, this);
 }
@@ -705,27 +1134,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 484,
+                lineNumber: 875,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 485,
+                lineNumber: 876,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 486,
+                lineNumber: 877,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 483,
+        lineNumber: 874,
         columnNumber: 5
     }, this);
 }
@@ -744,7 +1173,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 493,
+        lineNumber: 884,
         columnNumber: 5
     }, this);
 }
