@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
