@@ -630,7 +630,7 @@ export default function Home() {
                           fontWeight: "bold",
                           color: "#1a7f6b",
                         }}>
-                          Aucun document généré pour l'instant.
+                          Aucun document généré pour l&apos;instant.
                         </h3>
                       </div>
                       <button
