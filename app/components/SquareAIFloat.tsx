@@ -269,7 +269,7 @@ async function generatePDF(docData: { title: string; content: string; props?: an
   }
 }
 
-export default function SquareAIFloat() {
+const SquareAIFloat = () => {
   const [open, setOpen] = useState(false);
   const [docStudioOpen, setDocStudioOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -733,7 +733,11 @@ Données disponibles :
       `}</style>
     </div>
   );
-}
+};
+
+SquareAIFloat.displayName = "SquareAIFloat"; // Ajout obligatoire
+
+export default SquareAIFloat;
 
 const TypingText = React.memo(({ text }: { text: string }) => {
   const [displayed, setDisplayed] = useState("");
