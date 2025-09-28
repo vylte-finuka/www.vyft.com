@@ -55,10 +55,26 @@ __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5
     family: "Arial",
     src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf"
 });
+__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Font"].register({
+    family: "Arial",
+    src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf",
+    fontStyle: "italic"
+});
+__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Font"].register({
+    family: "Arial",
+    src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf",
+    fontWeight: "bold"
+});
+__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Font"].register({
+    family: "Arial",
+    src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf",
+    fontWeight: "bold",
+    fontStyle: "italic"
+});
 function DynamicReport(props) {
     // Fusionne design IA et props classiques
     const design = props.design || {};
-    const pages = props.pages && props.pages.length ? props.pages : [
+    const pages = design.pages && Array.isArray(design.pages) ? design.pages : props.pages && props.pages.length ? props.pages : [
         {
             watermark: props.watermark || design.watermark,
             watermarkImg: props.watermarkImg || design.watermarkImg,
@@ -103,7 +119,7 @@ function DynamicReport(props) {
                         fixed: true
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 100,
+                        lineNumber: 119,
                         columnNumber: 13
                     }, this),
                     page.watermarkImg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -120,7 +136,7 @@ function DynamicReport(props) {
                         fixed: true
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 117,
+                        lineNumber: 136,
                         columnNumber: 13
                     }, this),
                     page.logo && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -133,7 +149,7 @@ function DynamicReport(props) {
                         }
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 133,
+                        lineNumber: 152,
                         columnNumber: 13
                     }, this),
                     page.sections && page.sections.map((sec, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
@@ -156,7 +172,7 @@ function DynamicReport(props) {
                                     fixed: true
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 147,
+                                    lineNumber: 166,
                                     columnNumber: 17
                                 }, this),
                                 sec.title && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
@@ -167,18 +183,74 @@ function DynamicReport(props) {
                                     children: sec.title
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 180,
                                     columnNumber: 29
                                 }, this),
-                                sec.content && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
+                                Array.isArray(sec.content) ? sec.content.map((item, idx)=>{
+                                    if (item.type === "text") {
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
+                                            style: {
+                                                color: sec.style?.color || "#222",
+                                                fontSize: sec.style?.fontSize
+                                            },
+                                            children: item.value
+                                        }, idx, false, {
+                                            fileName: "[project]/app/components/DynamicReport.tsx",
+                                            lineNumber: 185,
+                                            columnNumber: 25
+                                        }, this);
+                                    }
+                                    if (item.type === "list" && Array.isArray(item.items)) {
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
+                                            style: {
+                                                marginLeft: 12,
+                                                marginBottom: 6
+                                            },
+                                            children: item.items.map((li, liIdx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
+                                                    style: {
+                                                        color: sec.style?.color || "#222",
+                                                        fontSize: sec.style?.fontSize
+                                                    },
+                                                    children: [
+                                                        "• ",
+                                                        li
+                                                    ]
+                                                }, liIdx, true, {
+                                                    fileName: "[project]/app/components/DynamicReport.tsx",
+                                                    lineNumber: 194,
+                                                    columnNumber: 29
+                                                }, this))
+                                        }, idx, false, {
+                                            fileName: "[project]/app/components/DynamicReport.tsx",
+                                            lineNumber: 192,
+                                            columnNumber: 25
+                                        }, this);
+                                    }
+                                    if (item.type === "signature") {
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
+                                            style: {
+                                                ...styles.signature,
+                                                color: sec.style?.color || "#222"
+                                            },
+                                            children: item.placeholder || "Signature"
+                                        }, idx, false, {
+                                            fileName: "[project]/app/components/DynamicReport.tsx",
+                                            lineNumber: 203,
+                                            columnNumber: 25
+                                        }, this);
+                                    }
+                                    // Ajoute d'autres types si besoin
+                                    return null;
+                                }) : sec.content && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
                                     style: {
-                                        color: props.colors?.content || "#222"
+                                        color: sec.style?.color || "#222",
+                                        fontSize: sec.style?.fontSize
                                     },
                                     children: sec.content
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 162,
-                                    columnNumber: 31
+                                    lineNumber: 212,
+                                    columnNumber: 21
                                 }, this),
                                 sec.table && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
                                     style: styles.table,
@@ -193,12 +265,12 @@ function DynamicReport(props) {
                                                     children: h
                                                 }, j, false, {
                                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                                    lineNumber: 167,
+                                                    lineNumber: 221,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 165,
+                                            lineNumber: 219,
                                             columnNumber: 19
                                         }, this),
                                         sec.table.rows.map((row, k)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
@@ -211,18 +283,18 @@ function DynamicReport(props) {
                                                         children: cell
                                                     }, l, false, {
                                                         fileName: "[project]/app/components/DynamicReport.tsx",
-                                                        lineNumber: 173,
+                                                        lineNumber: 227,
                                                         columnNumber: 25
                                                     }, this))
                                             }, k, false, {
                                                 fileName: "[project]/app/components/DynamicReport.tsx",
-                                                lineNumber: 171,
+                                                lineNumber: 225,
                                                 columnNumber: 21
                                             }, this))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 164,
+                                    lineNumber: 218,
                                     columnNumber: 17
                                 }, this),
                                 sec.image && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -234,7 +306,7 @@ function DynamicReport(props) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 180,
+                                    lineNumber: 234,
                                     columnNumber: 17
                                 }, this),
                                 sec.signature && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
@@ -248,25 +320,25 @@ function DynamicReport(props) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 183,
+                                    lineNumber: 237,
                                     columnNumber: 17
                                 }, this),
                                 sec.custom
                             ]
                         }, i, true, {
                             fileName: "[project]/app/components/DynamicReport.tsx",
-                            lineNumber: 145,
+                            lineNumber: 164,
                             columnNumber: 13
                         }, this))
                 ]
             }, idx, true, {
                 fileName: "[project]/app/components/DynamicReport.tsx",
-                lineNumber: 89,
+                lineNumber: 108,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/DynamicReport.tsx",
-        lineNumber: 87,
+        lineNumber: 106,
         columnNumber: 5
     }, this);
 }

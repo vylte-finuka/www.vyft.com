@@ -61,27 +61,30 @@ export default function DynamicReport(props: {
 }) {
   // Fusionne design IA et props classiques
   const design = props.design || {};
-  const pages: DynamicPage[] = props.pages && props.pages.length
-    ? props.pages
-    : [{
-        watermark: props.watermark || design.watermark,
-        watermarkImg: props.watermarkImg || design.watermarkImg,
-        logo: props.logo || design.logo,
-        font: props.font || design.font,
-        style: design.pageStyle,
-        sections: props.sections || design.sections || [
-          {
-            title: props.title || design.title,
-            content: props.content || design.content,
-            table: props.table || design.table,
-            signature: props.signature || design.signature,
-            image: design.image,
-            style: design.sectionStyle,
+  const pages: DynamicPage[] =
+    (design.pages && Array.isArray(design.pages))
+      ? design.pages
+      : props.pages && props.pages.length
+        ? props.pages
+        : [{
+            watermark: props.watermark || design.watermark,
             watermarkImg: props.watermarkImg || design.watermarkImg,
-            custom: design.custom,
-          }
-        ]
-      }];
+            logo: props.logo || design.logo,
+            font: props.font || design.font,
+            style: design.pageStyle,
+            sections: props.sections || design.sections || [
+              {
+                title: props.title || design.title,
+                content: props.content || design.content,
+                table: props.table || design.table,
+                signature: props.signature || design.signature,
+                image: design.image,
+                style: design.sectionStyle,
+                watermarkImg: props.watermarkImg || design.watermarkImg,
+                custom: design.custom,
+              }
+            ]
+          }];
 
   return (
     <Document>
@@ -159,7 +162,42 @@ export default function DynamicReport(props: {
                 />
               )}
               {sec.title && <Text style={{ ...styles.sectionTitle, color: props.colors?.sectionTitle || "#444" }}>{sec.title}</Text>}
-              {sec.content && <Text style={{ color: props.colors?.content || "#222" }}>{sec.content}</Text>}
+              {Array.isArray(sec.content)
+                ? sec.content.map((item, idx) => {
+                    if (item.type === "text") {
+                      return (
+                        <Text key={idx} style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
+                          {item.value}
+                        </Text>
+                      );
+                    }
+                    if (item.type === "list" && Array.isArray(item.items)) {
+                      return (
+                        <View key={idx} style={{ marginLeft: 12, marginBottom: 6 }}>
+                          {item.items.map((li: string, liIdx: number) => (
+                            <Text key={liIdx} style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
+                              • {li}
+                            </Text>
+                          ))}
+                        </View>
+                      );
+                    }
+                    if (item.type === "signature") {
+                      return (
+                        <Text key={idx} style={{ ...styles.signature, color: sec.style?.color || "#222" }}>
+                          {item.placeholder || "Signature"}
+                        </Text>
+                      );
+                    }
+                    // Ajoute d'autres types si besoin
+                    return null;
+                  })
+                : sec.content && (
+                    <Text style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
+                      {sec.content}
+                    </Text>
+                  )
+              }
               {sec.table && (
                 <View style={styles.table}>
                   <View style={styles.tableRow}>

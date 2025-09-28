@@ -1,6 +1,7 @@
 {
+  "/api/ask-ai": "pages/api/ask-ai.js",
   "/api/check-subscription-status": "pages/api/check-subscription-status.js",
   "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
-  "/api/vyfthealth_proc": "pages/api/vyfthealth_proc.js",
+  "/api/reportgen": "pages/api/reportgen.js",
   "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js"
 }

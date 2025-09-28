@@ -628,7 +628,7 @@ const __TURBOPACK__default__export__ = Navbar;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-__turbopack_context__.s({
+/* eslint-disable react/display-name */ __turbopack_context__.s({
     "default": (()=>SquareAIFloat)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
@@ -1249,12 +1249,12 @@ Données disponibles :
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 589,
+                            lineNumber: 591,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 573,
+                        lineNumber: 575,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1269,7 +1269,7 @@ Données disponibles :
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 591,
+                        lineNumber: 593,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1285,13 +1285,13 @@ Données disponibles :
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 602,
+                        lineNumber: 604,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 572,
+                lineNumber: 574,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1328,12 +1328,12 @@ Données disponibles :
                                         text: msg.text
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 643,
+                                        lineNumber: 645,
                                         columnNumber: 17
                                     }, this) : msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 641,
+                                    lineNumber: 643,
                                     columnNumber: 13
                                 }, this)),
                             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1370,23 +1370,23 @@ Données disponibles :
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 667,
+                                            lineNumber: 669,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 651,
+                                        lineNumber: 653,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 669,
+                                        lineNumber: 671,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 650,
+                                lineNumber: 652,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1394,13 +1394,13 @@ Données disponibles :
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 672,
+                                lineNumber: 674,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 629,
+                        lineNumber: 631,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1438,7 +1438,7 @@ Données disponibles :
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 681,
+                                lineNumber: 683,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1461,19 +1461,19 @@ Données disponibles :
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 701,
+                                lineNumber: 703,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 674,
+                        lineNumber: 676,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 615,
+                lineNumber: 617,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1483,7 +1483,7 @@ Données disponibles :
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 549,
+        lineNumber: 551,
         columnNumber: 5
     }, this);
 }
@@ -1507,7 +1507,7 @@ const TypingText = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 754,
+        lineNumber: 756,
         columnNumber: 10
     }, this);
 });
@@ -1530,7 +1530,7 @@ function Bubble({ from, text, children }) {
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 759,
+        lineNumber: 761,
         columnNumber: 5
     }, this);
 }
@@ -1558,18 +1558,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 798,
+                lineNumber: 800,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 799,
+                lineNumber: 801,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 782,
+        lineNumber: 784,
         columnNumber: 5
     }, this);
 }
@@ -1584,27 +1584,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 807,
+                lineNumber: 809,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 808,
+                lineNumber: 810,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 809,
+                lineNumber: 811,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 806,
+        lineNumber: 808,
         columnNumber: 5
     }, this);
 }
@@ -1623,7 +1623,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 816,
+        lineNumber: 818,
         columnNumber: 5
     }, this);
 }
