@@ -31,13 +31,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const formattedMessages = messages.map(msg => ({
       role: msg.from === "user" ? "user" : "assistant",
       content: msg.text,
-    }));
+    })).reverse();
+
+    // Détection du contexte pour ajuster la température et les tokens
+    let temperature = 0.85;
+    let max_tokens = 4096;
+    const lastUserMsg = formattedMessages.find(m => m.role === "user")?.content || "";
+    if (lastUserMsg.match(/design|cv|rapport|pdf|complexe|créatif|création/i)) {
+      temperature = 1.1; // Plus créatif pour les designs
+      max_tokens = 10000; // Permet des réponses plus longues
+    }
 
     const completion = await openai.chat.completions.create({
-      model: "x-ai/grok-4-fast:free",
+      model: "mistralai/mistral-large-2411",
       messages: formattedMessages as any,
-      max_tokens: 3000,
-      temperature: 0.7,
+      max_tokens,
+      temperature,
       stream: false,
     });
 

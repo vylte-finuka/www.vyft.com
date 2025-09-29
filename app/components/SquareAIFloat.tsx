@@ -278,7 +278,7 @@ export default function SquareAIFloat() {
     {
       from: "ai",
       text:
-                "Bienvenue sur Vyft Nérethense, assistant IA professionnel alimenté par Nérethense Z.S soit l'équivalent de Z.Setneshi. Je suis conçu pour les entreprises multinationales et d'autres entreprises comme les PME et TPE, avec création automatisée de documents professionnels, gestion de produits de grand marché. Posez votre question ou utilisez /compta, /manage-product, ou /generate-report.",
+                "Bienvenue sur Vyft Nérethense, assistant IA professionnel alimenté par Nérethense Z.S soit l'équivalent de Z.Setneshi. Je suis conçu pour les entreprises du marché principal et d'autres entreprises comme les PME et TPE, avec création automatisée de documents professionnels, gestion de produits de grand marché. Posez votre question ou utilisez /compta, /manage-product, ou /generate-report.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -428,15 +428,47 @@ export default function SquareAIFloat() {
     try {
       // Suggestion automatique du design, couleurs et style
       let context = `
-Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises. 
-Dès qu'on te demande de générer un document (business plan, rapport, contrat, etc.), tu dois proposer un design complet : 
-- couleurs adaptées au contexte (ex : business plan = bleu/gris, contrat = gris/noir, etc.)
-- polices professionnelles (Lato, Roboto, Arial)
-- structure DynamicReport : title, type, design (pages, sections, style, couleurs)
-- inclure CGVU comme section si pertinent
-- jamais de faute, jamais de clé "report" à la racine
-- chaque page et section doit avoir une clé "style"
-- le JSON doit être complet et prêt pour PDF, sans texte libre ni explication
+Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises.
+Quand tu dois générer un document, tu dois proposer un design complexe et structuré, similaire à cet exemple :
+
+{
+  "title": "Curiculum Vitae",
+  "type": "CV",
+  "design": {
+    "colors": {
+      "primary": "#00796B",
+      "secondary": "#FFFFFF",
+      "highlight": "#00F7FF",
+      "background": "#FFFFFF",
+      "text": "#000000",
+      "lightText": "#757575"
+    },
+    "fonts": {
+      "title": "Lato",
+      "body": "Roboto"
+    }
+  },
+  "pages": [
+    {
+      "title": "Page de Garde",
+      "style": { "backgroundColor": "#FFFFFF", "padding": "20px" },
+      "sections": [
+        { "title": "Nom et Prénom", "style": { "fontFamily": "Lato", "fontSize": 24, "color": "#000000", "textAlign": "center" } },
+        { "title": "Titre professionnel", "style": { "fontFamily": "Lato", "fontSize": 18, "color": "#000000", "textAlign": "center" } },
+        { "title": "Photo de Profil", "style": { "textAlign": "center", "border": "1px solid #000000", "borderRadius": 50 } },
+        { "title": "Coordonnées", "style": { "fontFamily": "Lato", "fontSize": 12, "color": "#000000", "textAlign": "center" } },
+        { "title": "Bande Diagonale", "style": { "backgroundColor": "#00F7FF", "transform": "rotate(45deg)", "width": "100%", "height": "100%", "position": "absolute", "top": "0", "left": "0", "opacity": 0.2 } }
+      ]
+    }
+    // ...autres pages...
+  ]
+}
+
+Règles strictes :
+- Toujours utiliser des couleurs hexadécimales sur 6 caractères (#FFFFFF).
+- Les styles doivent être détaillés et chaque section/page doit avoir une clé "style".
+- Jamais de texte libre ou d’explication, uniquement un JSON complet et prêt pour PDF.
+- Propose des designs aussi complexes et professionnels que l’exemple ci-dessus.
 `;
 
       if (comptaData) {
@@ -494,6 +526,43 @@ Données disponibles :
         setMessages((msgs) => [
           ...msgs,
           { from: "ai", text: `Document "${docData.title}" généré avec succès.` },
+          {
+            from: "ai",
+            text: `💡 Astuce : Pour garantir la compatibilité, corrige toujours ton JSON selon l'exemple suivant :
+{
+  "title": "Curiculum Vitae",
+  "type": "CV",
+  "design": {
+    "colors": {
+      "primary": "#00796B",
+      "secondary": "#FFFFFF",
+      "highlight": "#00F7FF",
+      "background": "#FFFFFF",
+      "text": "#000000",
+      "lightText": "#757575"
+    },
+    "fonts": {
+      "title": "Lato",
+      "body": "Roboto"
+    }
+  },
+  "pages": [
+    {
+      "title": "Page de Garde",
+      "style": { "backgroundColor": "#FFFFFF", "padding": "20px" },
+      "sections": [
+        { "title": "Nom et Prénom", "style": { "fontFamily": "Lato", "fontSize": 24, "color": "#000000", "textAlign": "center" } },
+        { "title": "Titre professionnel", "style": { "fontFamily": "Lato", "fontSize": 18, "color": "#000000", "textAlign": "center" } },
+        { "title": "Photo de Profil", "style": { "textAlign": "center", "border": "1px solid #000000", "borderRadius": 50 } },
+        { "title": "Coordonnées", "style": { "fontFamily": "Lato", "fontSize": 12, "color": "#000000", "textAlign": "center" } },
+        { "title": "Bande Diagonale", "style": { "backgroundColor": "#00F7FF", "transform": "rotate(45deg)", "width": "100%", "height": "100%", "position": "absolute", "top": "0", "left": "0", "opacity": 0.2 } }
+      ]
+    }
+    // ...autres pages...
+  ]
+}
+`
+          }
         ]);
       }
     } catch (error) {
@@ -720,6 +789,24 @@ Données disponibles :
             Envoyer
           </button>
         </form>
+        {/* Suggestion de prompt */}
+        <div
+          style={{
+            marginTop: 6,
+            fontSize: 13,
+            color: "#1a7f6b",
+            background: "rgba(255,255,255,0.08)",
+            borderRadius: 8,
+            padding: "6px 12px",
+            cursor: "pointer",
+            fontWeight: 500,
+            maxWidth: 340,
+            alignSelf: "flex-start"
+          }}
+          onClick={() => setInput("Fais-moi CV ultra-design avec des bandes vertes satin #1a7f6b et contenue bien garni (puces, Titre ligne banderole...etc)  en JSON valide")}
+        >
+          💡 Suggestion : Fais-moi CV ultra-design avec des bandes vertes satin #1a7f6b et contenue bien garni (puces, Titre ligne banderole...etc)  en JSON valide !
+        </div>
       </div>
       <style jsx global>{`
         @keyframes dotBounce {

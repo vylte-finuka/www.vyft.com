@@ -7,9 +7,17 @@ import {
   Image,
   StyleSheet,
   Font,
+  Svg,
+  Path,
 } from "@react-pdf/renderer";
 
-// Polices Google officielles : liens directs vers les sources TTF
+// Register fallback font
+Font.register({
+  family: "Arial",
+  src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf",
+});
+
+// Register additional fonts
 Font.register({
   family: "Lato",
   src: "https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf",
@@ -18,20 +26,17 @@ Font.register({
   family: "Roboto",
   src: "https://github.com/googlefonts/roboto-2/raw/refs/heads/main/src/hinted/Roboto-Regular.ttf",
 });
-Font.register({
-  family: "Arial",
-  src: "https://github.com/adrienverge/copr-some-nice-fonts/raw/refs/heads/master/Arial.ttf",
-});
 
 export type DynamicSection = {
   title?: string;
-  content?: string;
+  content?: string | any[];
   table?: { headers: string[]; rows: string[][] };
   image?: string;
   signature?: string;
   custom?: React.ReactNode;
   style?: any;
-  watermarkImg?: string; // image filigrane possible
+  watermarkImg?: string;
+  subContent?: any[];
 };
 
 export type DynamicPage = {
@@ -49,7 +54,7 @@ export default function DynamicReport(props: {
   type?: string;
   content?: string;
   props?: any;
-  design?: any; // instructions IA ou template complet
+  design?: any;
   watermark?: string;
   watermarkImg?: string;
   logo?: string;
@@ -57,9 +62,8 @@ export default function DynamicReport(props: {
   sections?: DynamicSection[];
   table?: { headers: string[]; rows: string[][] };
   signature?: string;
-  colors?: { [key: string]: string }; // couleurs personnalisées
+  colors?: { [key: string]: string };
 }) {
-  // Fusionne design IA et props classiques
   const design = props.design || {};
   const pages: DynamicPage[] =
     (design.pages && Array.isArray(design.pages))
@@ -86,141 +90,87 @@ export default function DynamicReport(props: {
             ]
           }];
 
+  function resolveStyle(style: any) {
+    return style ? { ...style, fontFamily: style.fontFamily || "Arial" } : { fontFamily: "Arial" };
+  }
+
+  function resolveImage(src?: string) {
+    if (!src) return "";
+    if (src.startsWith("data:image")) return src;
+    return src;
+  }
+
+  function renderSvg(item: any) {
+    return (
+      <Svg viewBox={item.viewBox || "0 0 210 96"} style={resolveStyle(item.style || {})}>
+        {item.children && item.children.map((child: any, idx: number) => (
+          <Path key={idx} d={child.d} fill={child.fill} stroke={child.stroke} strokeWidth={child.strokeWidth || 1} />
+        ))}
+      </Svg>
+    );
+  }
+
+  function renderListItem(li: string, bulletStyle: any, style: any) {
+    const [mainText, progress] = li.trim().split(/\s+(●|○)+$/);
+    return (
+      <View style={resolveStyle(style)}>
+        {bulletStyle && bulletStyle.type === "circle" && (
+          <View style={resolveStyle(bulletStyle.style)} />
+        )}
+        <Text style={resolveStyle(style)}>{mainText.trim()}</Text>
+        {progress && <Text style={resolveStyle(style)}>{progress}</Text>}
+      </View>
+    );
+  }
+
+  function renderContent(item: any) {
+    if (item.type === "image" && item.url) {
+      return <Image key={item.url} src={resolveImage(item.url)} style={resolveStyle(item.style || {})} />;
+    }
+    if (item.type === "text") {
+      return (
+        <Text key={item.value} style={resolveStyle(item.style || {})}>
+          {item.value.split("\n").map((line: string, lineIdx: number) => (
+            <Text key={lineIdx} style={resolveStyle({ display: "block" })}>{line}</Text>
+          ))}
+        </Text>
+      );
+    }
+    if (item.type === "list" && Array.isArray(item.items)) {
+      return (
+        <View key={item.items.join("-")} style={resolveStyle(item.style || {})}>
+          {item.items.map((li: string, liIdx: any) => renderListItem(li, item.bulletStyle, item.style))}
+        </View>
+      );
+    }
+    if (item.type === "svg") {
+      return renderSvg(item);
+    }
+    if (item.type === "view" && Array.isArray(item.subContent)) {
+      return (
+        <View key={`view-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`} style={resolveStyle(item.style || {})}>
+          {item.subContent.map((subItem: any, subIdx: any) => renderContent(subItem))}
+        </View>
+      );
+    }
+    return null;
+  }
+
   return (
     <Document>
       {pages.map((page, idx) => (
-        <Page
-          key={idx}
-          style={{
-            ...styles.body,
-            ...(page.style || {}),
-            fontFamily: page.font || "Arial", // <-- force Arial standard
-            backgroundColor: props.colors?.background || "#fff",
-          }}
-        >
-          {/* Filigrane texte */}
-          {page.watermark && (
-            <Text
-              style={{
-                position: "absolute",
-                top: "45%",
-                left: "10%",
-                opacity: 0.12,
-                fontSize: 80,
-                color: props.colors?.watermark || "#1a7f6b",
-                transform: "rotate(-30deg)",
-                zIndex: 0,
-              }}
-              render={() => page.watermark}
-              fixed
-            />
-          )}
-          {/* Filigrane image */}
-          {page.watermarkImg && (
-            <Image
-              src={page.watermarkImg}
-              style={{
-                position: "absolute",
-                top: "30%",
-                left: "25%",
-                width: 300,
-                height: 300,
-                opacity: 0.09,
-                zIndex: 0,
-              }}
-              fixed
-            />
-          )}
-          {/* Logo entreprise */}
-          {page.logo && (
-            <Image
-              src={page.logo}
-              style={{
-                width: 120,
-                height: 48,
-                marginBottom: 18,
-                alignSelf: "center",
-              }}
-            />
-          )}
-          {/* Sections dynamiques */}
+        <Page key={idx} style={resolveStyle(page.style)}>
           {page.sections && page.sections.map((sec, i) => (
-            <View key={i} style={{ ...styles.section, ...(sec.style || {}) }}>
+            <View key={i} style={resolveStyle(sec.style)}>
               {sec.watermarkImg && (
                 <Image
-                  src={sec.watermarkImg}
-                  style={{
-                    position: "absolute",
-                    top: "35%",
-                    left: "30%",
-                    width: 200,
-                    height: 200,
-                    opacity: 0.08,
-                    zIndex: 0,
-                  }}
+                  src={resolveImage(sec.watermarkImg)}
+                  style={resolveStyle({ position: "absolute", ...sec.style?.watermarkImgStyle })}
                   fixed
                 />
               )}
-              {sec.title && <Text style={{ ...styles.sectionTitle, color: props.colors?.sectionTitle || "#444" }}>{sec.title}</Text>}
-              {Array.isArray(sec.content)
-                ? sec.content.map((item, idx) => {
-                    if (item.type === "text") {
-                      return (
-                        <Text key={idx} style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
-                          {item.value}
-                        </Text>
-                      );
-                    }
-                    if (item.type === "list" && Array.isArray(item.items)) {
-                      return (
-                        <View key={idx} style={{ marginLeft: 12, marginBottom: 6 }}>
-                          {item.items.map((li: string, liIdx: number) => (
-                            <Text key={liIdx} style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
-                              • {li}
-                            </Text>
-                          ))}
-                        </View>
-                      );
-                    }
-                    if (item.type === "signature") {
-                      return (
-                        <Text key={idx} style={{ ...styles.signature, color: sec.style?.color || "#222" }}>
-                          {item.placeholder || "Signature"}
-                        </Text>
-                      );
-                    }
-                    // Ajoute d'autres types si besoin
-                    return null;
-                  })
-                : sec.content && (
-                    <Text style={{ color: sec.style?.color || "#222", fontSize: sec.style?.fontSize }}>
-                      {sec.content}
-                    </Text>
-                  )
-              }
-              {sec.table && (
-                <View style={styles.table}>
-                  <View style={styles.tableRow}>
-                    {sec.table.headers.map((h, j) => (
-                      <Text key={j} style={{ ...styles.tableHeader, color: props.colors?.tableHeader || "#1a7f6b" }}>{h}</Text>
-                    ))}
-                  </View>
-                  {sec.table.rows.map((row, k) => (
-                    <View key={k} style={styles.tableRow}>
-                      {row.map((cell, l) => (
-                        <Text key={l} style={{ ...styles.tableCell, color: props.colors?.tableCell || "#222" }}>{cell}</Text>
-                      ))}
-                    </View>
-                  ))}
-                </View>
-              )}
-              {sec.image && (
-                <Image src={sec.image} style={{ width: 180, height: 80, margin: 12 }} />
-              )}
-              {sec.signature && (
-                <Text style={{ ...styles.signature, color: props.colors?.signature || "#222" }}>Signature : {sec.signature}</Text>
-              )}
-              {sec.custom}
+              {sec.title && <Text style={resolveStyle(sec.style)}>{sec.title}</Text>}
+              {Array.isArray(sec.content) && sec.content.map((item, idx) => renderContent(item))}
             </View>
           ))}
         </Page>
@@ -229,48 +179,4 @@ export default function DynamicReport(props: {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    padding: 32,
-    fontSize: 13,
-    fontFamily: "Arial",
-    position: "relative",
-  },
-  section: {
-    marginBottom: 14,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#444",
-    marginBottom: 4,
-  },
-  table: {
-    display: "flex",
-    width: "auto",
-    marginBottom: 12,
-  },
-  tableRow: {
-    flexDirection: "row",
-  },
-  tableHeader: {
-    fontWeight: "bold",
-    fontSize: 13,
-    color: "#1a7f6b",
-    padding: 4,
-    borderBottom: "1px solid #e0dbdd",
-    minWidth: 60,
-  },
-  tableCell: {
-    fontSize: 13,
-    padding: 4,
-    minWidth: 60,
-  },
-  signature: {
-    fontSize: 14,
-    color: "#222",
-    marginTop: 18,
-    fontStyle: "italic",
-    textAlign: "right",
-  },
-});
+const styles = StyleSheet.create({});

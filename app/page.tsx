@@ -28,6 +28,32 @@ type Document = {
   createdAt: string;
 };
 
+function autoFixJsonPayload(input: string): string {
+  let fixed = input;
+  fixed = fixed.replace(/#([A-Fa-f0-9]{1,5})([^A-Fa-f0-9])/g, (m, p1, p2) => {
+    if (p1.length < 6) return "#" + p1.padEnd(6, "F") + p2;
+    return "#" + p1 + p2;
+  });
+  fixed = fixed.replace(/"background"\s*:\s*"#F"/g, '"background": "#FFFFFF"');
+  fixed = fixed.replace(/"backgroundColor"\s*:\s*"#F"/g, '"backgroundColor": "#FFFFFF"');
+  fixed = fixed.replace(/"highlight"\s*:\s*"#00F7F"/g, '"highlight": "#00F7FF"');
+  fixed = fixed.replace(/"secondary"\s*:\s*"#F"/g, '"secondary": "#FFFFFF"');
+  fixed = fixed.replace(/"pading"/g, '"padding"');
+  fixed = fixed.replace(/"marginBotom"/g, '"marginBottom"');
+  fixed = fixed.replace(/"fontFammly"/g, '"fontFamily"');
+  fixed = fixed.replace(/"styye"/g, '"style"');
+  fixed = fixed.replace(/""ontFamily"/g, '"fontFamily"');
+  fixed = fixed.replace(/"tttle"/g, '"title"');
+  fixed = fixed.replace(/"textAlign"::"left"/g, '"textAlign":"left"');
+  fixed = fixed.replace(/"height":\s*([0-9]+)px/g, '"height": "$1px"');
+  fixed = fixed.replace(/"borderRadius":\s*([0-9]+)/g, '"borderRadius": $1');
+  fixed = fixed.replace(/{{/g, '{').replace(/}}/g, '}');
+  fixed = fixed.replace(/,(\s*[}\]])/g, '$1');
+  fixed = fixed.replace(/undefined/g, '');
+  fixed = fixed.replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+  return fixed;
+}
+
 export default function Home() {
   const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -647,29 +673,28 @@ export default function Home() {
                         }}
                         onClick={async () => {
                           const jsonInput = prompt(
-                            "Collez le JSON DynamicReport complet (exemple dans la documentation)."
+                            "Collez le JSON DynamicReport complet (exemple dans la documentation, il sera corrigé automatiquement)."
                           );
                           if (!jsonInput) return;
-                          let payload: any = {};
+                          const fixedInput = autoFixJsonPayload(jsonInput);
+                          let sendBody: string;
                           try {
-                            // Correction automatique des guillemets doubles mal fermés
-                            const fixedInput = jsonInput
-                              .replace(/,\s*}/g, '}') // supprime les virgules avant }
-                              .replace(/,\s*]/g, ']'); // supprime les virgules avant ]
-                            payload = JSON.parse(fixedInput);
+                            // On tente de parser pour ajouter l'userId
+                            const payload = JSON.parse(fixedInput);
+                            const userId = secureLocalStorage.getItem("auth0UserId");
+                            payload.userId = userId;
+                            sendBody = JSON.stringify(payload);
                           } catch (e) {
-                            alert("Format JSON invalide !\n" + (e instanceof Error ? e.message : String(e)));
-                            return;
+                            // Si le parsing échoue, on envoie le JSON corrigé brut
+                            sendBody = fixedInput;
                           }
-                          const userId = secureLocalStorage.getItem("auth0UserId");
-                          payload.userId = userId;
                           const res = await fetch("/api/reportgen", {
                             method: "POST",
                             headers: {
                               "Content-Type": "application/json",
                               "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
                             },
-                            body: JSON.stringify(payload),
+                            body: sendBody,
                           });
                           if (!res.ok) {
                             alert("Erreur lors de la génération du PDF.");
@@ -678,8 +703,14 @@ export default function Home() {
                           const blob = await res.blob();
                           const url = window.URL.createObjectURL(blob);
                           const link = document.createElement("a");
+                          // Nom du fichier selon le titre si possible
+                          let filename = "document_personnalisé.pdf";
+                          try {
+                            const obj = JSON.parse(fixedInput);
+                            if (obj.title) filename = obj.title.replace(/\s/g, "_") + ".pdf";
+                          } catch {}
                           link.href = url;
-                          link.download = `${payload.title ? payload.title.replace(/\s/g, "_") : "document_personnalisé"}.pdf`;
+                          link.download = filename;
                           link.click();
                           window.URL.revokeObjectURL(url);
                         }}

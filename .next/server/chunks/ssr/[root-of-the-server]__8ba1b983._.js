@@ -120,7 +120,7 @@ module.exports = mod;
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
-__turbopack_context__.s({
+/* eslint-disable react/display-name */ __turbopack_context__.s({
     "default": (()=>SquareAIFloat)
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
@@ -164,10 +164,201 @@ async function callmodelAPI(messages) {
     let docData;
     try {
         const parsed = JSON.parse(reply);
-        if (parsed.title && parsed.content) {
+        // Cas spécial : payload racine avec "DynamicReport" ou "title"
+        if (parsed.DynamicReport && parsed.DynamicReport.pages) {
+            // Extraction du format custom
+            const dr = parsed.DynamicReport;
             isDocument = true;
-            docData = parsed;
-            reply = `Document "${parsed.title}" prêt à être généré.`;
+            docData = {
+                title: dr.reportType || dr.title || "Document",
+                type: dr.reportType || dr.type || "business_plan",
+                content: dr.content || "",
+                design: {
+                    pages: (dr.pages || []).map((p)=>({
+                            font: "Arial",
+                            style: {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.title || p.pageTitle || "",
+                                    content: p.content || "",
+                                    style: {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        } else if (parsed.title && parsed.pages) {
+            isDocument = true;
+            docData = {
+                title: parsed.title,
+                type: parsed.type || "business_plan",
+                content: parsed.content || "",
+                design: {
+                    pages: (parsed.pages || []).map((p)=>({
+                            font: "Arial",
+                            style: {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.title || "",
+                                    content: p.content || "",
+                                    style: {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.title && parsed.report.type && parsed.report.design) {
+            isDocument = true;
+            docData = parsed.report;
+            reply = `Document "${parsed.report.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.title && parsed.report.pages) {
+            // Conversion flexible du format "report" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.title,
+                type: r.type || "business_plan",
+                content: r.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.font || "Arial",
+                            style: p.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.title || p.section || "",
+                                    content: p.content || "",
+                                    style: p.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData?.title ?? ""}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.metadata && parsed.report.pages) {
+            // Conversion du format "report" avec "metadata" et "pages" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.metadata.title || "Document",
+                type: r.metadata.format || "business_plan",
+                content: r.metadata.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.layout?.font || "Arial",
+                            style: p.layout?.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.section || p.title || "",
+                                    content: typeof p.content === "object" ? Object.entries(p.content).map(([k, v])=>Array.isArray(v) ? `${k}: ${v.join(", ")}` : `${k}: ${v}`).join("\n") : p.content || "",
+                                    style: p.layout?.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.metadata.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        } else if (parsed.report && parsed.report.format === "DynamicReport" && parsed.report.pages) {
+            // Conversion du format "report" avec "format": "DynamicReport" en DynamicReport
+            const r = parsed.report;
+            isDocument = true;
+            docData = {
+                title: r.title || "Document",
+                type: r.format || "business_plan",
+                content: r.content || "",
+                design: {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.font || "Arial",
+                            style: p.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.section || p.title || "",
+                                    content: p.content || "",
+                                    style: p.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            reply = `Document "${docData.title}" prêt à être généré.`;
+        } else if (parsed.report) {
+            // Extraction générique du payload même si le format n'est pas strictement reconnu
+            const r = parsed.report;
+            docData = {
+                title: r.title || r.metadata?.title || "Document",
+                type: r.type || r.format || r.metadata?.format || "business_plan",
+                content: r.content || r.metadata?.content || "",
+                design: r.design || {
+                    pages: (r.pages || []).map((p)=>({
+                            font: p.font || p.layout?.font || "Arial",
+                            style: p.style || p.layout?.style || {
+                                backgroundColor: "#fff",
+                                padding: 32
+                            },
+                            sections: [
+                                {
+                                    title: p.section || p.title || "",
+                                    content: p.content || "",
+                                    style: p.sectionStyle || p.layout?.sectionStyle || {
+                                        color: "#222",
+                                        fontSize: 14
+                                    }
+                                }
+                            ]
+                        })),
+                    colors: r.colors || r.metadata?.colors || {
+                        background: "#fff"
+                    }
+                }
+            };
+            isDocument = true; // Force la génération
+            reply = `Document "${docData.title}" prêt à être généré.`;
         }
     } catch (e) {
     // Not JSON, treat as regular text response
@@ -348,11 +539,12 @@ function SquareAIFloat() {
             ]);
         setLoading(true);
         setInput("");
-        // Vérifie si l'input utilisateur est déjà un JSON valide
+        // Détection et envoi direct du payload DynamicReport saisi par l'utilisateur
         try {
             const parsed = JSON.parse(input);
-            if (parsed.title && parsed.content) {
-                const cleaned = cleanObject(parsed); // Nettoie et retire les images non valides
+            if (parsed && typeof parsed === "object" && parsed.title && parsed.type && parsed.design && Array.isArray(parsed.design.pages)) {
+                const cleaned = cleanObject(parsed);
+                // ENVOI DIRECT À L'API /reportgen
                 await generatePDF(cleaned);
                 setMessages((msgs)=>[
                         ...msgs,
@@ -365,151 +557,76 @@ function SquareAIFloat() {
                 return;
             }
         } catch (e) {
-        // Ce n'est pas un JSON, on continue le flow normal
+        // Si ce n'est pas un JSON, on continue le flow normal
         }
         try {
-            // Handle /compta command
-            if (input.trim().toLowerCase() === "/compta") {
-                if (!comptaData) {
-                    throw new Error("Impossible de récupérer vos informations de compte.");
-                }
-                const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
-                const influenceWeek = comptaData.influence?.week ?? 0;
-                const influenceMonth = comptaData.influence?.month ?? 0;
-                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
-                setMessages((msgs)=>[
-                        ...msgs,
-                        {
-                            from: "ai",
-                            text: `Comptabilité :\n` + `- Pas aujourd'hui : ${comptaData.dailySteps}\n` + `- Distance : ${comptaData.dailyDistance} km\n` + `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` + `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` + `- Marcheur le plus fidèle : ${topUser}\n` + `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` + `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n` + `- Gestion produits : ${productSummary}\n`
-                        }
-                    ]);
-                setLoading(false);
-                return;
-            }
-            // Handle /manage-product command
-            if (input.trim().toLowerCase().startsWith("/manage-product")) {
-                const { reply } = await callmodelAPI([
-                    {
-                        from: "user",
-                        text: input
-                    }
-                ]);
-                setMessages((msgs)=>[
-                        ...msgs,
-                        {
-                            from: "ai",
-                            text: reply
-                        }
-                    ]);
-                setLoading(false);
-                return;
-            }
-            // Handle /generate-report command
-            if (input.trim().toLowerCase().startsWith("/generate-report")) {
-                const { reply, isDocument, docData } = await callmodelAPI([
-                    {
-                        from: "user",
-                        text: input
-                    }
-                ]);
-                if (isDocument && docData) {
-                    await generatePDF(docData);
-                    setMessages((msgs)=>[
-                            ...msgs,
-                            {
-                                from: "ai",
-                                text: `Rapport "${docData.title}" généré avec succès.`
-                            }
-                        ]);
-                } else {
-                    setMessages((msgs)=>[
-                            ...msgs,
-                            {
-                                from: "ai",
-                                text: reply || "Erreur : Aucun rapport généré. Veuillez préciser le contenu (ex: /generate-report invoice client:Acme title:Invoice123)."
-                            }
-                        ]);
-                }
-                setLoading(false);
-                return;
-            }
-            function formatDateFr(dateStr) {
-                const d = new Date(dateStr);
-                return d.toLocaleDateString("fr-FR", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric"
-                });
-            }
-            // Build context for AI
-            let context = "";
+            // Suggestion automatique du design, couleurs et style
+            let context = `
+Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises.
+Quand tu dois générer un document PDF, tu dois répondre uniquement par un JSON strictement valide, sans texte libre ni explication, au format suivant :
+
+{
+  "title": "Titre du document",
+  "type": "TypeDuDocument",
+  "design": {
+    "colors": {
+      "primary": "#00796B",
+      "secondary": "#FFFFFF",
+      "highlight": "#4DB6AC",
+      "background": "#FFFFFF",
+      "text": "#212121",
+      "lightText": "#757575"
+    },
+    "fonts": {
+      "title": "Lato",
+      "body": "Roboto"
+    }
+  },
+  "pages": [
+    {
+      "style": {
+        "pageSize": "A4",
+        "margin": "20mm",
+        "backgroundColor": "#FFFFFF"
+      },
+      "sections": [
+        {
+          "style": { "fontSize": 14, "color": "#00796B", "fontFamily": "Lato" },
+          "content": [
+            { "type": "text", "value": "Texte parfaitement orthographié.", "style": { "fontSize": 14, "color": "#212121", "fontFamily": "Roboto" } },
+            { "type": "view", "subContent": [ /* ... */ ], "style": { "flexDirection": "row" } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+Règles strictes :
+- Toutes les couleurs doivent être au format hexadécimal 6 caractères (#FFFFFF).
+- Jamais de valeurs comme #F ou #FFF, toujours #FFFFFF ou #000000.
+- Toutes les clés "style" sont obligatoires pour chaque section et chaque page.
+- Les sections doivent avoir "content" sous forme de tableau d’objets {type, value} ou {type: "view", subContent: [...]}, jamais d’objet complexe ou de clé manquante.
+- Jamais de texte explicatif, jamais de clé "report" à la racine.
+- Le JSON doit être testable dans un validateur et prêt à l’usage sans correction humaine.
+- Tous les textes doivent être sans faute d’orthographe ni de grammaire.
+
+IMPORTANT : Si tu ne respectes pas exactement ce format, la génération du PDF échouera. Tu dois valider ton JSON dans un validateur avant de répondre. Ne réponds jamais par du texte libre ou des clés non demandées.
+`;
             if (comptaData) {
-                const influence = comptaData.influence || {};
-                const history7Days = (influence.history7Days || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
-                const historyMonth = (influence.historyMonth || []).map((h)=>`Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`).join("\n");
-                const topUsers = (influence.topUsers || []).map((u, i)=>`${i + 1}. ${u.name} (${u.count} participations)`).join("\n");
-                const mostInfluentialDay = (influence.history7Days || []).reduce((max, curr)=>curr.count > (max?.count ?? 0) ? curr : max, null);
-                const mostInfluentialDayStr = mostInfluentialDay ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)` : "";
-                const productSummary = comptaData.products ? `Produits gérés : ${comptaData.products.length} (scalable pour multinationales)` : "Aucun produit";
-                context = `Tu es Vyft Nérethense, un assistant IA expert pour entreprises multinationales, alimenté par Grok-3 d'xAI via OpenRouter. Tu offres :
-- Création automatisée de documents professionnels (simples à complexes, ex: rapports, factures, propositions) via /api/reportgen (PDF via @react-pdf/renderer).
-- Gestion de produits scalable (CRUD via commandes).
-- Réponses sans fautes de frappe, conformes aux standards de Microsoft/Carrefour.
-Pour documents, output JSON : {"title": "Titre", "content": "Contenu", "props": {...}}. Exemple pour facture : {"title": "Facture #123", "content": "Détails facture...", "props": {"client": "Acme", "amount": 1000}}.
-Reste modeste, factuel, poli.
+                context += `
 Données disponibles :
 - Pas aujourd'hui : ${comptaData.dailySteps}
 - Distance aujourd'hui : ${comptaData.dailyDistance} km
 - Profit aujourd'hui : ${comptaData.dailyRevenue} €
 - Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
-- Top marcheurs : ${topUsers}
-- Influence aujourd'hui : ${influence.day ?? 0}
-- Influence semaine : ${influence.week ?? 0}
-- Influence mois : ${influence.month ?? 0}
-- Historique 7 jours : ${history7Days}
-${historyMonth ? `- Historique mensuel : ${historyMonth}\n` : ""}
-${mostInfluentialDayStr}
-- Produits : ${productSummary}
+- Produits : ${comptaData.products ? `Produits gérés : ${comptaData.products.length}` : "Aucun produit"}
 `;
             }
             if (cgvu) {
-                context += `\n\nCGVU : ${cgvu}\n\n`;
+                context += `\nCGVU : ${cgvu}\n`;
             }
-            context += `
-Tu es un assistant IA expert en génération de documents administratifs pour entreprises (business plan, bilan, rapport annuel, contrat, PV d’AG, statuts, factures, devis, etc.), même les plus complexes et sur plusieurs pages.
-
-Pour chaque document, génère toujours un JSON structuré compatible avec le composant DynamicReport, incluant :
-- "title" : titre du document
-- "type" : type de document (ex : business_plan, bilan, contrat, etc.)
-- "design" : { "pages": [ ... ] } où chaque page contient "font", "sections" (tableaux, textes, signatures, images valides), "colors", "watermark", etc.
-
-Exemple de document complexe multi-pages :
-{
-  "title": "Business Plan 2025",
-  "type": "business_plan",
-  "design": {
-    "pages": [
-      {
-        "font": "Lato",
-        "sections": [
-          { "title": "Résumé exécutif", "content": "..." }
-        ]
-      },
-      {
-        "font": "Roboto",
-        "sections": [
-          { "title": "Analyse de marché", "table": { ... } }
-        ]
-      }
-    ],
-    "colors": { "background": "#f5f5f5", ... }
-  }
-}
-
-Génère toujours le JSON complet, même pour les documents longs ou complexes (plusieurs pages, tableaux, signatures, filigranes, etc.).
-Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
-`;
+            // Envoi à l'IA avec contexte enrichi
             const { reply, isDocument, docData } = await callmodelAPI([
                 {
                     from: "user",
@@ -543,7 +660,8 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                         }
                     ]);
             }
-            if (isDocument && docData) {
+            // Si l'IA retourne un JSON DynamicReport valide, on génère le PDF automatiquement
+            if (isDocument && docData && docData.title && docData.type && docData.design && Array.isArray(docData.design.pages)) {
                 await generatePDF(docData);
                 setMessages((msgs)=>[
                         ...msgs,
@@ -570,11 +688,10 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
         if (!docFormData.title || !docFormData.type) return;
         setDocLoading(true);
         try {
-            const docPrompt = `Générer un document de type ${docFormData.type} avec le titre "${docFormData.title}" et les paramètres : ${JSON.stringify(docFormData.params)}. Retourner JSON : {"title": "Titre", "content": "Contenu", "props": {...}}.`;
             const { reply, isDocument, docData } = await callmodelAPI([
                 {
                     from: "user",
-                    text: context + docPrompt
+                    text: context + prompt
                 }
             ]);
             if (isDocument && docData) {
@@ -669,12 +786,12 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 542,
+                            lineNumber: 632,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 526,
+                        lineNumber: 616,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
@@ -689,7 +806,7 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 544,
+                        lineNumber: 634,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
@@ -705,13 +822,13 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 555,
+                        lineNumber: 645,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 525,
+                lineNumber: 615,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -748,12 +865,12 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                                         text: msg.text
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 596,
+                                        lineNumber: 686,
                                         columnNumber: 17
                                     }, this) : msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 594,
+                                    lineNumber: 684,
                                     columnNumber: 13
                                 }, this)),
                             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -790,23 +907,23 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 620,
+                                            lineNumber: 710,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 604,
+                                        lineNumber: 694,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 622,
+                                        lineNumber: 712,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 603,
+                                lineNumber: 693,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -814,13 +931,13 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 625,
+                                lineNumber: 715,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 582,
+                        lineNumber: 672,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("form", {
@@ -858,7 +975,7 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                                 className: "jsx-7d37b0088d58e5a9"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 634,
+                                lineNumber: 724,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -881,19 +998,19 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 654,
+                                lineNumber: 744,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 627,
+                        lineNumber: 717,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 568,
+                lineNumber: 658,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__["default"], {
@@ -903,7 +1020,7 @@ Respecte la structure et n’utilise que des images valides (PNG/JPG/SVG).
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 502,
+        lineNumber: 592,
         columnNumber: 5
     }, this);
 }
@@ -927,7 +1044,7 @@ const TypingText = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$externals$5d
         children: displayed
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 707,
+        lineNumber: 797,
         columnNumber: 10
     }, this);
 });
@@ -950,7 +1067,7 @@ function Bubble({ from, text, children }) {
         children: children ? children : text
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 712,
+        lineNumber: 802,
         columnNumber: 5
     }, this);
 }
@@ -978,18 +1095,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 751,
+                lineNumber: 841,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 752,
+                lineNumber: 842,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 735,
+        lineNumber: 825,
         columnNumber: 5
     }, this);
 }
@@ -1004,27 +1121,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 760,
+                lineNumber: 850,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 761,
+                lineNumber: 851,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 762,
+                lineNumber: 852,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 759,
+        lineNumber: 849,
         columnNumber: 5
     }, this);
 }
@@ -1043,7 +1160,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 769,
+        lineNumber: 859,
         columnNumber: 5
     }, this);
 }

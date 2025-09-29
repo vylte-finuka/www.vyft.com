@@ -3,5 +3,6 @@
   "/api/check-subscription-status": "pages/api/check-subscription-status.js",
   "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
   "/api/reportgen": "pages/api/reportgen.js",
+  "/api/vyfthealth_proc": "pages/api/vyfthealth_proc.js",
   "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js"
 }

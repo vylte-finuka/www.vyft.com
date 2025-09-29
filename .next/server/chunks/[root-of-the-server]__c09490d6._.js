@@ -26,6 +26,22 @@ const mod = await __turbopack_context__.y("@react-pdf/renderer");
 __turbopack_context__.n(mod);
 __turbopack_async_result__();
 } catch(e) { __turbopack_async_result__(e); } }, true);}),
+"[externals]/path [external] (path, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("path", () => require("path"));
+
+module.exports = mod;
+}}),
+"[externals]/fs [external] (fs, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("fs", () => require("fs"));
+
+module.exports = mod;
+}}),
 "[project]/app/components/DynamicReport.tsx [api] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -36,10 +52,12 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/@react-pdf/renderer [external] (@react-pdf/renderer, esm_import)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/path [external] (path, cjs)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
     __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__
 ]);
 ([__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+;
 ;
 ;
 // Polices Google officielles : liens directs vers les sources TTF
@@ -80,17 +98,24 @@ function DynamicReport(props) {
         }
     ];
     function resolveImage(src) {
-        if (!src) return "";
-        if (/^https?:\/\//.test(src)) {
-            const urlWithoutParams = src.split("?")[0];
-            // Si l'URL n'a pas d'extension reconnue
-            if (!/\.(png|jpg|jpeg|webp)$/i.test(urlWithoutParams)) {
-                // Utilise le proxy images.weserv.nl pour convertir en PNG
-                return `https://images.weserv.nl/?url=${encodeURIComponent(src)}&output=jpg`;
+        // Si pas de src, retourne le chemin absolu du fallback
+        if (!src) return __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), "public", "tmp", "default.jpg");
+        // Si chemin local (commence par /tmp/)
+        if (src.startsWith("/tmp/")) {
+            if ("TURBOPACK compile-time truthy", 1) {
+                const absPath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), "public", src);
+                try {
+                    __turbopack_context__.r("[externals]/fs [external] (fs, cjs)").accessSync(absPath);
+                    return absPath;
+                } catch  {
+                    // Fallback si le fichier n'existe pas
+                    return __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), "public", "tmp", "default.jpg");
+                }
             }
+            // Côté client, retourne le chemin relatif
             return src;
         }
-        // Chemin relatif
+        // Si chemin relatif
         return src.startsWith("/") ? src : "/" + src;
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Document"], {
@@ -117,7 +142,7 @@ function DynamicReport(props) {
                         fixed: true
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 118,
+                        lineNumber: 126,
                         columnNumber: 13
                     }, this),
                     page.watermarkImg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -134,7 +159,7 @@ function DynamicReport(props) {
                         fixed: true
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 135,
+                        lineNumber: 143,
                         columnNumber: 13
                     }, this),
                     page.logo && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -147,7 +172,7 @@ function DynamicReport(props) {
                         }
                     }, void 0, false, {
                         fileName: "[project]/app/components/DynamicReport.tsx",
-                        lineNumber: 151,
+                        lineNumber: 159,
                         columnNumber: 13
                     }, this),
                     page.sections && page.sections.map((sec, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
@@ -167,7 +192,7 @@ function DynamicReport(props) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 166,
+                                    lineNumber: 174,
                                     columnNumber: 17
                                 }, this),
                                 sec.watermarkImg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -184,7 +209,7 @@ function DynamicReport(props) {
                                     fixed: true
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 179,
+                                    lineNumber: 187,
                                     columnNumber: 17
                                 }, this),
                                 sec.title && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
@@ -195,7 +220,7 @@ function DynamicReport(props) {
                                     children: sec.title
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 193,
+                                    lineNumber: 201,
                                     columnNumber: 29
                                 }, this),
                                 Array.isArray(sec.content) ? sec.content.map((item, idx)=>{
@@ -228,7 +253,7 @@ function DynamicReport(props) {
                                             }
                                         }, idx, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 213,
+                                            lineNumber: 221,
                                             columnNumber: 25
                                         }, this);
                                     }
@@ -241,7 +266,7 @@ function DynamicReport(props) {
                                             children: item.value
                                         }, idx, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 231,
+                                            lineNumber: 239,
                                             columnNumber: 25
                                         }, this);
                                     }
@@ -262,12 +287,12 @@ function DynamicReport(props) {
                                                     ]
                                                 }, liIdx, true, {
                                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 248,
                                                     columnNumber: 29
                                                 }, this))
                                         }, idx, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 238,
+                                            lineNumber: 246,
                                             columnNumber: 25
                                         }, this);
                                     }
@@ -280,7 +305,7 @@ function DynamicReport(props) {
                                             children: item.placeholder || "Signature"
                                         }, idx, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 249,
+                                            lineNumber: 257,
                                             columnNumber: 25
                                         }, this);
                                     }
@@ -293,7 +318,7 @@ function DynamicReport(props) {
                                     children: sec.content
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 257,
+                                    lineNumber: 265,
                                     columnNumber: 21
                                 }, this),
                                 sec.table && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
@@ -309,12 +334,12 @@ function DynamicReport(props) {
                                                     children: h
                                                 }, j, false, {
                                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                                    lineNumber: 266,
+                                                    lineNumber: 274,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/DynamicReport.tsx",
-                                            lineNumber: 264,
+                                            lineNumber: 272,
                                             columnNumber: 19
                                         }, this),
                                         sec.table.rows.map((row, k)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["View"], {
@@ -327,18 +352,18 @@ function DynamicReport(props) {
                                                         children: cell
                                                     }, l, false, {
                                                         fileName: "[project]/app/components/DynamicReport.tsx",
-                                                        lineNumber: 272,
+                                                        lineNumber: 280,
                                                         columnNumber: 25
                                                     }, this))
                                             }, k, false, {
                                                 fileName: "[project]/app/components/DynamicReport.tsx",
-                                                lineNumber: 270,
+                                                lineNumber: 278,
                                                 columnNumber: 21
                                             }, this))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 263,
+                                    lineNumber: 271,
                                     columnNumber: 17
                                 }, this),
                                 sec.image && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Image"], {
@@ -350,7 +375,7 @@ function DynamicReport(props) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 280,
+                                    lineNumber: 288,
                                     columnNumber: 17
                                 }, this),
                                 sec.signature && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["Text"], {
@@ -364,25 +389,25 @@ function DynamicReport(props) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/DynamicReport.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 291,
                                     columnNumber: 17
                                 }, this),
                                 sec.custom
                             ]
                         }, i, true, {
                             fileName: "[project]/app/components/DynamicReport.tsx",
-                            lineNumber: 163,
+                            lineNumber: 171,
                             columnNumber: 13
                         }, this))
                 ]
             }, idx, true, {
                 fileName: "[project]/app/components/DynamicReport.tsx",
-                lineNumber: 107,
+                lineNumber: 115,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/components/DynamicReport.tsx",
-        lineNumber: 105,
+        lineNumber: 113,
         columnNumber: 5
     }, this);
 }
@@ -433,14 +458,6 @@ const styles = __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$
 });
 __turbopack_async_result__();
 } catch(e) { __turbopack_async_result__(e); } }, false);}),
-"[externals]/path [external] (path, cjs)": (function(__turbopack_context__) {
-
-var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
-{
-const mod = __turbopack_context__.x("path", () => require("path"));
-
-module.exports = mod;
-}}),
 "[project]/app/components/reportvyft.tsx [api] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -1017,28 +1034,89 @@ const ReportVyft = ({ reportType, period, data, influenceHistory = [], chartImag
 const __TURBOPACK__default__export__ = ReportVyft;
 __turbopack_async_result__();
 } catch(e) { __turbopack_async_result__(e); } }, false);}),
+"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+const mod = await __turbopack_context__.y("axios");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
 "[project]/pages/api/reportgen.tsx [api] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
 __turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
-    "default": (()=>vyftreport)
+    "default": (()=>vyftreport),
+    "fetchAndSaveImage": (()=>fetchAndSaveImage)
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/@react-pdf/renderer [external] (@react-pdf/renderer, esm_import)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$DynamicReport$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/DynamicReport.tsx [api] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/reportvyft.tsx [api] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/fs [external] (fs, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/path [external] (path, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
     __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__,
     __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$DynamicReport$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__,
-    __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__
+    __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__,
+    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__
 ]);
-([__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$DynamicReport$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
+([__TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$DynamicReport$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 ;
 ;
 ;
 ;
+;
+;
+;
+async function fetchAndSaveImage(url, filename) {
+    try {
+        const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(url, {
+            responseType: "arraybuffer",
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
+            }
+        });
+        const ext = /\.(png|jpg|jpeg|webp)$/i.test(url) ? __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].extname(url) : ".jpg";
+        const filePath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), "public", "tmp", filename + ext);
+        __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].mkdirSync(__TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].dirname(filePath), {
+            recursive: true
+        });
+        __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].writeFileSync(filePath, response.data);
+        return "/tmp/" + filename + ext;
+    } catch (err) {
+        console.error("Erreur téléchargement image :", url, err?.message || err);
+        // Retourne le chemin relatif pour react-pdf
+        return "/tmp/default.jpg";
+    }
+}
+async function processImages(obj) {
+    if (!obj) return obj;
+    if (typeof obj === "object") {
+        for(const key in obj){
+            if (typeof obj[key] === "string" && /^https?:\/\//.test(obj[key])) {
+                const urlWithoutParams = obj[key].split("?")[0];
+                if (!/\.(png|jpg|jpeg|webp)$/i.test(urlWithoutParams)) {
+                    // Télécharge et remplace par le chemin local
+                    const filename = "img_" + Buffer.from(obj[key]).toString("base64").replace(/[^a-zA-Z0-9]/g, "");
+                    obj[key] = await fetchAndSaveImage(obj[key], filename);
+                } else {
+                    // Pour les images avec extension, télécharge aussi localement
+                    const filename = "img_" + Buffer.from(obj[key]).toString("base64").replace(/[^a-zA-Z0-9]/g, "");
+                    obj[key] = await fetchAndSaveImage(obj[key], filename);
+                }
+            } else if (typeof obj[key] === "object") {
+                obj[key] = await processImages(obj[key]);
+            }
+        }
+    }
+    return obj;
+}
 async function vyftreport(req, res) {
     // Sécurité par clé API
     const apiKey = req.headers["x-vyftprogram-api-key"];
@@ -1052,20 +1130,20 @@ async function vyftreport(req, res) {
         return;
     }
     try {
-        const props = req.body;
-        // Choix du composant selon le type/design IA
+        let props = req.body;
+        props = await processImages(props); // <--- Ajout ici
         const useVyft = props.type === "vyft" || !props.design;
         const pdfBlob = await (0, __TURBOPACK__imported__module__$5b$externals$5d2f40$react$2d$pdf$2f$renderer__$5b$external$5d$__$2840$react$2d$pdf$2f$renderer$2c$__esm_import$29$__["pdf"])(useVyft ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$reportvyft$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__["default"], {
             ...props
         }, void 0, false, {
             fileName: "[project]/pages/api/reportgen.tsx",
-            lineNumber: 23,
+            lineNumber: 70,
             columnNumber: 17
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$DynamicReport$2e$tsx__$5b$api$5d$__$28$ecmascript$29$__["default"], {
             ...props
         }, void 0, false, {
             fileName: "[project]/pages/api/reportgen.tsx",
-            lineNumber: 23,
+            lineNumber: 70,
             columnNumber: 45
         }, this)).toBlob();
         res.setHeader("Content-Type", "application/pdf");
@@ -1202,4 +1280,4 @@ __turbopack_async_result__();
 
 };
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__8dcb4e91._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__c09490d6._.js.map
