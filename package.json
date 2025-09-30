@@ -13,7 +13,7 @@
     "@netlify/functions": "^4.1.10",
     "@next/third-parties": "^14.2.13",
     "@react-pdf/renderer": "^4.3.0",
-    "@stripe/stripe-js": "^7.2.0",
+    "checkout-sdk-node": "^3.0.3",
     "alchemy-sdk": "^3.6.1",
     "axios": "^1.8.4",
     "chart.js": "^4.5.0",
