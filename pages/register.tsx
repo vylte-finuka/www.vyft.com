@@ -156,7 +156,7 @@ const CGVU_MARKDOWN = `
 ## Définitions à connaître
 - **Vyft Program** : plateforme SaaS de gestion de la relation client (CRM) et d’analyse d’activité physique.
 - **Utilisateur** : toute personne physique ou morale utilisant Vyft Program.
-- **Prestataire sécurisé** : service tiers spécialisé et certifié pour la gestion des comptes, abonnements et paiements (ex : Stripe).
+- **Prestataire de paiement** : Checkout.com, service tiers certifié pour la gestion des comptes, abonnements et paiements.
 - **Dénomination** : la société éditrice du service, à savoir Vylte-finuka SARL, SIRET 92978865100016, 60 rue François 1er, 75008 Paris, France.
 
 ## À propos de Vyft Program
@@ -168,7 +168,7 @@ Il permet aussi aux services de la commune d’organiser des marchés ou événe
 - Suivi en temps réel du nombre de pas effectués par les clients dans votre enseigne.
 - Analyse des données de fréquentation et de l’engagement client.
 - Tableau de bord pour visualiser les réclamations et les statistiques d’activité.
-- Gestion des abonnements via un **prestataire sécurisé** (Stripe) en mode "pay as you go".
+- Gestion des abonnements via **Checkout.com** à 300 €/mois.
 - Génération et impression de QR codes pour le suivi d’entrée et de sortie (Vyft tag™).
 - Export et impression des statistiques et des tags pour vos opérations marketing.
 - Support technique dédié et gestion des accès utilisateurs.
@@ -178,16 +178,16 @@ Il permet aussi aux services de la commune d’organiser des marchés ou événe
 Les présentes Conditions Générales de Vente et d’Utilisation (CGVU) régissent l’accès et l’utilisation du service Vyft Program, plateforme SaaS de gestion de la relation client (CRM), éditée par la société **Vylte-finuka SARL** (SIRET 92978865100016), 60 rue François 1er, 75008 Paris, France, conforme à la réglementation de l’Union Européenne.
 
 ## 2. Accès au service
-L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement géré par un **prestataire sécurisé**.
+L’accès à Vyft Program nécessite la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes et à les mettre à jour. L’accès au service est conditionné à la souscription d’un abonnement géré par **Checkout.com**.
 
 ## 3. Description du service
 Vyft Program permet la gestion des contacts, des réclamations, des interactions commerciales et l’analyse de données clients. Les fonctionnalités peuvent évoluer à tout moment.
 
 ## 4. Commande et abonnement
-L’abonnement fonctionne aujourd’hui en mode "pay as you go" via un **prestataire sécurisé** (Stripe). Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
+L’abonnement est facturé **300 €/mois** via **Checkout.com**. Nous manipulons les données uniquement dans les cas nécessaires. L’abonnement peut être révoqué à tout moment en contactant le support à l’adresse support@vylte-finuka.com.
 
 ## 5. Prix et paiement
-Les tarifs sont indiqués en euros hors taxes sur le site. Vylte-finuka se réserve le droit de modifier les prix à tout moment, les abonnés en seront informés par email.
+Le tarif est de **300 €/mois** hors taxes. Vylte-finuka se réserve le droit de modifier les prix à tout moment, les abonnés en seront informés par email.
 
 ## 6. Résiliation
 L’utilisateur peut demander la révocation de son abonnement à tout moment en contactant le support à support@vylte-finuka.com. Toute période entamée reste due. Vylte-finuka peut suspendre ou résilier l’accès en cas de non-respect des CGVU.

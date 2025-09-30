@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name */
-
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -9,214 +7,22 @@ import secureLocalStorage from "react-secure-storage";
 
 type Message = { from: "ai" | "user"; text: string };
 
-interface DocumentFormData {
-  type: string;
-  title: string;
-  params: { [key: string]: string };
-}
-
-// Call Grok-3 via /api/ask-ai (OpenRouter with x-ai/grok-3)
-async function callmodelAPI(messages: Message[]): Promise<{
-  reply: string;
-  isDocument?: boolean;
-  docData?: { title: string; content: string; props?: any; type?: string; design?: any };
-}> {
+// IA via OpenAI API (GPT-4o) via API interne sécurisée
+async function callmodelAPI(messages: Message[]): Promise<string> {
   const res = await fetch("/api/ask-ai", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
-    },
+    headers: { "Content-Type": "application/json", "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "" },
     body: JSON.stringify({ messages }),
   });
-
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.statusText}`);
-  }
-
   const data = await res.json();
-  if (data.error) {
-    throw new Error(data.error || "Erreur serveur IA");
-  }
-
-  let reply = data.reply || "";
-  let isDocument = false;
-  let docData: { title: string; content: string; props?: any; type?: string; design?: any } | undefined;
-
-  try {
-    const parsed = JSON.parse(reply);
-
-    // Cas spécial : payload racine avec "DynamicReport" ou "title"
-    if (parsed.DynamicReport && parsed.DynamicReport.pages) {
-      // Extraction du format custom
-      const dr = parsed.DynamicReport;
-      isDocument = true;
-      docData = {
-        title: dr.reportType || dr.title || "Document",
-        type: dr.reportType || dr.type || "business_plan",
-        content: dr.content || "",
-        design: {
-          pages: (dr.pages || []).map((p: any) => ({
-            font: "Arial",
-            style: { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.title || p.pageTitle || "",
-                content: p.content || "",
-                style: { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: { background: "#fff" }
-        }
-      };
-      reply = `Document "${docData.title}" prêt à être généré.`;
-    }
-    // Cas racine "title" + "pages"
-    else if (parsed.title && parsed.pages) {
-      isDocument = true;
-      docData = {
-        title: parsed.title,
-        type: parsed.type || "business_plan",
-        content: parsed.content || "",
-        design: {
-          pages: (parsed.pages || []).map((p: any) => ({
-            font: "Arial",
-            style: { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.title || "",
-                content: p.content || "",
-                style: { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: { background: "#fff" }
-        }
-      };
-      reply = `Document "${docData.title}" prêt à être généré.`;
-    }
-    // Si racine "report", tente d'extraire le vrai document
-    else if (parsed.report && parsed.report.title && parsed.report.type && parsed.report.design) {
-      isDocument = true;
-      docData = parsed.report;
-      reply = `Document "${parsed.report.title}" prêt à être généré.`;
-    }
-    else if (parsed.report && parsed.report.title && parsed.report.pages) {
-      // Conversion flexible du format "report" en DynamicReport
-      const r = parsed.report;
-      isDocument = true;
-      docData = {
-        title: r.title,
-        type: r.type || "business_plan",
-        content: r.content || "", // Ajout de la propriété 'content'
-        design: {
-          pages: (r.pages || []).map((p: any) => ({
-            font: p.font || "Arial",
-            style: p.style || { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.title || p.section || "",
-                content: p.content || "",
-                style: p.sectionStyle || { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: r.colors || { background: "#fff" }
-        }
-      };
-      reply = `Document "${docData?.title ?? ""}" prêt à être généré.`;
-    }
-    else if (parsed.report && parsed.report.metadata && parsed.report.pages) {
-      // Conversion du format "report" avec "metadata" et "pages" en DynamicReport
-      const r = parsed.report;
-      isDocument = true;
-      docData = {
-        title: r.metadata.title || "Document",
-        type: r.metadata.format || "business_plan",
-        content: r.metadata.content || "", // Ajout systématique de 'content'
-        design: {
-          pages: (r.pages || []).map((p: any) => ({
-            font: p.layout?.font || "Arial",
-            style: p.layout?.style || { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.section || p.title || "",
-                content: typeof p.content === "object"
-                  ? Object.entries(p.content)
-                      .map(([k, v]) => Array.isArray(v) ? `${k}: ${v.join(", ")}` : `${k}: ${v}`)
-                      .join("\n")
-                  : p.content || "",
-                style: p.layout?.sectionStyle || { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: r.metadata.colors || { background: "#fff" }
-        }
-      };
-      reply = `Document "${docData.title}" prêt à être généré.`;
-    }
-    else if (parsed.report && parsed.report.format === "DynamicReport" && parsed.report.pages) {
-      // Conversion du format "report" avec "format": "DynamicReport" en DynamicReport
-      const r = parsed.report;
-      isDocument = true;
-      docData = {
-        title: r.title || "Document",
-        type: r.format || "business_plan",
-        content: r.content || "",
-        design: {
-          pages: (r.pages || []).map((p: any) => ({
-            font: p.font || "Arial",
-            style: p.style || { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.section || p.title || "",
-                content: p.content || "",
-                style: p.sectionStyle || { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: r.colors || { background: "#fff" }
-        }
-      };
-      reply = `Document "${docData.title}" prêt à être généré.`;
-    }
-    else if (parsed.report) {
-      // Extraction générique du payload même si le format n'est pas strictement reconnu
-      const r = parsed.report;
-      docData = {
-        title: r.title || r.metadata?.title || "Document",
-        type: r.type || r.format || r.metadata?.format || "business_plan",
-        content: r.content || r.metadata?.content || "",
-        design: r.design || {
-          pages: (r.pages || []).map((p: any) => ({
-            font: p.font || p.layout?.font || "Arial",
-            style: p.style || p.layout?.style || { backgroundColor: "#fff", padding: 32 },
-            sections: [
-              {
-                title: p.section || p.title || "",
-                content: p.content || "",
-                style: p.sectionStyle || p.layout?.sectionStyle || { color: "#222", fontSize: 14 }
-              }
-            ]
-          })),
-          colors: r.colors || r.metadata?.colors || { background: "#fff" }
-        }
-      };
-      isDocument = true; // Force la génération
-      reply = `Document "${docData.title}" prêt à être généré.`;
-    }
-  } catch (e) {
-    // Not JSON, treat as regular text response
-  }
-
-  return { reply, isDocument, docData };
+  return data.reply || "";
 }
 
-// Fetch business data (expanded for product management)
 async function getComptaData(enseigne: string, stripeCustomerId: string) {
   const res = await fetch(
-    `/api/vyfthealth_proc?enseigne=${encodeURIComponent(enseigne)}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`,
+    `/api/vyfthealth_proc?enseigne=${encodeURIComponent(
+      enseigne
+    )}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`,
     {
       headers: {
         "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
@@ -225,84 +31,41 @@ async function getComptaData(enseigne: string, stripeCustomerId: string) {
   );
   const data = await res.json();
   if (data.success) {
-    return data.data;
+    // Accès à toutes les métriques
+    return data.data; // contient dailySteps, dailyRevenue, monthlyInvestment, upcomingInvoiceAmount, etc.
   } else {
     throw new Error(data.message || "Erreur API");
   }
 }
 
-// Génération PDF universelle selon le design IA
-async function generatePDF(docData: { title: string; content: string; props?: any; type?: string; design?: any }) {
-  try {
-    // Ajoute le type et toutes les props pour le design IA
-    const userId = secureLocalStorage.getItem("auth0UserId");
-    const payload = {
-      ...docData.props,
-      title: docData.title,
-      content: docData.content,
-      type: docData.type || "report",
-      userId,
-      design: docData.design || undefined, // si l'IA fournit un design spécifique
-    };
-
-    const res = await fetch("/api/reportgen", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      throw new Error(`Échec de la génération du PDF: ${res.statusText}`);
-    }
-
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${docData.title.replace(/\s/g, "_")}.pdf`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Erreur génération PDF:", error);
-    throw error;
-  }
-}
-
 export default function SquareAIFloat() {
   const [open, setOpen] = useState(false);
-  const [docStudioOpen, setDocStudioOpen] = useState(false);
+  type Message = { from: "ai" | "user"; text: string };
   const [messages, setMessages] = useState<Message[]>([
     {
       from: "ai",
-      text:
-                "Bienvenue sur Vyft Nérethense, assistant IA professionnel alimenté par Nérethense Z.S soit l'équivalent de Z.Setneshi. Je suis conçu pour les entreprises du marché principal et d'autres entreprises comme les PME et TPE, avec création automatisée de documents professionnels, gestion de produits de grand marché. Posez votre question ou utilisez /compta, /manage-product, ou /generate-report.",
+      text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [docLoading, setDocLoading] = useState(false);
+
+  // Ajout pour stocker les infos utilisateur
   const [denomination, setDenomination] = useState<string | null>(null);
   const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
   const [comptaData, setComptaData] = useState<any>(null);
   const [cgvu, setCgvu] = useState<string>("");
-  const [docFormData, setDocFormData] = useState<DocumentFormData>({
-    type: "report",
-    title: "",
-    params: {},
-  });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Fetch user info from Auth0
+  // Récupération des infos utilisateur depuis Auth0 (comme dans reports.tsx)
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const userToken = secureLocalStorage.getItem("userToken") as string | null;
         if (!userToken) return;
 
+        // Récupérer les infos utilisateur depuis Auth0
         const userInfoResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/userinfo`,
           {
@@ -314,6 +77,7 @@ export default function SquareAIFloat() {
         );
         const userId = userInfoResponse.data.sub;
 
+        // Récupérer les métadonnées utilisateur (enseigne et stripeCustomerId)
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`,
           {
@@ -333,15 +97,15 @@ export default function SquareAIFloat() {
     fetchUserInfo();
   }, []);
 
-  // Auto-scroll to bottom
+  // Scroll automatique vers le bas uniquement lors de la génération (loading)
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    if (loading && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "auto", block: "end" });
     }
-  }, [messages, loading]);
+  }, [loading]);
 
-  // Fetch business data
   useEffect(() => {
+    // Dès que l'utilisateur est identifié, on charge les données de marcheurs
     if (denomination && stripeCustomerId) {
       getComptaData(denomination, stripeCustomerId)
         .then(setComptaData)
@@ -349,49 +113,44 @@ export default function SquareAIFloat() {
     }
   }, [denomination, stripeCustomerId]);
 
-  // Preload CGVU
+  // Précharge le contenu CGVU depuis la page CGVU (via le script JSON du DOM)
   useEffect(() => {
-    async function fetchCGVU() {
-      try {
-        const res = await fetch("/api/cgvu");
-        const data = await res.json();
-        setCgvu(data.cgvu || "");
-      } catch (e) {
-        console.error("Failed to load CGVU:", e);
+    // On tente de trouver le script JSON sur la page CGVU (si déjà chargé)
+    function tryLoadCGVUFromDOM() {
+      const script = document.getElementById("vyft-cgvu-json");
+      if (script) {
+        try {
+          const data = JSON.parse(script.textContent || "{}");
+          if (data.cgvu) setCgvu(data.cgvu);
+        } catch (e) {
+          // ignore
+        }
       }
     }
-    if (!cgvu) fetchCGVU();
-  }, [cgvu]);
 
-  function cleanObject(obj: any): any {
-    if (Array.isArray(obj)) {
-      return obj
-        .map(cleanObject)
-        .filter((v) => v !== undefined && v !== null && v !== "undefined");
-    } else if (typeof obj === "object" && obj !== null) {
-      const newObj: any = {};
-      for (const k in obj) {
-        // Supprime les clés d'image non supportées
-        if (
-          k === "image" ||
-          k === "watermarkImg" ||
-          (k === "logo" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i)) ||
-          (k === "qrCode" && typeof obj[k] === "string" && !obj[k].match(/\.(png|jpg|jpeg|svg)$/i))
-        ) {
-          continue;
-        }
-        const v = obj[k];
-        if (v !== undefined && v !== null && v !== "undefined") {
-          newObj[k] = cleanObject(v);
-        }
-      }
-      return newObj;
+    // Si déjà sur la page CGVU, on charge tout de suite
+    tryLoadCGVUFromDOM();
+
+    // Sinon, on précharge la page CGVU en arrière-plan et on extrait le JSON
+    if (!cgvu) {
+      fetch("/conditions-generales-de-vente")
+        .then(res => res.text())
+        .then(html => {
+          // Extraction du contenu du script JSON
+          const match = html.match(
+            /<script[^>]*id=["']vyft-cgvu-json["'][^>]*>([\s\S]*?)<\/script>/
+          );
+          if (match && match[1]) {
+            try {
+              const data = JSON.parse(match[1]);
+              if (data.cgvu) setCgvu(data.cgvu);
+            } catch (e) {
+              // ignore
+            }
+          }
+        });
     }
-    if (typeof obj === "string") {
-      return obj.replace(/undefined/gi, "").trim();
-    }
-    return obj;
-  }
+  }, []);
 
   async function sendMessage() {
     if (!input.trim()) return;
@@ -400,221 +159,115 @@ export default function SquareAIFloat() {
     setLoading(true);
     setInput("");
 
-    // Détection et envoi direct du payload DynamicReport saisi par l'utilisateur
-    try {
-      const parsed = JSON.parse(input);
-      if (
-        parsed &&
-        typeof parsed === "object" &&
-        parsed.title &&
-        parsed.type &&
-        parsed.design &&
-        Array.isArray(parsed.design.pages)
-      ) {
-        const cleaned = cleanObject(parsed);
-        // ENVOI DIRECT À L'API /reportgen
-        await generatePDF(cleaned);
+    // Commande spéciale /compta
+    if (input.trim().toLowerCase() === "/compta") {
+      if (!comptaData) {
         setMessages((msgs) => [
           ...msgs,
-          { from: "ai", text: `Document "${cleaned.title}" généré avec succès.` },
+          { from: "ai", text: "Impossible de récupérer vos informations de compte." }
         ]);
         setLoading(false);
         return;
       }
-    } catch (e) {
-      // Si ce n'est pas un JSON, on continue le flow normal
-    }
-
-    try {
-      // Suggestion automatique du design, couleurs et style
-      let context = `
-Tu es Nérethense Z.Sethneshi, assistant IA professionnel pour entreprises.
-Quand tu dois générer un document, tu dois proposer un design complexe et structuré, similaire à cet exemple :
-
-{
-  "title": "Curiculum Vitae",
-  "type": "CV",
-  "design": {
-    "colors": {
-      "primary": "#00796B",
-      "secondary": "#FFFFFF",
-      "highlight": "#00F7FF",
-      "background": "#FFFFFF",
-      "text": "#000000",
-      "lightText": "#757575"
-    },
-    "fonts": {
-      "title": "Lato",
-      "body": "Roboto"
-    }
-  },
-  "pages": [
-    {
-      "title": "Page de Garde",
-      "style": { "backgroundColor": "#FFFFFF", "padding": "20px" },
-      "sections": [
-        { "title": "Nom et Prénom", "style": { "fontFamily": "Lato", "fontSize": 24, "color": "#000000", "textAlign": "center" } },
-        { "title": "Titre professionnel", "style": { "fontFamily": "Lato", "fontSize": 18, "color": "#000000", "textAlign": "center" } },
-        { "title": "Photo de Profil", "style": { "textAlign": "center", "border": "1px solid #000000", "borderRadius": 50 } },
-        { "title": "Coordonnées", "style": { "fontFamily": "Lato", "fontSize": 12, "color": "#000000", "textAlign": "center" } },
-        { "title": "Bande Diagonale", "style": { "backgroundColor": "#00F7FF", "transform": "rotate(45deg)", "width": "100%", "height": "100%", "position": "absolute", "top": "0", "left": "0", "opacity": 0.2 } }
-      ]
-    }
-    // ...autres pages...
-  ]
-}
-
-Règles strictes :
-- Toujours utiliser des couleurs hexadécimales sur 6 caractères (#FFFFFF).
-- Les styles doivent être détaillés et chaque section/page doit avoir une clé "style".
-- Jamais de texte libre ou d’explication, uniquement un JSON complet et prêt pour PDF.
-- Propose des designs aussi complexes et professionnels que l’exemple ci-dessus.
-`;
-
-      if (comptaData) {
-        context += `
-Données disponibles :
-- Pas aujourd'hui : ${comptaData.dailySteps}
-- Distance aujourd'hui : ${comptaData.dailyDistance} km
-- Profit aujourd'hui : ${comptaData.dailyRevenue} €
-- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
-- Produits : ${comptaData.products ? `Produits gérés : ${comptaData.products.length}` : "Aucun produit"}
-`;
-      }
-      if (cgvu) {
-        context += `\nCGVU : ${cgvu}\n`;
-      }
-
-      // Envoi à l'IA avec contexte enrichi
-      const { reply, isDocument, docData } = await callmodelAPI([
-        { from: "user", text: context + input },
-        ...messages,
-      ]);
-
-      let cleanReply = reply;
-      if (cleanReply) {
-        cleanReply = cleanReply.replace(/undefined/gi, " ");
-        cleanReply = cleanReply.replace(/benvenue|iinvenue|binvenue|invenue|Benvenue/gi, "Bienvenue");
-        cleanReply = cleanReply.replace(/Vyft Nérethhnse|Vyft Nérethense|Nérethhnse/gi, "Vyft Nérethense");
-        cleanReply = cleanReply.replace(/pprfessionnel|prfessionnel|professionnel/gi, "professionnel");
-        cleanReply = cleanReply.replace(/poor|poour|pour/gi, "pour");
-        cleanReply = cleanReply.replace(/certifii|certifé|certiféé|certifiéé/gi, "certifié");
-        cleanReply = cleanReply.replace(/activitt|activittt|activitée|activitée/gi, "activité");
-        cleanReply = cleanReply.replace(/ssistanttIA|ssistant IA|assistanttIA|assistantt IA/gi, "assistant IA");
-        cleanReply = cleanReply.replace(/vouu/gi, "vous");
-        cleanReply = cleanReply.replace(/ee/gi, "et");
-        cleanReply = cleanReply.replace(/([a-zA-Z])\1{1,}/g, "$1");
-        cleanReply = cleanReply.replace(/[\s\n\r]{2,}/g, " ");
-        cleanReply = cleanReply.replace(/\s+([.,;:!?])/g, "$1");
-        cleanReply = cleanReply.trim();
-      }
-
-      if (cleanReply && cleanReply !== "") {
-        setMessages((msgs) => [...msgs, { from: "ai", text: cleanReply }]);
-      }
-
-      // Si l'IA retourne un JSON DynamicReport valide, on génère le PDF automatiquement
-      if (
-        isDocument &&
-        docData &&
-        docData.title &&
-        docData.type &&
-        docData.design &&
-        Array.isArray(docData.design.pages)
-      ) {
-        await generatePDF(docData);
-        setMessages((msgs) => [
-          ...msgs,
-          { from: "ai", text: `Document "${docData.title}" généré avec succès.` },
-          {
-            from: "ai",
-            text: `💡 Astuce : Pour garantir la compatibilité, corrige toujours ton JSON selon l'exemple suivant :
-{
-  "title": "Curiculum Vitae",
-  "type": "CV",
-  "design": {
-    "colors": {
-      "primary": "#00796B",
-      "secondary": "#FFFFFF",
-      "highlight": "#00F7FF",
-      "background": "#FFFFFF",
-      "text": "#000000",
-      "lightText": "#757575"
-    },
-    "fonts": {
-      "title": "Lato",
-      "body": "Roboto"
-    }
-  },
-  "pages": [
-    {
-      "title": "Page de Garde",
-      "style": { "backgroundColor": "#FFFFFF", "padding": "20px" },
-      "sections": [
-        { "title": "Nom et Prénom", "style": { "fontFamily": "Lato", "fontSize": 24, "color": "#000000", "textAlign": "center" } },
-        { "title": "Titre professionnel", "style": { "fontFamily": "Lato", "fontSize": 18, "color": "#000000", "textAlign": "center" } },
-        { "title": "Photo de Profil", "style": { "textAlign": "center", "border": "1px solid #000000", "borderRadius": 50 } },
-        { "title": "Coordonnées", "style": { "fontFamily": "Lato", "fontSize": 12, "color": "#000000", "textAlign": "center" } },
-        { "title": "Bande Diagonale", "style": { "backgroundColor": "#00F7FF", "transform": "rotate(45deg)", "width": "100%", "height": "100%", "position": "absolute", "top": "0", "left": "0", "opacity": 0.2 } }
-      ]
-    }
-    // ...autres pages...
-  ]
-}
-`
-          }
-        ]);
-      }
-    } catch (error) {
+      const topUser = comptaData.influence?.topUsers?.[0]?.name || "Aucun";
+      const influenceWeek = comptaData.influence?.week ?? 0;
+      const influenceMonth = comptaData.influence?.month ?? 0;
       setMessages((msgs) => [
         ...msgs,
-        { from: "ai", text: "Une erreur est survenue. Veuillez réessayer." },
+        {
+          from: "ai",
+          text:
+            `Comptabilité :\n` +
+            `- Pas aujourd'hui : ${comptaData.dailySteps}\n` +
+            `- Distance : ${comptaData.dailyDistance} km\n` +
+            `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` +
+            `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` +
+            `- Marcheur le plus fidèle : ${topUser}\n` +
+            `- Influence cette semaine : ${influenceWeek} marcheur(s) unique(s)\n` +
+            `- Influence ce mois : ${influenceMonth} marcheur(s) unique(s)\n`
+        }
       ]);
-    } finally {
       setLoading(false);
+      return;
     }
-  }
 
-  async function handleDocSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!docFormData.title || !docFormData.type) return;
-
-    setDocLoading(true);
-    try {
-      const { reply, isDocument, docData } = await callmodelAPI([
-        { from: "user", text: context + prompt },
-      ]);
-
-      if (isDocument && docData) {
-        await generatePDF(docData);
-        setMessages((msgs) => [
-          ...msgs,
-          { from: "ai", text: `Document "${docData.title}" généré avec succès.` },
-        ]);
-      } else {
-        setMessages((msgs) => [
-          ...msgs,
-          { from: "ai", text: reply || "Erreur : Impossible de générer le document. Veuillez vérifier les paramètres." },
-        ]);
-      }
-    } catch (error) {
-      setMessages((msgs) => [
-        ...msgs,
-        { from: "ai", text: "Erreur lors de la génération du document. Veuillez réessayer." },
-      ]);
-    } finally {
-      setDocLoading(false);
+    function formatDateFr(dateStr: string) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
     }
-  }
 
-  const context = comptaData
-    ? `Données disponibles :
-- Pas aujourd'hui : ${comptaData.dailySteps}
-- Distance aujourd'hui : ${comptaData.dailyDistance} km
-- Profit aujourd'hui : ${comptaData.dailyRevenue} €
-- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €
-- Produits : ${comptaData.products ? `Produits gérés : ${comptaData.products.length}` : "Aucun produit"}`
-    : "";
+    // Préparation du contexte enrichi pour l'IA
+    let context = "";
+    if (comptaData) {
+      const influence = comptaData.influence || {};
+
+      // Historique par jour (exemple)
+      const history7Days = (influence.history7Days || [])
+        .map((h: any) =>
+          `Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`
+        )
+        .join("\n");
+
+      // Historique par mois (si dispo)
+      const historyMonth = (influence.historyMonth || [])
+        .map((h: any) =>
+          `Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`
+        )
+        .join("\n");
+
+      // Top marcheurs/mois
+      const topUsers = (influence.topUsers || [])
+        .map((u: any, i: number) => `${i + 1}. ${u.name} (${u.count} participations)`)
+        .join("\n");
+
+      // Jours les plus influents
+      const mostInfluentialDay = (influence.history7Days || []).reduce(
+        (max: any, curr: any) => (curr.count > (max?.count ?? 0) ? curr : max),
+        null
+      );
+      const mostInfluentialDayStr = mostInfluentialDay
+        ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)`
+        : "";
+
+      // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
+      context =
+        `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` +
+        `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` +
+        `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` +
+        `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` +
+        `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` +
+        `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` +
+        `- Pas aujourd'hui : ${comptaData.dailySteps}\n` +
+        `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` +
+        `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` +
+        `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` +
+        `- Top marcheurs du mois :\n${topUsers}\n` +
+        `- Influence aujourd'hui : ${influence.day ?? 0}\n` +
+        `- Influence cette semaine : ${influence.week ?? 0}\n` +
+        `- Influence ce mois : ${influence.month ?? 0}\n` +
+        `- Influence cette année : ${influence.year ?? 0}\n` +
+        `- Influence totale : ${influence.all ?? 0}\n` +
+        `- Historique des 7 derniers jours :\n${history7Days}\n` +
+        (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") +
+        `${mostInfluentialDayStr}\n\n`;
+    }
+    // Ajoute le CGVU au contexte IA
+    if (cgvu) {
+      context +=
+        "\n\nVoici les Conditions Générales de Vente et d’Utilisation (CGVU) de Vyft Program, à utiliser pour toute question juridique ou d’utilisation :\n" +
+        cgvu +
+        "\n\n";
+    }
+
+    const reply = await callmodelAPI([
+      { from: "user", text: context + input },
+      ...messages,
+    ]);
+    if (reply && reply.trim() !== "") {
+      setMessages((msgs) => [...msgs, { from: "ai", text: reply }]);
+    }
+    setLoading(false);
+  }
 
   return (
     <div
@@ -623,7 +276,7 @@ Données disponibles :
         bottom: 32,
         right: 32,
         zIndex: 9999,
-        background: "#23272e",
+        background: "#23272e", // Fond plus clair mais sombre, adapté au thème report
         borderRadius: 18,
         boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
         padding: 28,
@@ -633,7 +286,7 @@ Données disponibles :
         display: "flex",
         flexDirection: "column",
         transition: "height 0.7s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s",
-        height: open ? (docStudioOpen ? "700px" : "500px") : "90px",
+        height: open ? "500px" : "90px",
         overflow: "hidden",
         cursor: "pointer",
       }}
@@ -693,10 +346,11 @@ Données disponibles :
           display: "flex",
           flexDirection: "column",
           gap: 12,
-          flex: 1,
+          flex: 1, // <-- Ajouté pour que la zone prenne toute la hauteur dispo
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Zone de discussion coulissante */}
         <div
           style={{
             display: "flex",
@@ -705,20 +359,29 @@ Données disponibles :
             flex: 1,
             overflowY: "auto",
             scrollBehavior: "smooth",
-            maxHeight: 340,
+            maxHeight: 340, // Ajoute une hauteur max pour activer le scroll
           }}
         >
-          {messages.map((msg, idx) => (
-            <Bubble key={idx} from={msg.from} text={msg.text}>
-              {msg.from === "ai" && idx === messages.length - 1 && !loading ? (
-                <TypingText text={msg.text} />
-              ) : (
-                msg.text
-              )}
-            </Bubble>
-          ))}
+          {messages.map((msg, idx) => {
+            // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
+            if (msg.from === "ai" && idx === messages.length - 1 && !loading) {
+              return (
+                <Bubble key={idx} from={msg.from} text="">
+                  <TypingText text={msg.text} />
+                </Bubble>
+              );
+            }
+            return <Bubble key={idx} from={msg.from} text={msg.text} />;
+          })}
           {loading && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginTop: 12,
+              }}
+            >
               <div
                 style={{
                   width: 24,
@@ -743,7 +406,12 @@ Données disponibles :
           <div ref={messagesEndRef} />
         </div>
         <form
-          style={{ display: "flex", gap: 8, marginTop: 8, marginBottom: 0 }}
+          style={{
+            display: "flex",
+            gap: 8,
+            marginTop: 8,
+            marginBottom: 0,
+          }}
           onSubmit={(e) => {
             e.preventDefault();
             sendMessage();
@@ -753,8 +421,7 @@ Données disponibles :
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Votre demande..."
-            aria-label="Saisir votre demande pour Vyft Nérethense"
+            placeholder="Votre question..."
             style={{
               flex: 1,
               borderRadius: 12,
@@ -762,8 +429,8 @@ Données disponibles :
               padding: "8px 12px",
               fontSize: 15,
               fontWeight: 500,
-              background: "rgba(255,255,255,0.18)",
-              color: "#fff",
+              background: "rgba(255,255,255,0.18)", // Fond plus clair
+              color: "#fff", // Texte bien blanc
               outline: "none",
               transition: "background 0.2s, color 0.2s",
             }}
@@ -771,7 +438,6 @@ Données disponibles :
           />
           <button
             type="submit"
-            aria-label="Envoyer la question"
             style={{
               borderRadius: 12,
               border: "none",
@@ -789,24 +455,6 @@ Données disponibles :
             Envoyer
           </button>
         </form>
-        {/* Suggestion de prompt */}
-        <div
-          style={{
-            marginTop: 6,
-            fontSize: 13,
-            color: "#1a7f6b",
-            background: "rgba(255,255,255,0.08)",
-            borderRadius: 8,
-            padding: "6px 12px",
-            cursor: "pointer",
-            fontWeight: 500,
-            maxWidth: 340,
-            alignSelf: "flex-start"
-          }}
-          onClick={() => setInput("Fais-moi CV ultra-design avec des bandes vertes satin #1a7f6b et contenue bien garni (puces, Titre ligne banderole...etc)  en JSON valide")}
-        >
-          💡 Suggestion : Fais-moi CV ultra-design avec des bandes vertes satin #1a7f6b et contenue bien garni (puces, Titre ligne banderole...etc)  en JSON valide !
-        </div>
       </div>
       <style jsx global>{`
         @keyframes dotBounce {
@@ -824,7 +472,8 @@ Données disponibles :
   );
 }
 
-const TypingText = React.memo(({ text }: { text: string }) => {
+// Ajoute ce composant pour l'effet d'écriture lettre par lettre
+function TypingText({ text }: { text: string }) {
   const [displayed, setDisplayed] = useState("");
   const index = useRef(0);
 
@@ -836,18 +485,28 @@ const TypingText = React.memo(({ text }: { text: string }) => {
       setDisplayed((prev) => prev + text[index.current]);
       index.current++;
       if (index.current >= text.length) clearInterval(interval);
-    }, 18);
+    }, 18); // Vitesse d'écriture (ms)
     return () => clearInterval(interval);
   }, [text]);
 
   return <span>{displayed}</span>;
-});
+}
 
-function Bubble({ from, text, children }: { from: "ai" | "user"; text: string; children?: React.ReactNode }) {
+// Modifie Bubble pour accepter des enfants (children)
+function Bubble({
+  from,
+  text,
+  children,
+}: {
+  from: "ai" | "user";
+  text: string;
+  children?: React.ReactNode;
+}) {
   return (
     <div
       style={{
         alignSelf: from === "user" ? "flex-end" : "flex-start",
+        // Inversion des couleurs :
         background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
         color: from === "ai" ? "#222" : "#f5f6fa",
         borderRadius: 12,

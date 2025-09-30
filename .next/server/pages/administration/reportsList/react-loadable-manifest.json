@@ -1,9 +1,0 @@
-{
-  "[project]/pages/administration/reportsList.tsx [client] (ecmascript, next/dynamic entry)": {
-    "id": "[project]/pages/administration/reportsList.tsx [client] (ecmascript, next/dynamic entry)",
-    "files": [
-      "static/chunks/pages_administration_reportsList_tsx_64b6057f._.js",
-      "static/chunks/pages_administration_reportsList_tsx_2fa1552e._.js"
-    ]
-  }
-}

@@ -22,6 +22,12 @@
       "namedRegex": "^/(?:/)?$"
     },
     {
+      "page": "/Resetpassword",
+      "regex": "^/Resetpassword(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/Resetpassword(?:/)?$"
+    },
+    {
       "page": "/_not-found",
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
@@ -50,6 +56,12 @@
       "regex": "^/administration/settings(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/administration/settings(?:/)?$"
+    },
+    {
+      "page": "/administration/settings/connecthist",
+      "regex": "^/administration/settings/connecthist(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/administration/settings/connecthist(?:/)?$"
     },
     {
       "page": "/cancel",

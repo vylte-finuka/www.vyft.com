@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import Stripe from "stripe";
+import { Checkout } from "checkout-sdk-node";
 
-const stripe = new Stripe("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", { apiVersion: "2025-04-30.basil" });
+const checkout = new Checkout(process.env.CKO_SECRET_KEY as string);
 
-export default async function createOrRetriveCustomer(req: NextApiRequest, res: NextApiResponse) {
-  // Authentification par clé API locale
+export default async function createOrRetrieveCustomer(req: NextApiRequest, res: NextApiResponse) {
   const apiKey = req.headers["x-vyftprogram-api-key"];
   if (apiKey !== process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY) {
     return res.status(401).json({ success: false, message: "Clé API invalide ou manquante." });
@@ -18,120 +17,122 @@ export default async function createOrRetriveCustomer(req: NextApiRequest, res: 
   const { auth0UserId, userToken, action, customerId } = req.body;
 
   if (!auth0UserId || !userToken || !action) {
-    console.error("Paramètres manquants :", { auth0UserId, userToken, action });
     return res.status(400).json({ error: "Tous les champs requis (auth0UserId, userToken, action) doivent être fournis." });
   }
 
   try {
+    // Récupérer les infos utilisateur depuis Auth0
+    const auth0Domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
+    const userInfoResponse = await fetch(`${auth0Domain}/api/v2/users/${auth0UserId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    if (!userInfoResponse.ok) {
+      console.error("Erreur Auth0 userInfoResponse:", await userInfoResponse.text());
+      throw new Error("Impossible de récupérer les infos utilisateur Auth0.");
+    }
+    const userInfo = await userInfoResponse.json();
+    const userName = userInfo.name || userInfo.nickname || "";
+    const userEmail = userInfo.email || "";
+
     if (action === "create") {
-      console.log("Création ou récupération d'un client Stripe...");
+      let ckoCustomerId: string | undefined;
 
-      // Vérifier si le client Stripe existe déjà via les métadonnées
-      const customers = await stripe.customers.list({
-        limit: 100, // Augmenter la limite si nécessaire
-      });
+      // Vérifie si l'ID client existe déjà dans Auth0
+      ckoCustomerId = userInfo.user_metadata?.subid;
+      console.log("subid récupéré depuis Auth0 :", ckoCustomerId);
 
-      let customer = customers.data.find((c) => c.metadata?.auth0UserId === auth0UserId);
+      if (!ckoCustomerId) {
+        // Si pas d'ID, tente de créer le client Checkout.com
+        try {
+          const customerResponse = await checkout.customers.create({
+            email: userEmail,
+            name: userName
+          }) as { id: string };
+          ckoCustomerId = customerResponse.id;
+          console.log("Client créé Checkout.com:", customerResponse);
 
-      if (customer) {
-        console.log("Client Stripe existant trouvé :", customer.id);
-      } else {
-        // Créer un nouveau client Stripe si aucun n'existe
-        customer = await stripe.customers.create({
-          metadata: {
-            auth0UserId, // Stocker l'ID utilisateur Auth0 dans les métadonnées
-          },
-        });
-        console.log("Nouveau client Stripe créé :", customer.id);
-      }
+          // Met à jour Auth0 avec l'id client Checkout.com
+          const updateResponse = await fetch(`${auth0Domain}/api/v2/users/${auth0UserId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify({
+              user_metadata: {
+                subscription_start: new Date().toISOString(),
+                subid: ckoCustomerId, // ou stripeCustomerId selon ton système
+              },
+            }),
+          });
 
-      // Mettre à jour les métadonnées utilisateur dans Auth0 avec le customerId
-      const auth0Domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
-      if (!auth0Domain) {
-        throw new Error("Le domaine Auth0 (NEXT_PUBLIC_AUTH0_DOMAIN) n'est pas configuré.");
-      }
-
-      const auth0Response = await fetch(`${auth0Domain}/api/v2/users/${auth0UserId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`, // Utiliser le userToken pour l'autorisation
-        },
-        body: JSON.stringify({
-          user_metadata: {
-            subid: customer.id, // Ajouter le customerId Stripe comme subid
-          },
-        }),
-      });
-
-      if (!auth0Response.ok) {
-        console.error("Erreur lors de la mise à jour des métadonnées utilisateur dans Auth0 :", await auth0Response.text());
-        throw new Error("Erreur lors de la mise à jour des métadonnées utilisateur dans Auth0.");
-      }
-
-      console.log("Mise à jour des métadonnées utilisateur dans Auth0 réussie.");
-
-      // Créer une session Stripe Checkout
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        mode: "subscription",
-        customer: customer.id,
-        line_items: [
-          {
-            price: "price_1RhCTRGdfgLieo7O9P3P0Fx4", // Remplacez par l'ID de votre tarif Stripe
-          },
-        ],
-        success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/cancel`,
-      });
-
-      if (!session || !session.id) {
-        console.error("Erreur : session Stripe Checkout non créée.");
-        return res.status(500).json({ error: "Erreur lors de la création de la session Stripe Checkout." });
-      }
-
-      console.log("Session Stripe Checkout créée :", session.id);
-
-      // Après la création de la session Stripe Checkout
-      return res.status(200).json({ sessionId: session.id, customerId: customer.id, url: session.url });
-    } else if (action === "unsubscribe") {
-      console.log("Annulation d'un abonnement Stripe...");
-
-      try {
-        // Récupérer les abonnements actifs du client
-        const subscriptions = await stripe.subscriptions.list({
-          customer: customerId,
-          status: "active", // Filtrer uniquement les abonnements actifs
-          limit: 1, // Récupérer uniquement le premier abonnement actif
-        });
-
-        if (subscriptions.data.length === 0) {
-          console.error("Aucun abonnement actif trouvé pour ce client.");
-          return res.status(404).json({ error: "Aucun abonnement actif trouvé pour ce client." });
+          if (!updateResponse.ok) {
+            const errorText = await updateResponse.text();
+            console.error("Erreur PATCH Auth0:", errorText);
+            throw new Error("Erreur lors de la mise à jour du subid dans Auth0: " + errorText);
+          }
+        } catch (err: any) {
+          console.error("Erreur création client Checkout.com:", err);
+          // Si l'email existe déjà, retourne une erreur explicite
+          if (err.body && err.body.error_codes && err.body.error_codes.includes("customer_email_already_exists")) {
+            return res.status(500).json({ error: "L'utilisateur existe déjà, mais aucun subid n'est enregistré dans Auth0." });
+          } else {
+            return res.status(500).json({ error: "Erreur Checkout.com: " + (err.message || err) });
+          }
         }
-
-        const subscriptionId = subscriptions.data[0].id;
-
-        // Annuler l'abonnement
-        const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
-
-        console.log("Abonnement annulé :", deletedSubscription.id);
-
-        return res.status(200).json({
-          success: true,
-          message: "Abonnement annulé avec succès.",
-          deletedSubscription,
-        });
-      } catch (error: any) {
-        console.error("Erreur lors de l'annulation de l'abonnement :", error.message || error);
-        return res.status(500).json({ error: "Erreur lors de l'annulation de l'abonnement Stripe." });
       }
+
+      // Ici, on ne recrée jamais le client si ckoCustomerId existe déjà !
+      // Création du lien de paiement avec l'ID client existant ou nouvellement créé
+      try {
+        console.log("Payload PaymentLink:", {
+          amount: 300,
+          currency: "EUR",
+          reference: "Vyft program lite",
+          customer: { id: ckoCustomerId },
+          billing: { address: { country: "FR" } },
+          description: "Vyft program allow manage all your business in time.",
+        });
+
+        const paymentLinkResponse = await checkout.paymentLinks.create({
+          amount: 30000,
+          currency: "EUR",
+          reference: "Vyft program lite",
+          processing_channel_id: process.env.CKO_CHANNEL_ID,
+          customer: {
+            id: ckoCustomerId
+          },
+          billing: {
+            address: {
+              country: "FR"
+            }
+          },
+          description: "Vyft program allow manage all your business in time.",
+        }) as { _links: { redirect: { href: string } } };
+
+        console.log("Lien de paiement généré :", paymentLinkResponse);
+
+        const paymentUrl = paymentLinkResponse._links.redirect.href;
+
+        return res.status(200).json({ customerId: ckoCustomerId, paymentUrl });
+      } catch (err: any) {
+        console.error("Erreur création PaymentLink Checkout.com:", err);
+        if (err.body) {
+          console.error("Détail erreur Checkout.com:", JSON.stringify(err.body, null, 2));
+        }
+        return res.status(500).json({ error: "Erreur lors de la création du lien de paiement.", details: err.body });
+      }
+    } else if (action === "unsubscribe") {
+      // À compléter selon ta logique Checkout.com
+      return res.status(200).json({ success: true, message: "Annulation de l'abonnement (implémentation à compléter)." });
     } else {
-      console.error("Action non valide :", action);
       return res.status(400).json({ error: "Action non valide. Utilisez 'create' ou 'unsubscribe'." });
     }
   } catch (error: any) {
-    console.error("Erreur Stripe ou Auth0 :", error.message || error);
-    return res.status(500).json({ error: "Erreur lors de la gestion de l'abonnement ou des métadonnées Auth0." });
+    return res.status(500).json({ error: error.message || "Erreur lors de la gestion de l'abonnement." });
   }
 }

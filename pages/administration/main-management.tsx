@@ -64,7 +64,7 @@ export default function Funds_management() {
     }
     return false;
   });
-  const [stripeCustomerId, setStripeCustomerId] = useState<string | undefined>(undefined);
+  const [ckoCustomerId, setckoCustomerId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setStoreName(storeNamefact);
@@ -124,10 +124,10 @@ export default function Funds_management() {
           }
         );
         const denomination = response.data?.user_metadata?.denomination?.trim();
-        let stripeCustomerIdValue = response.data?.user_metadata?.subid?.trim();
+        let ckoCustomerIdValue = response.data?.user_metadata?.subid?.trim();
 
         // Si subid absent, essayer de le retrouver/créer côté Stripe
-        if (!stripeCustomerIdValue && userId) {
+        if (!ckoCustomerIdValue && userId) {
           try {
             const stripeRes = await axios.post(
               "/api/create-or-retrieve-customer",
@@ -143,20 +143,20 @@ export default function Funds_management() {
                 },
               }
             );
-            stripeCustomerIdValue = stripeRes.data.customerId;
+            ckoCustomerIdValue = stripeRes.data.customerId;
           } catch (err) {
             console.error("Impossible de retrouver/créer le client Stripe :", err);
           }
         }
 
         setStoreName(denomination);
-        setStripeCustomerId(stripeCustomerIdValue);
+        setckoCustomerId(ckoCustomerIdValue);
 
-        if (!denomination || !stripeCustomerIdValue) return;
+        if (!denomination || !ckoCustomerIdValue) return;
 
         const apiResponse = await fetch(
-          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&stripeCustomerId=${encodeURIComponent(
-            stripeCustomerIdValue
+          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&ckoCustomerId=${encodeURIComponent(
+            ckoCustomerIdValue
           )}`,
           {
             method: "GET",
@@ -304,7 +304,7 @@ export default function Funds_management() {
               }}
             >
               {/* Si pas d'abonnement et pas exploré, affiche le bouton explorer et masque le QR code */}
-              {(!stripeCustomerId && !hasExplored) && (
+              {(!ckoCustomerId && !hasExplored) && (
                 <div
                   style={{
                     background: "#23272e",
@@ -350,7 +350,7 @@ export default function Funds_management() {
                 </div>
               )}
               {/* Si pas d'abonnement mais exploré, affiche le reste mais masque les QR codes */}
-              {(!stripeCustomerId && hasExplored) ? (
+              {(!ckoCustomerId && hasExplored) ? (
                 <div
                   style={{
                     background: "#23272e",
@@ -393,7 +393,7 @@ export default function Funds_management() {
                 </div>
               ) : null}
               {/* QR codes visibles seulement si abonnement trouvé */}
-              {stripeCustomerId && (
+              {ckoCustomerId && (
                 <>
                   <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
                     Vyft tag™ :

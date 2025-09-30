@@ -7,11 +7,8 @@ import styles from "./page.module.css";
 import Navbar from "./components/Navbar";
 import Footer1 from "./components/Footer";
 import Login from "../pages/login";
-import { loadStripe } from "@stripe/stripe-js";
 import SubscribeModal from "./components/SubscribeModal";
 import axios from "axios";
-
-const stripePromise = loadStripe("pk_test_51OlpeQDrg8ui7gWsxtoc9bVcIDCCSm0CD5gRKP1GJW6Dt917sBHbmGPt9cQnz0SRBthZ15JF1md3IkiGDzdjFkPO00TbFIA05L");
 
 type Transaction = {
   name: string;
@@ -67,6 +64,7 @@ export default function Home() {
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [hasExplored, setHasExplored] = useState(false);
+  const [subscriptionStart, setSubscriptionStart] = useState<string | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -117,6 +115,12 @@ export default function Home() {
       } else {
         console.warn("SubID manquant dans user_metadata");
         setSubid(null);
+      }
+
+      if (userInfo.user_metadata?.subscription_start) {
+        setSubscriptionStart(userInfo.user_metadata.subscription_start);
+      } else {
+        setSubscriptionStart(null);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des données utilisateur depuis Auth0 :", error);
@@ -170,13 +174,12 @@ export default function Home() {
 
   const API_KEY = process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY;
 
-  const startStripeSession = useCallback(async () => {
-    const stripe = await stripePromise;
+  const startCheckoutSession = useCallback(async () => {
     const userToken = secureLocalStorage.getItem("userToken");
     const storedAuth0UserId = secureLocalStorage.getItem("auth0UserId");
 
-    if (!userToken || !storedAuth0UserId || !connectedAccountId) {
-      console.error("Paramètres manquants :", { userToken, storedAuth0UserId, connectedAccountId });
+    if (!userToken || !storedAuth0UserId) {
+      console.error("Paramètres manquants :", { userToken, storedAuth0UserId });
       return;
     }
 
@@ -191,7 +194,6 @@ export default function Home() {
           userToken,
           auth0UserId: storedAuth0UserId,
           action: "create",
-          connectedAccountId,
         }),
       });
 
@@ -201,22 +203,19 @@ export default function Home() {
         throw new Error("Erreur lors de l'appel à l'API create-or-retrieve-customer.");
       }
 
-      const session = await response.json();
+      const result = await response.json();
 
-      if (!session.sessionId) {
-        console.error("sessionId manquant dans la réponse de l'API");
-        return;
-      }
-
-      if (session.url) {
-        window.location.href = session.url;
+      if (result.paymentUrl) {
+        window.location.href = result.paymentUrl; // Redirige vers la page de paiement Checkout.com
+      } else if (result.customerId) {
+        alert("Client Checkout.com créé ! ID : " + result.customerId);
       } else {
-        console.error("URL de session Stripe manquante dans la réponse");
+        alert("Erreur lors de la création du lien de paiement Checkout.com.");
       }
     } catch (error) {
-      console.error("Erreur lors du démarrage de la session Stripe :", error);
+      console.error("Erreur lors du démarrage de la session Checkout.com :", error);
     }
-  }, [connectedAccountId, router]);
+  }, []);
 
   useEffect(() => {
     fetchAuth0UserId();
@@ -322,18 +321,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Vérifier l'état de l'abonnement
+    // Vérifier l'état de l'abonnement et mettre à jour la date
     const fetchSubscriptionStatus = async () => {
       try {
         const userToken = secureLocalStorage.getItem("userToken");
-        const storedAuth0UserId = secureLocalStorage.getItem("auth0UserId");
+        const storedAuth0UserId = auth0UserId || secureLocalStorage.getItem("auth0UserId");
 
         if (!userToken || !storedAuth0UserId) {
           console.error("userToken ou auth0UserId manquant");
           return;
         }
-
-        console.log("Appel à l'API check-subscription-status avec :", { userToken, storedAuth0UserId });
 
         const response = await fetch("/api/check-subscription-status", {
           method: "POST",
@@ -350,13 +347,8 @@ export default function Home() {
         const result = await response.json();
         console.log("Résultat de l'API check-subscription-status :", result);
 
-        if (result.hasActiveSubscription) {
-          console.log("Abonnement actif détecté");
-          setSubid("active"); // Utilisez une valeur arbitraire pour indiquer un abonnement actif
-        } else {
-          console.log("Aucun abonnement actif détecté");
-          setSubid(null); // Aucun abonnement actif
-        }
+        // Met à jour la date d'abonnement depuis l'API
+        setSubscriptionStart(result.subscriptionStart || null);
       } catch (error) {
         console.error("Erreur lors de la vérification de l'état de l'abonnement :", error);
       }
@@ -366,15 +358,24 @@ export default function Home() {
     const interval = setInterval(fetchSubscriptionStatus, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [auth0UserId]);
 
   useEffect(() => {
-    if (!subid) {
-      setShowSubscribeModal(true);
+    console.log("subscriptionStart =", subscriptionStart);
+    if (subscriptionStart) {
+      const startDate = new Date(subscriptionStart);
+      const now = new Date();
+      const diffDays = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      console.log("diffDays =", diffDays, "startDate =", startDate, "now =", now);
+      if (diffDays >= 30) {
+        setShowSubscribeModal(true);
+      } else {
+        setShowSubscribeModal(false);
+      }
     } else {
-      setShowSubscribeModal(false);
+      setShowSubscribeModal(true);
     }
-  }, [subid]);
+  }, [subscriptionStart]);
 
   if (!isClient) {
     // Empêche le rendu SSR qui bloque le dashboard
@@ -747,7 +748,7 @@ export default function Home() {
       {showSubscribeModal && (
         <SubscribeModal
           onClose={() => {}} // Empêche la fermeture
-          onSubscribe={startStripeSession}
+          onSubscribe={startCheckoutSession}
         />
       )}
     </div>
