@@ -1,0 +1,12 @@
+__turbopack_load_page_chunks__("/register", [
+  "static/chunks/9b465c3c7af523b1.js",
+  "static/chunks/74c36f47e1fa4c17.js",
+  "static/chunks/ace3c9753509068e.js",
+  "static/chunks/230cab340d6a154d.js",
+  "static/chunks/44039029a60f5370.js",
+  "static/chunks/596df42ae77bf7e3.js",
+  "static/chunks/30fc08b750bf5891.js",
+  "static/chunks/cd38eb556aedfd9d.js",
+  "static/chunks/dfcd4985d2c4360c.css",
+  "static/chunks/16476838ec91d7a8.js"
+])

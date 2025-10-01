@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Checkout } from "checkout-sdk-node";
+import { SquareClient, SquareEnvironment, SquareError } from "square";
 
-const checkout = new Checkout(process.env.CKO_SECRET_KEY as string);
+const client = new SquareClient({
+  environment: SquareEnvironment.Sandbox,
+  token: process.env.SQUARE_ACCESS_TOKEN,
+});
 
 export default async function checkSubscriptionStatus(req: NextApiRequest, res: NextApiResponse) {
   const apiKey = req.headers["x-vyftprogram-api-key"];
@@ -13,48 +16,58 @@ export default async function checkSubscriptionStatus(req: NextApiRequest, res: 
     return res.status(405).json({ success: false, message: "Méthode non autorisée" });
   }
 
-  const { userToken, auth0UserId } = req.body;
+  const { auth0UserId, userToken } = req.body;
+  if (!auth0UserId || !userToken) {
+    return res.status(400).json({ error: "auth0UserId ou userToken manquant" });
+  }
 
-  if (!auth0UserId) {
-    // Correction : retourne 200 avec abonnement inactif et date nulle
-    return res.status(200).json({ hasActiveSubscription: false, expired: true, subscriptionStart: null });
+  // Récupère le customerId depuis Auth0 user_metadata.subid
+  const auth0Domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
+  const userInfoResponse = await fetch(`${auth0Domain}/api/v2/users/${auth0UserId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+  if (!userInfoResponse.ok) {
+    return res.status(400).json({ error: "Impossible de récupérer le subid Auth0." });
+  }
+  const userInfo = await userInfoResponse.json();
+  const squareCustomerId = userInfo.user_metadata?.subid ?? null;
+  const subobjid = userInfo.user_metadata?.subobjid ?? null;
+  if (!squareCustomerId) {
+    return res.status(404).json({ error: "Aucun customerId Square trouvé dans Auth0." });
   }
 
   try {
-    // Récupérer les métadonnées utilisateur depuis Auth0
-    const auth0Domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
-    const userInfoResponse = await fetch(`${auth0Domain}/api/v2/users/${auth0UserId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-    });
-    const userInfo = await userInfoResponse.json();
-    console.log("userInfo.user_metadata.subscription_start =", userInfo.user_metadata?.subscription_start);
+    let hasActiveSubscription = false;
 
-    // On récupère la date d'abonnement
-    const subscriptionStart =
-      userInfo.app_metadata?.subscription_start ||
-      userInfo.user_metadata?.subscription_start ||
-      null;
-    let expired = true;
-    if (subscriptionStart) {
-      const startDate = new Date(subscriptionStart);
-      const now = new Date();
-      const startDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-      const nowDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const diffDays = Math.floor((nowDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24));
-      expired = diffDays >= 30;
+    // Si subobjid existe, considère l'abonnement comme actif
+    if (subobjid) {
+      hasActiveSubscription = true;
+    } else {
+      // Vérifier les abonnements actifs Square pour ce customerId
+      const subscriptionsResponse = await client.subscriptions.search({
+        query: {
+          filter: {
+            customerIds: [squareCustomerId],
+          },
+        },
+      });
+
+      if (subscriptionsResponse.subscriptions && subscriptionsResponse.subscriptions.length > 0) {
+        hasActiveSubscription = true;
+      }
     }
 
-    // Correction : la réponse ne dépend plus de subid
-    return res.status(200).json({
-      hasActiveSubscription: !expired && !!subscriptionStart,
-      expired,
-      subscriptionStart,
-    });
+    return res.status(200).json({ hasActiveSubscription });
   } catch (error) {
+    if (error instanceof SquareError) {
+      console.error("Erreur Square :", error.message);
+    } else {
+      console.error("Erreur inattendue :", error);
+    }
     return res.status(500).json({ error: "Erreur lors de la vérification de l'abonnement" });
   }
 }

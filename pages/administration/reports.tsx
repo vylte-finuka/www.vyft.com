@@ -65,7 +65,7 @@ export default function Reports() {
         );
         const userId = userInfoResponse.data.sub;
 
-        // Récupérer les métadonnées utilisateur (enseigne et ckoCustomerId)
+        // Récupérer les métadonnées utilisateur (enseigne et CustomerId)
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`,
           {
@@ -76,9 +76,9 @@ export default function Reports() {
           }
         );
         const denomination = response.data?.user_metadata?.denomination?.trim();
-        const ckoCustomerId = response.data?.user_metadata?.subid?.trim();
+        const CustomerId = response.data?.user_metadata?.subid?.trim();
 
-        if (!denomination || !ckoCustomerId) {
+        if (!denomination || !CustomerId) {
           setLoading(false);
           return;
         }
@@ -87,7 +87,7 @@ export default function Reports() {
 
         // Récupérer les vraies données depuis l'API
         const apiResponse = await fetch(
-          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&ckoCustomerId=${encodeURIComponent(ckoCustomerId)}`,
+          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&squareCustomerId=${encodeURIComponent(CustomerId)}`,
           {
             headers: {
               "x-vyftprogram-api-key": API_KEY || "",

@@ -205,12 +205,10 @@ export default function Home() {
 
       const result = await response.json();
 
-      if (result.paymentUrl) {
-        window.location.href = result.paymentUrl; // Redirige vers la page de paiement Checkout.com
-      } else if (result.customerId) {
-        alert("Client Checkout.com créé ! ID : " + result.customerId);
+      if (result.paymentLink) {
+        window.location.href = result.paymentLink; // Redirige vers le lien de paiement Square
       } else {
-        alert("Erreur lors de la création du lien de paiement Checkout.com.");
+        alert("Erreur lors de la création du lien de paiement Square.");
       }
     } catch (error) {
       console.error("Erreur lors du démarrage de la session Checkout.com :", error);
@@ -347,7 +345,14 @@ export default function Home() {
         const result = await response.json();
         console.log("Résultat de l'API check-subscription-status :", result);
 
-        // Met à jour la date d'abonnement depuis l'API
+        // Si abonnement actif, on masque le modal
+        if (result.hasActiveSubscription) {
+          setShowSubscribeModal(false);
+        } else {
+          setShowSubscribeModal(true);
+        }
+
+        // Met à jour la date d'abonnement depuis l'API si disponible
         setSubscriptionStart(result.subscriptionStart || null);
       } catch (error) {
         console.error("Erreur lors de la vérification de l'état de l'abonnement :", error);
@@ -358,7 +363,7 @@ export default function Home() {
     const interval = setInterval(fetchSubscriptionStatus, 10000);
 
     return () => clearInterval(interval);
-  }, [auth0UserId]);
+  }, [auth0UserId, API_KEY]);
 
   useEffect(() => {
     console.log("subscriptionStart =", subscriptionStart);

@@ -1,12 +1,15 @@
 {
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/Resetpassword": "pages/Resetpassword.html",
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
   "/administration/main-management": "pages/administration/main-management.html",
   "/administration/reports": "pages/administration/reports.html",
   "/administration/reportsList": "pages/administration/reportsList.html",
   "/administration/settings": "pages/administration/settings.html",
   "/administration/settings/connecthist": "pages/administration/settings/connecthist.html",
+  "/api/EURCsenter": "pages/api/EURCsenter.js",
+  "/api/USDCEURCconverter": "pages/api/USDCEURCconverter.js",
   "/api/ask-ai": "pages/api/ask-ai.js",
   "/api/check-subscription-status": "pages/api/check-subscription-status.js",
   "/api/create-or-retrieve-customer": "pages/api/create-or-retrieve-customer.js",
@@ -28,8 +31,5 @@
   "/risk-management/accounting": "pages/risk-management/accounting.html",
   "/risk-management/cashback": "pages/risk-management/cashback.html",
   "/success": "pages/success.html",
-  "/api/USDCEURCconverter": "pages/api/USDCEURCconverter.js",
-  "/api/EURCsenter": "pages/api/EURCsenter.js",
-  "/_document": "pages/_document.js",
   "/404": "pages/404.html"
 }
