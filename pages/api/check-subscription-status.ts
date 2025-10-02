@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { SquareClient, SquareEnvironment, SquareError } from "square";
 
 const client = new SquareClient({
-  environment: SquareEnvironment.Sandbox,
+  environment: SquareEnvironment.Production,
   token: process.env.SQUARE_ACCESS_TOKEN,
 });
 

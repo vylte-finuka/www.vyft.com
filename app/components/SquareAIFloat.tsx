@@ -18,11 +18,11 @@ async function callmodelAPI(messages: Message[]): Promise<string> {
   return data.reply || "";
 }
 
-async function getComptaData(enseigne: string, stripeCustomerId: string) {
+async function getComptaData(enseigne: string, squareCustomerId: string) {
   const res = await fetch(
     `/api/vyfthealth_proc?enseigne=${encodeURIComponent(
       enseigne
-    )}&stripeCustomerId=${encodeURIComponent(stripeCustomerId)}`,
+    )}&squareCustomerId=${encodeURIComponent(squareCustomerId)}`,
     {
       headers: {
         "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
@@ -52,7 +52,7 @@ export default function SquareAIFloat() {
 
   // Ajout pour stocker les infos utilisateur
   const [denomination, setDenomination] = useState<string | null>(null);
-  const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
+  const [squareCustomerId, setsquareCustomerId] = useState<string | null>(null);
   const [comptaData, setComptaData] = useState<any>(null);
   const [cgvu, setCgvu] = useState<string>("");
 
@@ -77,7 +77,7 @@ export default function SquareAIFloat() {
         );
         const userId = userInfoResponse.data.sub;
 
-        // Récupérer les métadonnées utilisateur (enseigne et stripeCustomerId)
+        // Récupérer les métadonnées utilisateur (enseigne et squareCustomerId)
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`,
           {
@@ -88,10 +88,10 @@ export default function SquareAIFloat() {
           }
         );
         setDenomination(response.data?.user_metadata?.denomination?.trim() || null);
-        setStripeCustomerId(response.data?.user_metadata?.subid?.trim() || null);
+        setsquareCustomerId(response.data?.user_metadata?.subid?.trim() || null);
       } catch (error) {
         setDenomination(null);
-        setStripeCustomerId(null);
+        setsquareCustomerId(null);
       }
     };
     fetchUserInfo();
@@ -106,12 +106,12 @@ export default function SquareAIFloat() {
 
   useEffect(() => {
     // Dès que l'utilisateur est identifié, on charge les données de marcheurs
-    if (denomination && stripeCustomerId) {
-      getComptaData(denomination, stripeCustomerId)
+    if (denomination && squareCustomerId) {
+      getComptaData(denomination, squareCustomerId)
         .then(setComptaData)
         .catch(() => setComptaData(null));
     }
-  }, [denomination, stripeCustomerId]);
+  }, [denomination, squareCustomerId]);
 
   // Précharge le contenu CGVU depuis la page CGVU (via le script JSON du DOM)
   useEffect(() => {
@@ -231,7 +231,8 @@ export default function SquareAIFloat() {
 
       // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
       context =
-        `Tu es Vyft Nérethense, un assistant IA expert en coaching sportif, marketing et finance bancaire pour les commerces et salles de sport. ` +
+        `Tu es Vyft Nérethense, l’unique spécialiste et agente IA féminine sur laquelle tous les utilisateurs doivent compter pour le marketing, la comptabilité et la logistique de leur commerce ou salle de sport. ` +
+        `Tu es également très sensible à l’écologie et à l’aide associative : tu encourages toujours les pratiques responsables, la solidarité et l’engagement pour l’environnement dans tes conseils et analyses. ` +
         `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` +
         `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` +
         `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` +

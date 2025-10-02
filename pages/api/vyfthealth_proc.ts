@@ -4,7 +4,7 @@ import clientPromise from "./lib/mongodb";
 import { randomUUID } from "crypto";
 
 const client = new SquareClient({
-  environment: SquareEnvironment.Sandbox,
+  environment: SquareEnvironment.Production,
   token: process.env.SQUARE_ACCESS_TOKEN,
 });
 

@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 import axios from "axios";
 
 const client = new SquareClient({
-  environment: SquareEnvironment.Sandbox,
+  environment: SquareEnvironment.Production,
   token: process.env.SQUARE_ACCESS_TOKEN,
 });
 
@@ -171,7 +171,7 @@ export default async function createOrRetrieveCustomer(req: NextApiRequest, res:
           locationId: locationId,
           name: "Vyft program Market starter",
           priceMoney: {
-            amount: BigInt(300000),
+            amount: BigInt(30000),
             currency: "EUR",
           },
         },
