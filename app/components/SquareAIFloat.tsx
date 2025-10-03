@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../page.module.css";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import CGU_Vyft_content_fr from "../components/CGU_Vyft_content_fr"; // Assure-toi que ce fichier existe et est exporté
 
 type Message = { from: "ai" | "user"; text: string };
 
@@ -324,6 +325,12 @@ export default function SquareAIFloat() {
         cgvu +
         "\n\n";
     }
+
+    // Ajoute le CGU Vyft au contexte IA
+    context +=
+      "\n\nVoici les Conditions Générales d'Utilisation (CGU) officielles de Vyft :\n" +
+      CGU_Vyft_content_fr +
+      "\n\n";
 
     // Ajout des infos utilisateur au contexte
     if (userInfo) {
