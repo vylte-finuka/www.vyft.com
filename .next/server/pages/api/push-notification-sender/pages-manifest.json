@@ -1,0 +1,3 @@
+{
+  "/api/push-notification-sender": "pages/api/push-notification-sender.js"
+}

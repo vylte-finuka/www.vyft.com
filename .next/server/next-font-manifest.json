@@ -9,24 +9,8 @@
   },
   "appUsingSizeAdjust": true,
   "pages": {
-    "/Resetpassword": [],
-    "/administration/main-management": [],
-    "/administration/reports": [],
-    "/administration/reportsList": [],
-    "/administration/settings": [],
-    "/administration/settings/connecthist": [],
-    "/cancel": [],
     "/conditions-generales-de-vente": [],
-    "/events/management": [],
-    "/events/statistics": [],
-    "/login": [],
-    "/register": [],
-    "/regulations/aml": [],
-    "/regulations/kyc": [],
-    "/regulations/pci-dss": [],
-    "/risk-management/accounting": [],
-    "/risk-management/cashback": [],
-    "/success": []
+    "/login": []
   },
   "pagesUsingSizeAdjust": false
 }

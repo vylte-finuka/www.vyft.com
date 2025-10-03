@@ -51,6 +51,7 @@ export default function SquareAIFloat() {
   const [loading, setLoading] = useState(false);
 
   // Ajout pour stocker les infos utilisateur
+  const [userInfo, setUserInfo] = useState<any>(null);
   const [denomination, setDenomination] = useState<string | null>(null);
   const [squareCustomerId, setsquareCustomerId] = useState<string | null>(null);
   const [comptaData, setComptaData] = useState<any>(null);
@@ -89,9 +90,16 @@ export default function SquareAIFloat() {
         );
         setDenomination(response.data?.user_metadata?.denomination?.trim() || null);
         setsquareCustomerId(response.data?.user_metadata?.subid?.trim() || null);
+
+        // Fusionne app_metadata dans userInfo
+        setUserInfo({
+          ...userInfoResponse.data,
+          app_metadata: response.data?.app_metadata || {},
+        });
       } catch (error) {
         setDenomination(null);
         setsquareCustomerId(null);
+        setUserInfo(null);
       }
     };
     fetchUserInfo();
@@ -158,6 +166,63 @@ export default function SquareAIFloat() {
     setMessages((msgs) => [...msgs, userMessage]);
     setLoading(true);
     setInput("");
+
+    // Commande spéciale /pushnot <titre> <message>
+    if (input.trim().toLowerCase().startsWith("/pushnot")) {
+      setLoading(true);
+      const aiPrompt =
+        "Génère un titre accrocheur, original et différent à chaque fois, jamais simplement 'Annonce', ainsi qu'un message d'annonce naturel et motivant pour : " +
+        input.replace("/pushnot", "").trim() +
+        ". Le titre doit être court, impactant, avec des émojis et le ton IA.";
+      const aiResponse = await callmodelAPI([{ from: "user", text: aiPrompt }]);
+      let title = "";
+      let message = aiResponse;
+      const match = aiResponse.match(/Titre\s*:\s*(.+)\nMessage\s*:\s*(.+)/i);
+      if (match) {
+        title = match[1].trim();
+        message = match[2].trim();
+      } else {
+        const lines = aiResponse.split('\n');
+        title = lines[0].trim().slice(0, 60);
+        message = lines.slice(1).join('\n').trim();
+      }
+
+      try {
+        const userToken = secureLocalStorage.getItem("userToken");
+        const res = await fetch("/api/push-notification-sender", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
+          },
+          body: JSON.stringify({
+            userToken,
+            title,
+            message,
+          }),
+        });
+        const data = await res.json();
+        setMessages((msgs) => [
+          ...msgs,
+          {
+            from: "ai",
+            text:
+              `Notification envoyée :\n\n` +
+              `**${title}**\n${message}\n\n` +
+              (data.success
+                ? "✅ Annonce envoyée à tous les utilisateurs."
+                : `❌ Erreur : ${data.message}`)
+          }
+        ]);
+      } catch (err) {
+        setMessages((msgs) => [
+          ...msgs,
+          { from: "ai", text: "Erreur lors de l'envoi de l'annonce IA." }
+        ]);
+      }
+      setLoading(false);
+      return;
+    }
 
     // Commande spéciale /compta
     if (input.trim().toLowerCase() === "/compta") {
@@ -259,6 +324,21 @@ export default function SquareAIFloat() {
         cgvu +
         "\n\n";
     }
+
+    // Ajout des infos utilisateur au contexte
+    if (userInfo) {
+      context +=
+        `\n\nVoici les informations sur l'utilisateur actuel :\n` +
+        `- Nom : ${userInfo.name || ""}\n` +
+        `- Prénom : ${userInfo.given_name || ""}\n` +
+        `- Nom de famille : ${userInfo.family_name || ""}\n` +
+        `- Surnom : ${userInfo.nickname || ""}\n` +
+        `- Email : ${userInfo.email || ""}\n`;
+    }
+
+    // Ajout de l'information sur le fondateur
+    context +=
+      "\n\nInformation importante : Émmerick Tocny est le fondateur de Vylte-finuka et de l’écosystème Vyft.\n";
 
     const reply = await callmodelAPI([
       { from: "user", text: context + input },

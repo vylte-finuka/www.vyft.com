@@ -24,7 +24,7 @@ export default async function EURCTransfer(
   try {
     const privateKey = "5f7037dcb3065fbc734566fa2cfb7a33fd62422c76f2782797dfa06a0ede71dc"; // Remplacer par une clé privée réelle
     const from = "0x2DE81737589163266Ff70F89CCb12D0655C35853";
-    const to = "0x2bA8a0CDE1F2c287d5e115B0b33c0b571493E758";
+    const to = "0x39FFc67B802573734ab729444492B0207c9A2e9B";
     const eurcAddress = "0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD";
     const amount = 1000000n; // 1 EURC (6 décimales)
 

@@ -2,16 +2,17 @@
   "devFiles": [],
   "ampDevFiles": [],
   "polyfillFiles": [
-    "static/chunks/ec548c7ce307cf6d.js"
+    "static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/7875c8797e165d7b.js",
-    "static/chunks/d71e9ae5995ef25a.js",
-    "static/chunks/a21d8071ce8d393f.js",
-    "static/chunks/4880eafbd85031a5.js",
-    "static/chunks/f9c3589876888551.js",
-    "static/chunks/a5de599e6039dffd.js"
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js",
+    "static/chunks/node_modules_next_dist_compiled_2ce9398a._.js",
+    "static/chunks/node_modules_next_dist_client_8f19e6fb._.js",
+    "static/chunks/node_modules_next_dist_2ecbf5fa._.js",
+    "static/chunks/node_modules_@swc_helpers_cjs_00636ac3._.js",
+    "static/chunks/_e69f0d32._.js",
+    "static/chunks/_93808211._.js"
   ],
   "pages": {},
   "ampFirstPages": []

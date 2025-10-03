@@ -148,6 +148,9 @@ export default async function createOrRetrieveCustomer(req: NextApiRequest, res:
           user_metadata: {
             subid: customer?.id ?? null,
           },
+          appdata: {
+            ownerlevel: "standard", // Ajout du rôle par défaut
+          },
         }),
       });
 
@@ -194,6 +197,9 @@ export default async function createOrRetrieveCustomer(req: NextApiRequest, res:
           user_metadata: {
             subid: customer?.id ?? null,
             subobjid: paymentLinkResponse.paymentLink?.checkoutOptions?.subscriptionPlanId ?? null,
+          },
+          appdata: {
+            ownerlevel: "standard", // Ajout du rôle par défaut
           },
         }),
       });

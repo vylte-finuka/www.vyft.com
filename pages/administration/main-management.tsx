@@ -64,7 +64,7 @@ export default function Funds_management() {
     }
     return false;
   });
-  const [ckoCustomerId, setckoCustomerId] = useState<string | undefined>(undefined);
+  const [squareCustomerId, setSquareCustomerId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setStoreName(storeNamefact);
@@ -124,12 +124,12 @@ export default function Funds_management() {
           }
         );
         const denomination = response.data?.user_metadata?.denomination?.trim();
-        let ckoCustomerIdValue = response.data?.user_metadata?.subid?.trim();
+        let squareCustomerId = response.data?.user_metadata?.subid?.trim();
 
-        // Si subid absent, essayer de le retrouver/créer côté Stripe
-        if (!ckoCustomerIdValue && userId) {
+        // Si subid absent, essayer de le retrouver/créer côté Square
+        if (!squareCustomerId && userId) {
           try {
-            const stripeRes = await axios.post(
+            const squareRes = await axios.post(
               "/api/create-or-retrieve-customer",
               {
                 auth0UserId: userId,
@@ -143,20 +143,20 @@ export default function Funds_management() {
                 },
               }
             );
-            ckoCustomerIdValue = stripeRes.data.customerId;
+            squareCustomerId = squareRes.data.customerId;
           } catch (err) {
-            console.error("Impossible de retrouver/créer le client Stripe :", err);
+            console.error("Impossible de retrouver/créer le client Square :", err);
           }
         }
 
         setStoreName(denomination);
-        setckoCustomerId(ckoCustomerIdValue);
+        setSquareCustomerId(squareCustomerId);
 
-        if (!denomination || !ckoCustomerIdValue) return;
+        if (!denomination || !squareCustomerId) return;
 
         const apiResponse = await fetch(
-          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&ckoCustomerId=${encodeURIComponent(
-            ckoCustomerIdValue
+          `/api/vyfthealth_proc?enseigne=${encodeURIComponent(denomination)}&squareCustomerId=${encodeURIComponent(
+            squareCustomerId
           )}`,
           {
             method: "GET",
@@ -304,7 +304,7 @@ export default function Funds_management() {
               }}
             >
               {/* Si pas d'abonnement et pas exploré, affiche le bouton explorer et masque le QR code */}
-              {(!ckoCustomerId && !hasExplored) && (
+              {(!squareCustomerId && !hasExplored) && (
                 <div
                   style={{
                     background: "#23272e",
@@ -350,7 +350,7 @@ export default function Funds_management() {
                 </div>
               )}
               {/* Si pas d'abonnement mais exploré, affiche le reste mais masque les QR codes */}
-              {(!ckoCustomerId && hasExplored) ? (
+              {(!squareCustomerId && hasExplored) ? (
                 <div
                   style={{
                     background: "#23272e",
@@ -393,7 +393,7 @@ export default function Funds_management() {
                 </div>
               ) : null}
               {/* QR codes visibles seulement si abonnement trouvé */}
-              {ckoCustomerId && (
+              {squareCustomerId && (
                 <>
                   <h2 className={`${styles.body} ${styles.subtitle} ${styles.subtitleAligned}`}>
                     Vyft tag™ :
