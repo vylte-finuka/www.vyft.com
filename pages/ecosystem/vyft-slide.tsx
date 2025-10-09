@@ -42,6 +42,7 @@ export default function Home() {
         {/* Tous les éléments sont au-dessus du background */}
         <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
           <Navbar />
+          <title>Vyft - Vyft slide - La néobanque à la vertu de la finance.</title>
           <main className={styles.main}>
             <h1 className={styles.headerX2}>
               Unique au monde.

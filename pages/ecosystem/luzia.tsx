@@ -11,7 +11,7 @@ export default function Cashback() {
         <>
             <div className={styles.container2}>
                 <head>
-                    <title>En construction - Vyft program: Manage your own market.</title>
+                    <title>En construction - Vyft: Manage your own market.</title>
                 </head>
                 <Navbar />
                 <main className={styles.main}>
