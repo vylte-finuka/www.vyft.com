@@ -60,7 +60,7 @@ export default function Home() {
         <main className={styles.main}>
           <h1 className={styles.header}>
             Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout.
-            Bientôt communiquez entre proches via notre IA Vyft Nérethense pour éviter les frais de messagerie et problème de confidentialité, n'importe où.
+            Bientôt communiquez entre proches via notre IA Vyft Nérethense pour éviter les frais de messagerie et problème de confidentialité, n&apos;importe où.
           </h1>
           <h2 className={styles.bodymessage}>
             1. L&apos;investissement étant un cas de perte foncière, cela s&apos;applique à la néobanque.
