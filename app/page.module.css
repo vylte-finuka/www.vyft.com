@@ -57,14 +57,21 @@
   
   .header {
     font-family: BR Sonoma Semibold;
-    color: #000000;
+    color: #ffffff;
     font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .headerX2 {
+    font-family: BR Sonoma Semibold;
+    font-size: 56px;
+    color: #ffffff;
     margin-bottom: 20px;
   }
   
   .body {
     font-family: BR Sonoma Semibold;
-    color: #000000;
+    color: #ffffff;
     font-size: 18px;
   }
   
@@ -89,11 +96,13 @@
   }
   
   .container1 {
-    background-color: #e0dbdd;
+    background-image: url('../public/bvs.png');
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
+    background-size: cover; /* Ajuste l'image pour couvrir tout le conteneur */
+    background-position: center; /* Centre l'image dans le conteneur */
+}
   
   .container2 {
     background-color: #DBDFE0;
@@ -103,7 +112,7 @@
   }
 
   .container3 {
-    background-image: url('../public/corporatevylte-finuka.png');
+    background-image: url('../public/bvs.png');
     display: flex;
     flex-direction: column;
     min-height: 100vh;

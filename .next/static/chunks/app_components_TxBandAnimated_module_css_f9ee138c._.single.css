@@ -1,0 +1,15 @@
+/* [project]/app/components/TxBandAnimated.module.css [app-client] (css) */
+.TxBandAnimated-module__sayCDq__diagonalRow {
+  height: 300px;
+  margin-top: 32px;
+  position: relative;
+}
+
+.TxBandAnimated-module__sayCDq__txband {
+  will-change: transform;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*# sourceMappingURL=app_components_TxBandAnimated_module_css_f9ee138c._.single.css.map*/

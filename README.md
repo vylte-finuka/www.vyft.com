@@ -1,46 +1,50 @@
-# Vyft Program
+# Vyft – Plateforme officielle
 
-![Vyft Program](public/vyft_program.png)
+![Vyft](public/vyft.png)
 
-Vyft Program est une plateforme SaaS de gestion de la relation client (CRM) moderne, pensée pour les entreprises souhaitant centraliser et optimiser le marché à l'intermédiare de l'application Vyft.
+Bienvenue sur le site officiel de Vyft, la néobanque nouvelle génération qui allie finance, fitness et écologie.
+
+## Présentation
+
+Vyft propose une application mobile innovante permettant de gérer vos finances, suivre votre activité physique et voyager en toute simplicité. Notre carte métal recyclée, nos services digitaux et notre IA de support font de Vyft un écosystème unique.
 
 ## Fonctionnalités principales
 
-- Gestion des contacts et des réclamations
-- Tableau de bord en temps réel
-- Analyse des données clients
-- Abonnement mensuel ou annuel via Stripe
-- Sécurité et confidentialité des données (RGPD)
-- Support technique dédié
+- **Compte Vyft** : portefeuille auto-géré basé sur l’actif EURC (réseau Avalanche)
+- **Carte Vyft slide** : carte de débit Visa, virtuelle ou physique (bientôt disponible)
+- **Virements SEPA** via MetaMask
+- **Tableau de bord** intuitif et suivi d’activité
+- **Support IA** : assistance instantanée via Vyft Nérethense
+- **Respect de l’écologie** : carte métal recyclée, démarche responsable
 
 ## Démarrage rapide
 
-Installez les dépendances puis lancez le serveur de développement :
+Installez les dépendances et lancez le serveur de développement :
 
 ```bash
 npm install
 npm run dev
 ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour accéder à l’application.
+Accédez à l’application sur [http://localhost:3000](http://localhost:3000).
 
 ## Structure du projet
 
 - `app/` : Pages et composants principaux (Next.js)
-- `pages/api/` : API backend (Node.js/Next.js)
-- `public/` : Fichiers statiques (dont le logo)
+- `pages/api/` : API backend
+- `public/` : Fichiers statiques (images, vidéos)
 - `styles/` : Feuilles de style CSS
-
-## Personnalisation
-
-Modifiez `app/page.tsx` pour adapter le tableau de bord à vos besoins.  
-Les CGVU sont disponibles dans `pages/condition-generale-de-vente.tsx`.
 
 ## Documentation
 
+- [Conditions Générales d’Utilisation](./pages/conditions-generales-d-utilisation.tsx)
 - [Documentation Next.js](https://nextjs.org/docs)
-- [Déploiement sur Netlify](https://app.netlify.com)
 
 ## Support
 
-Pour toute question ou demande
+Pour toute question ou assistance, contactez :  
+**support@vylte-finuka.com**
+
+---
+
+Vyft est une marque déposée de Vylte-Finuka

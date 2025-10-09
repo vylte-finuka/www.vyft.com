@@ -45,7 +45,7 @@ export default function SquareAIFloat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       from: "ai",
-      text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Qu'est-ce qui vous préoccupe pour votre business ? Posez-moi votre question ou réponse !",
+      text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Comment pourrais-je vous aider avec Vyft ? Posez-moi votre question ou réponse !",
     },
   ]);
   const [input, setInput] = useState("");
@@ -142,7 +142,7 @@ export default function SquareAIFloat() {
 
     // Sinon, on précharge la page CGVU en arrière-plan et on extrait le JSON
     if (!cgvu) {
-      fetch("/conditions-generales-de-vente")
+      fetch("/conditions-generales-d-utilisation")
         .then(res => res.text())
         .then(html => {
           // Extraction du contenu du script JSON
@@ -167,63 +167,6 @@ export default function SquareAIFloat() {
     setMessages((msgs) => [...msgs, userMessage]);
     setLoading(true);
     setInput("");
-
-    // Commande spéciale /pushnot <titre> <message>
-    if (input.trim().toLowerCase().startsWith("/pushnot")) {
-      setLoading(true);
-      const aiPrompt =
-        "Génère un titre accrocheur, original et différent à chaque fois, jamais simplement 'Annonce', ainsi qu'un message d'annonce naturel et motivant pour : " +
-        input.replace("/pushnot", "").trim() +
-        ". Le titre doit être court, impactant, avec des émojis et le ton IA.";
-      const aiResponse = await callmodelAPI([{ from: "user", text: aiPrompt }]);
-      let title = "";
-      let message = aiResponse;
-      const match = aiResponse.match(/Titre\s*:\s*(.+)\nMessage\s*:\s*(.+)/i);
-      if (match) {
-        title = match[1].trim();
-        message = match[2].trim();
-      } else {
-        const lines = aiResponse.split('\n');
-        title = lines[0].trim().slice(0, 60);
-        message = lines.slice(1).join('\n').trim();
-      }
-
-      try {
-        const userToken = secureLocalStorage.getItem("userToken");
-        const res = await fetch("/api/push-notification-sender", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-vyftprogram-api-key": process.env.NEXT_PUBLIC_VYFTPROGRAM_API_KEY || "",
-          },
-          body: JSON.stringify({
-            userToken,
-            title,
-            message,
-          }),
-        });
-        const data = await res.json();
-        setMessages((msgs) => [
-          ...msgs,
-          {
-            from: "ai",
-            text:
-              `Notification envoyée :\n\n` +
-              `**${title}**\n${message}\n\n` +
-              (data.success
-                ? "✅ Annonce envoyée à tous les utilisateurs."
-                : `❌ Erreur : ${data.message}`)
-          }
-        ]);
-      } catch (err) {
-        setMessages((msgs) => [
-          ...msgs,
-          { from: "ai", text: "Erreur lors de l'envoi de l'annonce IA." }
-        ]);
-      }
-      setLoading(false);
-      return;
-    }
 
     // Commande spéciale /compta
     if (input.trim().toLowerCase() === "/compta") {
@@ -264,61 +207,15 @@ export default function SquareAIFloat() {
 
     // Préparation du contexte enrichi pour l'IA
     let context = "";
-    if (comptaData) {
-      const influence = comptaData.influence || {};
+    context =
+      `Tu es Vyft Nérethense, l’unique agente IA de support pour Vyft. ` +
+      `Ta mission est d'aider, d'accompagner et de répondre à toutes les questions des utilisateurs concernant l'utilisation de Vyft, les problèmes techniques, la FAQ, la sécurité, la gestion de compte, l'accès aux services, et toute demande d'assistance. ` +
+      `Tu es empathique, claire, pédagogique et toujours orientée solution. ` +
+      `Ne donne jamais de conseils business ou marketing, concentre-toi sur le support et l'aide utilisateur. ` +
+      `Si la question concerne une fonctionnalité, un bug, une procédure, une sécurité, une inscription, une connexion, une facture, une CGU ou une FAQ, réponds précisément et propose des solutions ou des étapes à suivre. ` +
+      `Si tu n'as pas la réponse exacte, propose une démarche ou invite à contacter le support humain. ` +
+      `Ne réponds jamais "je ne sais pas", propose toujours une aide ou une orientation.\n\n`;
 
-      // Historique par jour (exemple)
-      const history7Days = (influence.history7Days || [])
-        .map((h: any) =>
-          `Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`
-        )
-        .join("\n");
-
-      // Historique par mois (si dispo)
-      const historyMonth = (influence.historyMonth || [])
-        .map((h: any) =>
-          `Le ${formatDateFr(h.date)} : ${h.count} marcheur(s) uniques${h.users && h.users.length ? " (" + h.users.join(", ") + ")" : ""}`
-        )
-        .join("\n");
-
-      // Top marcheurs/mois
-      const topUsers = (influence.topUsers || [])
-        .map((u: any, i: number) => `${i + 1}. ${u.name} (${u.count} participations)`)
-        .join("\n");
-
-      // Jours les plus influents
-      const mostInfluentialDay = (influence.history7Days || []).reduce(
-        (max: any, curr: any) => (curr.count > (max?.count ?? 0) ? curr : max),
-        null
-      );
-      const mostInfluentialDayStr = mostInfluentialDay
-        ? `Jour le plus influent : ${formatDateFr(mostInfluentialDay.date)} (${mostInfluentialDay.count} marcheurs uniques)`
-        : "";
-
-      // INSTRUCTION DE ROLE ET D'UTILISATION DES DONNÉES
-      context =
-        `Tu es Vyft Nérethense, l’unique spécialiste et agente IA féminine sur laquelle tous les utilisateurs doivent compter pour le marketing, la comptabilité et la logistique de leur commerce ou salle de sport. ` +
-        `Tu es également très sensible à l’écologie et à l’aide associative : tu encourages toujours les pratiques responsables, la solidarité et l’engagement pour l’environnement dans tes conseils et analyses. ` +
-        `Tu dois toujours t'appuyer sur les données suivantes pour répondre, même si la question semble inhabituelle. ` +
-        `Si la question n'est pas claire, propose une analyse, un conseil ou une interprétation basée sur les chiffres, l'activité ou la fidélité des marcheurs. ` +
-        `Ne réponds jamais "je ne sais pas" ou "je ne dispose pas d'informations". ` +
-        `Si la question concerne un jour, un mois ou un nom inconnu, propose une analyse ou une astuce business ou sportive adaptée à la situation.\n\n` +
-        `Voici toutes les données de marche, d'influence, de finance et d'activité :\n` +
-        `- Pas aujourd'hui : ${comptaData.dailySteps}\n` +
-        `- Distance aujourd'hui : ${comptaData.dailyDistance} km\n` +
-        `- Profit aujourd'hui : ${comptaData.dailyRevenue} €\n` +
-        `- Prochaine facture : ${comptaData.upcomingInvoiceAmount} €\n` +
-        `- Top marcheurs du mois :\n${topUsers}\n` +
-        `- Influence aujourd'hui : ${influence.day ?? 0}\n` +
-        `- Influence cette semaine : ${influence.week ?? 0}\n` +
-        `- Influence ce mois : ${influence.month ?? 0}\n` +
-        `- Influence cette année : ${influence.year ?? 0}\n` +
-        `- Influence totale : ${influence.all ?? 0}\n` +
-        `- Historique des 7 derniers jours :\n${history7Days}\n` +
-        (historyMonth ? `- Historique mensuel :\n${historyMonth}\n` : "") +
-        `${mostInfluentialDayStr}\n\n`;
-    }
-    // Ajoute le CGVU au contexte IA
     if (cgvu) {
       context +=
         "\n\nVoici les Conditions Générales de Vente et d’Utilisation (CGVU) de Vyft Program, à utiliser pour toute question juridique ou d’utilisation :\n" +
@@ -326,13 +223,11 @@ export default function SquareAIFloat() {
         "\n\n";
     }
 
-    // Ajoute le CGU Vyft au contexte IA
     context +=
       "\n\nVoici les Conditions Générales d'Utilisation (CGU) officielles de Vyft :\n" +
       CGU_Vyft_content_fr +
       "\n\n";
 
-    // Ajout des infos utilisateur au contexte
     if (userInfo) {
       context +=
         `\n\nVoici les informations sur l'utilisateur actuel :\n` +
@@ -343,7 +238,6 @@ export default function SquareAIFloat() {
         `- Email : ${userInfo.email || ""}\n`;
     }
 
-    // Ajout de l'information sur le fondateur
     context +=
       "\n\nInformation importante : Émmerick Tocny est le fondateur de Vylte-finuka et de l’écosystème Vyft.\n";
 

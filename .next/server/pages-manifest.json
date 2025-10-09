@@ -1,13 +1,7 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
-  "/api/ask-ai": "pages/api/ask-ai.js",
-  "/api/check-subscription-status": "pages/api/check-subscription-status.js",
-  "/api/push-notification-sender": "pages/api/push-notification-sender.js",
-  "/api/receive-tokpushnot": "pages/api/receive-tokpushnot.js",
-  "/api/vyfthealth_proc": "pages/api/vyfthealth_proc.js",
-  "/api/vyfthealth_receive": "pages/api/vyfthealth_receive.js",
+  "/conditions-generales-d-utilisation": "pages/conditions-generales-d-utilisation.js",
   "/conditions-generales-de-vente": "pages/conditions-generales-de-vente.js",
-  "/login": "pages/login.js"
+  "/ecosystem/vyft-slide": "pages/ecosystem/vyft-slide.js"
 }

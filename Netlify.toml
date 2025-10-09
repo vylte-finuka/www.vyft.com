@@ -1,5 +1,0 @@
-[functions]
-  included_files = [
-    "public/font/brsonomasemibold.ttf",
-    "public/vyft_program.png"
-  ]

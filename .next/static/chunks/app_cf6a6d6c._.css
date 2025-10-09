@@ -35,7 +35,7 @@
 }
 
 .Navbar-module__pSp8Ga__fontstyle {
-  color: #000;
+  color: #fff;
   margin-left: 10px;
   font-family: BR Sonoma Semibold;
   font-weight: 15;
@@ -88,7 +88,7 @@
 .Navbar-module__pSp8Ga__subMenu {
   visibility: hidden;
   z-index: 1000;
-  background-color: #00cb9e;
+  background-color: #353636;
   border-radius: 10px;
   max-height: 0;
   margin: 0;
@@ -125,7 +125,7 @@
 
 .Navbar-module__pSp8Ga__subSubMenu {
   visibility: hidden;
-  background-color: #00cb9e;
+  background-color: #353636;
   border-radius: 10px;
   max-height: 0;
   margin: 0;
@@ -172,14 +172,14 @@
   }
 
   .Navbar-module__pSp8Ga__navLinks li a:hover {
-    background-color: #00cb9e;
+    background-color: #353636;
     border-radius: 5px;
     width: auto;
     padding: .5rem;
   }
 
   .Navbar-module__pSp8Ga__subMenu, .Navbar-module__pSp8Ga__subSubMenu {
-    background-color: #00cb9e;
+    background-color: #353636;
     border-radius: 10px;
     width: auto;
     position: static;
@@ -278,14 +278,21 @@
 }
 
 .page-module__E0kJGG__header {
-  color: #000;
+  color: #fff;
   margin-bottom: 20px;
   font-family: BR Sonoma Semibold;
   font-size: 24px;
 }
 
+.page-module__E0kJGG__headerX2 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-family: BR Sonoma Semibold;
+  font-size: 56px;
+}
+
 .page-module__E0kJGG__body {
-  color: #000;
+  color: #fff;
   font-family: BR Sonoma Semibold;
   font-size: 18px;
 }
@@ -310,7 +317,9 @@
 }
 
 .page-module__E0kJGG__container1 {
-  background-color: #e0dbdd;
+  background-image: url("../media/bvs.1329776d.png");
+  background-position: center;
+  background-size: cover;
   flex-direction: column;
   min-height: 100vh;
   display: flex;
@@ -324,7 +333,7 @@
 }
 
 .page-module__E0kJGG__container3 {
-  background-image: url("../media/corporatevylte-finuka.cf1cc9d9.png");
+  background-image: url("../media/bvs.1329776d.png");
   background-position: center;
   background-size: cover;
   flex-direction: column;

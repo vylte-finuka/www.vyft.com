@@ -9,8 +9,9 @@
   },
   "appUsingSizeAdjust": true,
   "pages": {
+    "/conditions-generales-d-utilisation": [],
     "/conditions-generales-de-vente": [],
-    "/login": []
+    "/ecosystem/vyft-slide": []
   },
   "pagesUsingSizeAdjust": false
 }

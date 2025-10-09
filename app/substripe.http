@@ -1,5 +1,0 @@
-curl -X GET https://api.stripe.com/v1/subscriptions \
-  -u sk_test_51OlpeQDrg8ui7gWs1DDcKWe98MhDQaHoZwCEAzFQwumnXm5BL2MicQD2eN3UC4h9iDn0dca9VMxF4eVfvKfmvSnp00oaEldISy: \
-  -G \
-  --data-urlencode "customer=cus_SCWTMTOv9fg6kk" \
-  --data-urlencode "status=active"

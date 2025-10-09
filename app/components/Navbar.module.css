@@ -43,7 +43,7 @@
   font-family: BR Sonoma Semibold;
   font-weight: 15;
   margin-left: 10px;
-  color: #000;
+  color: #ffffff;
 }
 
 .fontstyle1 {
@@ -96,7 +96,7 @@
   position: absolute;
   top: 100%; /* Positionne le sous-menu juste en dessous de l'élément parent */
   left: 0; /* Par défaut, aligné à gauche */
-  background-color: #00CB9E;
+  background-color: #353636;
   display: none;
   padding: 0;
   margin: 0;
@@ -136,7 +136,7 @@
   position: absolute;
   top: 0;
   left: 100%;
-  background-color: #00CB9E;
+  background-color: #353636;
   display: none;
   padding: 0;
   margin: 0;
@@ -183,12 +183,12 @@
     width: auto; /* Show full text on hover */
     padding: 0.5rem;
     border-radius: 5px;
-    background-color: #00CB9E; /* Background for better readability */
+    background-color: #353636; /* Background for better readability */
   }
 
   .subMenu, .subSubMenu {
     position: static; /* Submenus behave more naturally on mobile */
-    background-color: #00CB9E;
+    background-color: #353636;
     border-radius: 10px;
     width: auto;
   }
