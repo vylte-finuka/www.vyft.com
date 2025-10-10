@@ -450,6 +450,43 @@ export default function SquareAIFloat() {
             transform: translateY(-8px);
           }
         }
+        /* Styles markdown pour le chat */
+        .vyft-markdown h1, .vyft-markdown h2, .vyft-markdown h3 {
+          color: #1a7f6b;
+          margin: 10px 0 6px 0;
+          font-weight: bold;
+        }
+        .vyft-markdown ul, .vyft-markdown ol {
+          margin-left: 18px;
+          color: #222;
+        }
+        .vyft-markdown code {
+          background: #f5f5f5;
+          color: #c7254e;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+        .vyft-markdown pre {
+          background: #23272e;
+          color: #fff;
+          padding: 10px;
+          border-radius: 8px;
+          font-size: 13px;
+          overflow-x: auto;
+        }
+        .vyft-markdown a {
+          color: #1a7f6b;
+          text-decoration: underline;
+        }
+        .vyft-markdown strong {
+          font-weight: bold;
+          color: #1a7f6b;
+        }
+        .vyft-markdown em {
+          font-style: italic;
+          color: #1a7f6b;
+        }
       `}</style>
     </div>
   );
