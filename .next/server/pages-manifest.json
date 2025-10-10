@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/api/ask-ai": "pages/api/ask-ai.js",
-  "/conditions-generales-d-utilisation": "pages/conditions-generales-d-utilisation.js",
-  "/conditions-generales-de-vente": "pages/conditions-generales-de-vente.js",
-  "/ecosystem/vyft-slide": "pages/ecosystem/vyft-slide.js"
+  "/conditions-generales-d-utilisation": "pages/conditions-generales-d-utilisation.js"
 }

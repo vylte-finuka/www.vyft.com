@@ -5,6 +5,7 @@ import styles from "../page.module.css";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 import CGU_Vyft_content_fr from "../components/CGU_Vyft_content_fr"; // Assure-toi que ce fichier existe et est exporté
+import ReactMarkdown from "react-markdown";
 
 type Message = { from: "ai" | "user"; text: string };
 
@@ -488,7 +489,6 @@ function Bubble({
     <div
       style={{
         alignSelf: from === "user" ? "flex-end" : "flex-start",
-        // Inversion des couleurs :
         background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
         color: from === "ai" ? "#222" : "#f5f6fa",
         borderRadius: 12,
@@ -500,9 +500,29 @@ function Bubble({
         transition: "transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)",
         transform: "translateY(0)",
         border: from === "ai" ? "none" : "1px solid #353a40",
+        wordBreak: "break-word",
       }}
     >
-      {children ? children : text}
+      {children ? children : (
+        <ReactMarkdown
+          components={{
+            strong: ({node, ...props}) => (
+              <strong
+                style={{
+                  color: "#1a7f6b",
+                  fontWeight: 700,
+                  background: "rgba(26,127,107,0.08)",
+                  padding: "0 2px",
+                  borderRadius: "3px"
+                }}
+                {...props}
+              />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
+      )}
     </div>
   );
 }

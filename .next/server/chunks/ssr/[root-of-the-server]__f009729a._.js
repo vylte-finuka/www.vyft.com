@@ -48,7 +48,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$next$2f$th
 ;
 ;
 const metadata = {
-    title: "Vyft - La néobanque à la vertu de la finance.",
+    title: "Vyft: La néobanque à la vertu de la finance.",
     description: "La néobanque à la vertu de la finance."
 };
 function RootLayout({ children }) {
