@@ -7,7 +7,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vyft - La néobanque à la vertu de la finance.",
+  title: "Vyft: La néobanque à la vertu de la finance.",
   description: "La néobanque à la vertu de la finance.",
 };
 

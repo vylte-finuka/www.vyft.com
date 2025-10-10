@@ -11,7 +11,7 @@ export default function Accounting() {
         <>
             <div className={styles.container2}>
                 <head>
-                    <title>En construction - Vyft program: Manage your own market.</title>
+                    <title>En construction - Vyft program:  La néobanque à la vertu de la finance..</title>
                 </head>
                 <Navbar />
                 <main className={styles.main}>
