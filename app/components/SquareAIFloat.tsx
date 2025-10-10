@@ -472,7 +472,8 @@ function TypingText({ text }: { text: string }) {
     return () => clearInterval(interval);
   }, [text]);
 
-  return <span>{displayed}</span>;
+  // Affiche le markdown en direct
+  return <ReactMarkdown>{displayed}</ReactMarkdown>;
 }
 
 // Modifie Bubble pour accepter des enfants (children)
