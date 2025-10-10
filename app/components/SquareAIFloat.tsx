@@ -472,8 +472,12 @@ function TypingText({ text }: { text: string }) {
     return () => clearInterval(interval);
   }, [text]);
 
-  // Affiche le markdown en direct
-  return <ReactMarkdown>{displayed}</ReactMarkdown>;
+  // Utilise un div pour appliquer la classe vyft-markdown pendant la génération
+  return (
+    <div className="vyft-markdown">
+      <ReactMarkdown>{displayed}</ReactMarkdown>
+    </div>
+  );
 }
 
 // Modifie Bubble pour accepter des enfants (children)
