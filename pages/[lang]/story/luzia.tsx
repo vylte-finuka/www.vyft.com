@@ -2,7 +2,7 @@
 "use client";
 
 import React from 'react';
-import styles from "../../app/page.module.css";
+import styles from "@/app/page.module.css";
 import Footer from '@/app/[lang]/components/Footer';
 import Navbar from '@/app/[lang]/components/Navbar'; // Assurez-vous que l'importation de Navbar est correcte
 
