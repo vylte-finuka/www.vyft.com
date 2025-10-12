@@ -25,6 +25,7 @@ __turbopack_context__.v({
   "container2": "page-module__E0kJGG__container2",
   "container3": "page-module__E0kJGG__container3",
   "container4": "page-module__E0kJGG__container4",
+  "container5": "page-module__E0kJGG__container5",
   "content": "page-module__E0kJGG__content",
   "date": "page-module__E0kJGG__date",
   "description": "page-module__E0kJGG__description",

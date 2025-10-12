@@ -33,6 +33,7 @@ export default function Home() {
 
   type Locale = "fr-FR" | "en-EN";
   type ContentType = {
+    main0: string;
     title: string;
     subtitle: string;
     download: string;
@@ -44,15 +45,17 @@ export default function Home() {
       title: "Un choix de simplicité.",
       subtitle: "Une appli pouvant faire ça, vous tenez la finance et la fitness au bout des doigts.",
       download: "Télécharger l'appli",
-      main: "Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout. Bientôt communiquez entre proches optionnellement par abréviation via notre IA Vyft Nérethense pour éviter les frais de réseau et problème de confidentialité, n'importe où.",
-      note: "1. L'investissement étant un cas de perte foncière, cela s'applique à la néobanque."
+      main: "Écrivez votre histoire avec Vyft. Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout. Bientôt communiquez entre proches optionnellement par abréviation via notre IA Vyft Nérethense pour éviter les frais de réseau et problème de confidentialité, n'importe où.",
+      note: "1. L'investissement étant un cas de perte foncière, cela s'applique à la néobanque.",
+      main0: "Faites les transactions avec votre carte avec des conversions en temps réel idéales pour le voyage à des taux meilleurs que la concurrence et de plus sans frais partout."
     },
     "en-EN": {
       title: "A choice of simplicity.",
       subtitle: "An app that can do this, you hold finance and fitness at your fingertips.",
       download: "Download the app",
-      main: "We recognize personal connection, travel, ecology and investment¹ as a whole. Soon communicate between relatives optionally by abbreviation via our Vyft Nérethense AI to avoid network fees and privacy issues, anywhere.",
-      note: "1. Investment being a case of land loss, this applies to the neobank."
+      main: " Write your story with Vyft. We recognize personal connection, travel, ecology and investment¹ as a whole. Soon communicate between relatives optionally by abbreviation via our Vyft Nérethense AI to avoid network fees and privacy issues, anywhere.",
+      note: "1. Investment being a case of land loss, this applies to the neobank.",
+      main0: "Make transactions with your card with real-time conversions ideal for travel at rates better than the competition and no fees anywhere."
     }
   };
 
@@ -76,8 +79,8 @@ export default function Home() {
               position: "absolute",
               top: 0,
               left: 0,
-              width: "110%",
-              height: "110%",
+              width: "100%",
+              height: "100%",
               objectFit: "cover",
               zIndex: 0,
               pointerEvents: "none"
@@ -128,20 +131,27 @@ export default function Home() {
       <div className={styles.container3}>
         <main className={styles.main}>
           <h1 className={styles.header}>
+            {t.main0}
+          </h1>        
+            <Image
+              src="/txband.png"
+              alt="Vyft tx"
+              width={255}
+              height={80}
+              style={{ top: 56 }}
+              onContextMenu={e => e.preventDefault()}
+              onDragStart={e => e.preventDefault()}
+            />
+        </main>
+      </div>
+            <div className={styles.container5}>
+        <main className={styles.main}>
+          <h1 className={styles.header}>
             {t.main}
-          </h1>
+          </h1>        
           <h2 className={styles.bodymessage}>
             {t.note}
           </h2>
-          {/* Ajout de l'image ipn14Vyft.png */}
-          <div style={{ textAlign: "center", margin: "32px 0" }}>
-            <Image
-              src="/ipn14Vyft.png"
-              alt="Vyft illustration"
-              width={1220}
-              height={880}
-            />
-          </div>
         </main>
         <Footer1 />
       </div>

@@ -333,7 +333,7 @@
 }
 
 .page-module__E0kJGG__container3 {
-  background-image: url("../media/background_vyftmot.5e9a4e18.jpg");
+  background-image: url("../media/background_vyftmot.d44de348.jpg");
   background-position: center;
   background-size: cover;
   flex-direction: column;
@@ -342,12 +342,21 @@
 }
 
 .page-module__E0kJGG__container4 {
-  background-image: url("../media/background_vyftconfort.107355c0.jpg");
+  background-image: url("../media/background_vyftconfort.a11c8549.jpg");
   background-position: center;
   background-size: cover;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  display: flex;
+}
+
+.page-module__E0kJGG__container5 {
+  background-image: url("../media/background_vyftconfort1.4a0b4cf4.png");
+  background-position: center;
+  background-size: cover;
+  flex-direction: column;
   min-height: 100vh;
   display: flex;
 }
