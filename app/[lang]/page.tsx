@@ -133,6 +133,15 @@ export default function Home() {
           <h2 className={styles.bodymessage}>
             {t.note}
           </h2>
+          {/* Ajout de l'image ipn14Vyft.png */}
+          <div style={{ textAlign: "center", margin: "32px 0" }}>
+            <Image
+              src="/ipn14Vyft.png"
+              alt="Vyft illustration"
+              width={1220}
+              height={880}
+            />
+          </div>
         </main>
         <Footer1 />
       </div>
