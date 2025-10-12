@@ -15,6 +15,22 @@ export default function Home() {
   const [showVideo, setShowVideo] = useState(false);
   const router = useRouter();
 
+  // Ajout de la redirection si aucune langue n'est présente
+  useEffect(() => {
+    // Si aucune langue dans l'URL, on redirige selon la langue du navigateur
+    if (!params.lang) {
+      const browserLang = navigator.language || navigator.languages[0] || "fr";
+      if (browserLang.startsWith("fr")) {
+        router.replace("/fr-FR");
+      } else {
+        router.replace("/en-EN");
+      }
+      return;
+    }
+    const timer = setTimeout(() => setShowVideo(true), 2000);
+    return () => clearTimeout(timer);
+  }, [params.lang, router]);
+
   type Locale = "fr-FR" | "en-EN";
   type ContentType = {
     title: string;
@@ -41,11 +57,6 @@ export default function Home() {
   };
 
   const t = content[locale as Locale] || content["fr-FR"];
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowVideo(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div>

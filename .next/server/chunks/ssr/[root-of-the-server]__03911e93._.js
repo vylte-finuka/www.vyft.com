@@ -1493,6 +1493,24 @@ function Home() {
     const locale = params.lang === "en-EN" ? "en-EN" : "fr-FR";
     const [showVideo, setShowVideo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
+    // Ajout de la redirection si aucune langue n'est présente
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // Si aucune langue dans l'URL, on redirige selon la langue du navigateur
+        if (!params.lang) {
+            const browserLang = navigator.language || navigator.languages[0] || "fr";
+            if (browserLang.startsWith("fr")) {
+                router.replace("/fr-FR");
+            } else {
+                router.replace("/en-EN");
+            }
+            return;
+        }
+        const timer = setTimeout(()=>setShowVideo(true), 2000);
+        return ()=>clearTimeout(timer);
+    }, [
+        params.lang,
+        router
+    ]);
     const content = {
         "fr-FR": {
             title: "Un choix de simplicité.",
@@ -1510,10 +1528,6 @@ function Home() {
         }
     };
     const t = content[locale] || content["fr-FR"];
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const timer = setTimeout(()=>setShowVideo(true), 2000);
-        return ()=>clearTimeout(timer);
-    }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1539,7 +1553,7 @@ function Home() {
                         }
                     }, void 0, false, {
                         fileName: "[project]/app/[lang]/page.tsx",
-                        lineNumber: 57,
+                        lineNumber: 68,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1551,7 +1565,7 @@ function Home() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/app/[lang]/page.tsx",
-                                lineNumber: 78,
+                                lineNumber: 89,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1562,7 +1576,7 @@ function Home() {
                                         children: t.title
                                     }, void 0, false, {
                                         fileName: "[project]/app/[lang]/page.tsx",
-                                        lineNumber: 80,
+                                        lineNumber: 91,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1570,14 +1584,14 @@ function Home() {
                                         children: t.subtitle
                                     }, void 0, false, {
                                         fileName: "[project]/app/[lang]/page.tsx",
-                                        lineNumber: 83,
+                                        lineNumber: 94,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodyattract
                                     }, void 0, false, {
                                         fileName: "[project]/app/[lang]/page.tsx",
-                                        lineNumber: 86,
+                                        lineNumber: 97,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1608,30 +1622,30 @@ function Home() {
                                             children: t.download
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/page.tsx",
-                                            lineNumber: 89,
+                                            lineNumber: 100,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/[lang]/page.tsx",
-                                        lineNumber: 88,
+                                        lineNumber: 99,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/[lang]/page.tsx",
-                                lineNumber: 79,
+                                lineNumber: 90,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/[lang]/page.tsx",
-                        lineNumber: 77,
+                        lineNumber: 88,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/[lang]/page.tsx",
-                lineNumber: 52,
+                lineNumber: 63,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1645,7 +1659,7 @@ function Home() {
                                 children: t.main
                             }, void 0, false, {
                                 fileName: "[project]/app/[lang]/page.tsx",
-                                lineNumber: 119,
+                                lineNumber: 130,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1653,30 +1667,30 @@ function Home() {
                                 children: t.note
                             }, void 0, false, {
                                 fileName: "[project]/app/[lang]/page.tsx",
-                                lineNumber: 122,
+                                lineNumber: 133,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/[lang]/page.tsx",
-                        lineNumber: 118,
+                        lineNumber: 129,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/[lang]/page.tsx",
-                        lineNumber: 126,
+                        lineNumber: 137,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/[lang]/page.tsx",
-                lineNumber: 117,
+                lineNumber: 128,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/[lang]/page.tsx",
-        lineNumber: 51,
+        lineNumber: 62,
         columnNumber: 5
     }, this);
 }
