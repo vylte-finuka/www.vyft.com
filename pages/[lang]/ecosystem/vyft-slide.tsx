@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Navbar from "../../../app/[lang]/components/Navbar";
-import styles from "../../../app/page.module.css";
+import styles from "@/app/page.module.css";
 import Footer1 from '../../../app/[lang]/components/Footer1';
 import { useRouter } from "next/router";
 
