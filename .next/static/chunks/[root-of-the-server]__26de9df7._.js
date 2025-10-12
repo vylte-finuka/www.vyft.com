@@ -959,9 +959,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-secure-storage/dist/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$CGU_Vyft_content_fr$2e$ts__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/CGU_Vyft_content_fr.ts [client] (ecmascript)"); // Assure-toi que ce fichier existe et est exporté
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__ = __turbopack_context__.i("[project]/node_modules/react-markdown/lib/index.js [client] (ecmascript) <export Markdown as default>");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -1100,7 +1102,7 @@ function SquareAIFloat() {
             tryLoadCGVUFromDOM();
             // Sinon, on précharge la page CGVU en arrière-plan et on extrait le JSON
             if (!cgvu) {
-                fetch("/conditions-generales-de-vente").then({
+                fetch("/conditions-generales-d-utilisation").then({
                     "SquareAIFloat.useEffect": (res)=>res.text()
                 }["SquareAIFloat.useEffect"]).then({
                     "SquareAIFloat.useEffect": (html)=>{
@@ -1215,7 +1217,7 @@ function SquareAIFloat() {
             cursor: "pointer"
         },
         onClick: ()=>setOpen((v)=>!v),
-        className: "jsx-7d37b0088d58e5a9" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
+        className: "jsx-1c380e0a5c273610" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 style: {
@@ -1223,7 +1225,7 @@ function SquareAIFloat() {
                     alignItems: "center",
                     gap: 12
                 },
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         style: {
@@ -1240,22 +1242,22 @@ function SquareAIFloat() {
                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                             letterSpacing: 1
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             style: {
                                 fontSize: 18,
                                 color: "#1a7f6b"
                             },
-                            className: "jsx-7d37b0088d58e5a9",
+                            className: "jsx-1c380e0a5c273610",
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                            lineNumber: 295,
+                            lineNumber: 296,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 279,
+                        lineNumber: 280,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1266,11 +1268,11 @@ function SquareAIFloat() {
                             fontWeight: 600,
                             letterSpacing: 0.5
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 297,
+                        lineNumber: 298,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1282,17 +1284,17 @@ function SquareAIFloat() {
                             transition: "transform 0.3s",
                             transform: open ? "rotate(90deg)" : "rotate(0deg)"
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 308,
+                        lineNumber: 309,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 278,
+                lineNumber: 279,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1308,7 +1310,7 @@ function SquareAIFloat() {
                     flex: 1
                 },
                 onClick: (e)=>e.stopPropagation(),
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         style: {
@@ -1320,7 +1322,7 @@ function SquareAIFloat() {
                             scrollBehavior: "smooth",
                             maxHeight: 340
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             messages.map((msg, idx)=>{
                                 // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
@@ -1332,12 +1334,12 @@ function SquareAIFloat() {
                                             text: msg.text
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 352,
+                                            lineNumber: 353,
                                             columnNumber: 19
                                         }, this)
                                     }, idx, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 352,
                                         columnNumber: 17
                                     }, this);
                                 }
@@ -1346,7 +1348,7 @@ function SquareAIFloat() {
                                     text: msg.text
                                 }, idx, false, {
                                     fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                    lineNumber: 356,
+                                    lineNumber: 357,
                                     columnNumber: 20
                                 }, this);
                             }),
@@ -1357,7 +1359,7 @@ function SquareAIFloat() {
                                     gap: 8,
                                     marginTop: 12
                                 },
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -1374,47 +1376,47 @@ function SquareAIFloat() {
                                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                                             letterSpacing: 1
                                         },
-                                        className: "jsx-7d37b0088d58e5a9",
+                                        className: "jsx-1c380e0a5c273610",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             style: {
                                                 fontSize: 13,
                                                 color: "#1a7f6b"
                                             },
-                                            className: "jsx-7d37b0088d58e5a9",
+                                            className: "jsx-1c380e0a5c273610",
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                            lineNumber: 383,
+                                            lineNumber: 384,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 367,
+                                        lineNumber: 368,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                        lineNumber: 385,
+                                        lineNumber: 386,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 359,
+                                lineNumber: 360,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 ref: messagesEndRef,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 388,
+                                lineNumber: 389,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 336,
+                        lineNumber: 337,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1428,7 +1430,7 @@ function SquareAIFloat() {
                             e.preventDefault();
                             sendMessage();
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                 type: "text",
@@ -1448,10 +1450,10 @@ function SquareAIFloat() {
                                     transition: "background 0.2s, color 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 402,
+                                lineNumber: 403,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1469,33 +1471,33 @@ function SquareAIFloat() {
                                     transition: "opacity 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                                lineNumber: 421,
+                                lineNumber: 422,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 390,
+                        lineNumber: 391,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 321,
+                lineNumber: 322,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
-                id: "7d37b0088d58e5a9",
-                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}"
+                id: "1c380e0a5c273610",
+                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}.vyft-markdown h1,.vyft-markdown h2,.vyft-markdown h3{color:#1a7f6b;margin:10px 0 6px;font-weight:700}.vyft-markdown ul,.vyft-markdown ol{color:#222;margin-left:18px}.vyft-markdown code{color:#c7254e;background:#f5f5f5;border-radius:4px;padding:2px 6px;font-size:14px}.vyft-markdown pre{color:#fff;background:#23272e;border-radius:8px;padding:10px;font-size:13px;overflow-x:auto}.vyft-markdown a{color:#1a7f6b;text-decoration:underline}.vyft-markdown strong{color:#1a7f6b;font-weight:700}.vyft-markdown em{color:#1a7f6b;font-style:italic}"
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 255,
+        lineNumber: 256,
         columnNumber: 5
     }, this);
 }
@@ -1527,12 +1529,20 @@ function TypingText({ text }) {
     }["TypingText.useEffect"], [
         text
     ]);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-        children: displayed
+    // Utilise un div pour appliquer la classe vyft-markdown pendant la génération
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "vyft-markdown",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+            children: displayed
+        }, void 0, false, {
+            fileName: "[project]/app/components/SquareAIFloat.tsx",
+            lineNumber: 515,
+            columnNumber: 7
+        }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 474,
-        columnNumber: 10
+        lineNumber: 514,
+        columnNumber: 5
     }, this);
 }
 _s1(TypingText, "vX7roFhzDmTMSRT2IyLXRVK/bXA=");
@@ -1542,7 +1552,6 @@ function Bubble({ from, text, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             alignSelf: from === "user" ? "flex-end" : "flex-start",
-            // Inversion des couleurs :
             background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
             color: from === "ai" ? "#222" : "#f5f6fa",
             borderRadius: 12,
@@ -1553,12 +1562,35 @@ function Bubble({ from, text, children }) {
             boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
             transition: "transform 0.4s cubic-bezier(.68,-0.55,.27,1.55)",
             transform: "translateY(0)",
-            border: from === "ai" ? "none" : "1px solid #353a40"
+            border: from === "ai" ? "none" : "1px solid #353a40",
+            wordBreak: "break-word"
         },
-        children: children ? children : text
+        children: children ? children : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+            components: {
+                strong: ({ node, ...props })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        style: {
+                            color: "#1a7f6b",
+                            fontWeight: 700,
+                            background: "rgba(26,127,107,0.08)",
+                            padding: "0 2px",
+                            borderRadius: "3px"
+                        },
+                        ...props
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SquareAIFloat.tsx",
+                        lineNumber: 552,
+                        columnNumber: 15
+                    }, void 0)
+            },
+            children: text
+        }, void 0, false, {
+            fileName: "[project]/app/components/SquareAIFloat.tsx",
+            lineNumber: 549,
+            columnNumber: 9
+        }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 488,
+        lineNumber: 531,
         columnNumber: 5
     }, this);
 }
@@ -1587,18 +1619,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 528,
+                lineNumber: 590,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 529,
+                lineNumber: 591,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 512,
+        lineNumber: 574,
         columnNumber: 5
     }, this);
 }
@@ -1614,27 +1646,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 537,
+                lineNumber: 599,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 538,
+                lineNumber: 600,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 539,
+                lineNumber: 601,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 536,
+        lineNumber: 598,
         columnNumber: 5
     }, this);
 }
@@ -1654,7 +1686,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 546,
+        lineNumber: 608,
         columnNumber: 5
     }, this);
 }
@@ -1694,7 +1726,7 @@ const Footer = ()=>{
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].links,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/conditions-generales-de-vente",
+                    href: "/conditions-generales-d-utilisation",
                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle3,
                     children: "Conditions Générales d'Utilisation"
                 }, void 0, false, {
@@ -1815,42 +1847,57 @@ function Home() {
                             lineNumber: 44,
                             columnNumber: 11
                         }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("title", {
+                            children: "Vyft: La néobanque à la vertu de la finance. - Vyft slide"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
+                            lineNumber: 45,
+                            columnNumber: 11
+                        }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].main,
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].headerX2,
-                                    children: "Unique au monde."
+                                    children: "Concept unique au monde."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
-                                    lineNumber: 46,
+                                    lineNumber: 47,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
-                                    children: "Une carte métal recyclée de manière éco-responsable et prêt et compagnon de voyage, bientôt sur le marché."
+                                    children: "Une carte métal recyclée de manière éco-responsable et compagnon de voyage, bientôt sur le marché."
                                 }, void 0, false, {
                                     fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
-                                    lineNumber: 49,
+                                    lineNumber: 50,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].body,
+                                    children: "Elle sera conçue via le recyclage par mission de redonner de la valeur aux matériaux usagés."
+                                }, void 0, false, {
+                                    fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
+                                    lineNumber: 53,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyattract
                                 }, void 0, false, {
                                     fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
-                                    lineNumber: 52,
+                                    lineNumber: 54,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
-                            lineNumber: 45,
+                            lineNumber: 46,
                             columnNumber: 11
                         }, this),
                         "  ",
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/pages/ecosystem/vyft-slide.tsx",
-                            lineNumber: 53,
+                            lineNumber: 55,
                             columnNumber: 20
                         }, this)
                     ]

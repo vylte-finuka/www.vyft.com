@@ -111,10 +111,21 @@
 }
 
 .page-module__E0kJGG__container3 {
-  background-image: url("../media/bvs.1329776d.png");
+  background-image: url("../media/background_vyftmot.5e9a4e18.jpg");
   background-position: center;
   background-size: cover;
   flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+}
+
+.page-module__E0kJGG__container4 {
+  background-image: url("../media/background_vyftconfort.107355c0.jpg");
+  background-position: center;
+  background-size: cover;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
   display: flex;
 }

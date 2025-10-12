@@ -906,7 +906,7 @@ function SquareAIFloat() {
             cursor: "pointer"
         },
         onClick: ()=>setOpen((v)=>!v),
-        className: "jsx-7d37b0088d58e5a9" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
+        className: "jsx-1c380e0a5c273610" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 style: {
@@ -914,7 +914,7 @@ function SquareAIFloat() {
                     alignItems: "center",
                     gap: 12
                 },
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         style: {
@@ -931,13 +931,13 @@ function SquareAIFloat() {
                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                             letterSpacing: 1
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             style: {
                                 fontSize: 18,
                                 color: "#1a7f6b"
                             },
-                            className: "jsx-7d37b0088d58e5a9",
+                            className: "jsx-1c380e0a5c273610",
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -957,7 +957,7 @@ function SquareAIFloat() {
                             fontWeight: 600,
                             letterSpacing: 0.5
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -973,7 +973,7 @@ function SquareAIFloat() {
                             transition: "transform 0.3s",
                             transform: open ? "rotate(90deg)" : "rotate(0deg)"
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -999,7 +999,7 @@ function SquareAIFloat() {
                     flex: 1
                 },
                 onClick: (e)=>e.stopPropagation(),
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         style: {
@@ -1011,7 +1011,7 @@ function SquareAIFloat() {
                             scrollBehavior: "smooth",
                             maxHeight: 340
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             messages.map((msg, idx)=>{
                                 // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
@@ -1048,7 +1048,7 @@ function SquareAIFloat() {
                                     gap: 8,
                                     marginTop: 12
                                 },
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -1065,13 +1065,13 @@ function SquareAIFloat() {
                                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                                             letterSpacing: 1
                                         },
-                                        className: "jsx-7d37b0088d58e5a9",
+                                        className: "jsx-1c380e0a5c273610",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             style: {
                                                 fontSize: 13,
                                                 color: "#1a7f6b"
                                             },
-                                            className: "jsx-7d37b0088d58e5a9",
+                                            className: "jsx-1c380e0a5c273610",
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -1096,7 +1096,7 @@ function SquareAIFloat() {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 ref: messagesEndRef,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
                                 lineNumber: 389,
@@ -1119,7 +1119,7 @@ function SquareAIFloat() {
                             e.preventDefault();
                             sendMessage();
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                 type: "text",
@@ -1139,7 +1139,7 @@ function SquareAIFloat() {
                                     transition: "background 0.2s, color 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
                                 lineNumber: 403,
@@ -1160,7 +1160,7 @@ function SquareAIFloat() {
                                     transition: "opacity 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -1180,8 +1180,8 @@ function SquareAIFloat() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                id: "7d37b0088d58e5a9",
-                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}"
+                id: "1c380e0a5c273610",
+                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}.vyft-markdown h1,.vyft-markdown h2,.vyft-markdown h3{color:#1a7f6b;margin:10px 0 6px;font-weight:700}.vyft-markdown ul,.vyft-markdown ol{color:#222;margin-left:18px}.vyft-markdown code{color:#c7254e;background:#f5f5f5;border-radius:4px;padding:2px 6px;font-size:14px}.vyft-markdown pre{color:#fff;background:#23272e;border-radius:8px;padding:10px;font-size:13px;overflow-x:auto}.vyft-markdown a{color:#1a7f6b;text-decoration:underline}.vyft-markdown strong{color:#1a7f6b;font-weight:700}.vyft-markdown em{color:#1a7f6b;font-style:italic}"
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
@@ -1207,12 +1207,20 @@ function TypingText({ text }) {
     }, [
         text
     ]);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-        children: displayed
+    // Utilise un div pour appliquer la classe vyft-markdown pendant la génération
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "vyft-markdown",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+            children: displayed
+        }, void 0, false, {
+            fileName: "[project]/app/components/SquareAIFloat.tsx",
+            lineNumber: 515,
+            columnNumber: 7
+        }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 475,
-        columnNumber: 10
+        lineNumber: 514,
+        columnNumber: 5
     }, this);
 }
 // Modifie Bubble pour accepter des enfants (children)
@@ -1246,19 +1254,19 @@ function Bubble({ from, text, children }) {
                         ...props
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
-                        lineNumber: 510,
+                        lineNumber: 552,
                         columnNumber: 15
                     }, void 0)
             },
             children: text
         }, void 0, false, {
             fileName: "[project]/app/components/SquareAIFloat.tsx",
-            lineNumber: 507,
+            lineNumber: 549,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 489,
+        lineNumber: 531,
         columnNumber: 5
     }, this);
 }
@@ -1286,18 +1294,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 548,
+                lineNumber: 590,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 549,
+                lineNumber: 591,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 532,
+        lineNumber: 574,
         columnNumber: 5
     }, this);
 }
@@ -1312,27 +1320,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 557,
+                lineNumber: 599,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 558,
+                lineNumber: 600,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 559,
+                lineNumber: 601,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 556,
+        lineNumber: 598,
         columnNumber: 5
     }, this);
 }
@@ -1351,7 +1359,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 566,
+        lineNumber: 608,
         columnNumber: 5
     }, this);
 }
@@ -1436,7 +1444,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Navbar.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [app-ssr] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Footer1.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -1444,8 +1454,30 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1
 ;
 function Home() {
     const [showVideo, setShowVideo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
+    // Détection de la langue (exemple avec pathname)
+    let locale = "fr-FR";
+    if ("TURBOPACK compile-time falsy", 0) {
+        "TURBOPACK unreachable";
+    }
+    const content = {
+        "fr-FR": {
+            title: "Un choix de simplicité.",
+            subtitle: "Une appli pouvant faire ça, vous tenez la finance et la fitness au bout des doigts.",
+            download: "Télécharger l'application",
+            main: "Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout. Bientôt communiquez entre proches optionnellement par abréviation via notre IA Vyft Nérethense pour éviter les frais de réseau et problème de confidentialité, n'importe où.",
+            note: "1. L'investissement étant un cas de perte foncière, cela s'applique à la néobanque."
+        },
+        "en-EN": {
+            title: "A choice of simplicity.",
+            subtitle: "An app that can do this, you hold finance and fitness at your fingertips.",
+            download: "Download the app",
+            main: "We recognize personal connection, travel, ecology and investment¹ as a whole. Soon communicate between relatives optionally by abbreviation via our Vyft Nérethense AI to avoid network fees and privacy issues, anywhere.",
+            note: "1. Investment being a case of land loss, this applies to the neobank."
+        }
+    };
+    const t = content[locale] || content["fr-FR"];
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Affiche l'image 2s puis lance la vidéo en background
         const timer = setTimeout(()=>setShowVideo(true), 2000);
         return ()=>clearTimeout(timer);
     }, []);
@@ -1474,7 +1506,7 @@ function Home() {
                         }
                     }, void 0, false, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 26,
+                        lineNumber: 62,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1486,7 +1518,7 @@ function Home() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/app/page.tsx",
-                                lineNumber: 47,
+                                lineNumber: 83,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1494,43 +1526,80 @@ function Home() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].headerX2,
-                                        children: "Un choix de simplicité."
+                                        children: t.title
                                     }, void 0, false, {
                                         fileName: "[project]/app/page.tsx",
-                                        lineNumber: 49,
+                                        lineNumber: 85,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].body,
-                                        children: "Une appli pouvant faire ça, vous tenez la finance et la fitness au bout des doigts."
+                                        children: t.subtitle
                                     }, void 0, false, {
                                         fileName: "[project]/app/page.tsx",
-                                        lineNumber: 52,
+                                        lineNumber: 88,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodyattract
                                     }, void 0, false, {
                                         fileName: "[project]/app/page.tsx",
-                                        lineNumber: 55,
+                                        lineNumber: 91,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        style: {
+                                            marginTop: 40
+                                        },
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].button,
+                                            style: {
+                                                background: "linear-gradient(90deg, #e0dbdd 0%, #bdbdbd 100%)",
+                                                color: "#cccccc",
+                                                fontWeight: "bold",
+                                                fontSize: 18,
+                                                border: "none",
+                                                width: 242,
+                                                borderRadius: 25,
+                                                padding: "18px 40px",
+                                                boxShadow: "0px 4px 12px rgba(82, 132, 120, 0.10)",
+                                                transition: "background 0.3s",
+                                                display: "inline-block",
+                                                textDecoration: "none",
+                                                marginTop: "20px",
+                                                cursor: "not-allowed",
+                                                pointerEvents: "none",
+                                                opacity: 0.6
+                                            },
+                                            "aria-disabled": "true",
+                                            tabIndex: -1,
+                                            children: t.download
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/page.tsx",
+                                            lineNumber: 94,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/page.tsx",
+                                        lineNumber: 93,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/page.tsx",
-                                lineNumber: 48,
+                                lineNumber: 84,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 46,
+                        lineNumber: 82,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/page.tsx",
-                lineNumber: 21,
+                lineNumber: 57,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1541,41 +1610,41 @@ function Home() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].header,
-                                children: "Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout. Bientôt communiquez entre proches via notre IA Vyft Nérethense pour éviter les frais de messagerie et problème de confidentialité, n'importe où."
+                                children: t.main
                             }, void 0, false, {
                                 fileName: "[project]/app/page.tsx",
-                                lineNumber: 61,
+                                lineNumber: 125,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$app$2d$ssr$5d$__$28$css__module$29$__["default"].bodymessage,
-                                children: "1. L'investissement étant un cas de perte foncière, cela s'applique à la néobanque."
+                                children: t.note
                             }, void 0, false, {
                                 fileName: "[project]/app/page.tsx",
-                                lineNumber: 65,
+                                lineNumber: 128,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 60,
+                        lineNumber: 124,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Footer1$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/page.tsx",
-                        lineNumber: 69,
+                        lineNumber: 132,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/page.tsx",
-                lineNumber: 59,
+                lineNumber: 123,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/page.tsx",
-        lineNumber: 20,
+        lineNumber: 56,
         columnNumber: 5
     }, this);
 }

@@ -781,7 +781,7 @@ function SquareAIFloat() {
             cursor: "pointer"
         },
         onClick: ()=>setOpen((v)=>!v),
-        className: "jsx-7d37b0088d58e5a9" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
+        className: "jsx-1c380e0a5c273610" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 style: {
@@ -789,7 +789,7 @@ function SquareAIFloat() {
                     alignItems: "center",
                     gap: 12
                 },
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                         style: {
@@ -806,13 +806,13 @@ function SquareAIFloat() {
                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                             letterSpacing: 1
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                             style: {
                                 fontSize: 18,
                                 color: "#1a7f6b"
                             },
-                            className: "jsx-7d37b0088d58e5a9",
+                            className: "jsx-1c380e0a5c273610",
                             children: "NE"
                         }, void 0, false, {
                             fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -832,7 +832,7 @@ function SquareAIFloat() {
                             fontWeight: 600,
                             letterSpacing: 0.5
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "Vyft Nérethense (Beta) ✨"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -848,7 +848,7 @@ function SquareAIFloat() {
                             transition: "transform 0.3s",
                             transform: open ? "rotate(90deg)" : "rotate(0deg)"
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: "▸"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -874,7 +874,7 @@ function SquareAIFloat() {
                     flex: 1
                 },
                 onClick: (e)=>e.stopPropagation(),
-                className: "jsx-7d37b0088d58e5a9",
+                className: "jsx-1c380e0a5c273610",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                         style: {
@@ -886,7 +886,7 @@ function SquareAIFloat() {
                             scrollBehavior: "smooth",
                             maxHeight: 340
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             messages.map((msg, idx)=>{
                                 // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
@@ -923,7 +923,7 @@ function SquareAIFloat() {
                                     gap: 8,
                                     marginTop: 12
                                 },
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                         style: {
@@ -940,13 +940,13 @@ function SquareAIFloat() {
                                             boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                                             letterSpacing: 1
                                         },
-                                        className: "jsx-7d37b0088d58e5a9",
+                                        className: "jsx-1c380e0a5c273610",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                                             style: {
                                                 fontSize: 13,
                                                 color: "#1a7f6b"
                                             },
-                                            className: "jsx-7d37b0088d58e5a9",
+                                            className: "jsx-1c380e0a5c273610",
                                             children: "NE"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -971,7 +971,7 @@ function SquareAIFloat() {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 ref: messagesEndRef,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
                                 lineNumber: 389,
@@ -994,7 +994,7 @@ function SquareAIFloat() {
                             e.preventDefault();
                             sendMessage();
                         },
-                        className: "jsx-7d37b0088d58e5a9",
+                        className: "jsx-1c380e0a5c273610",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
                                 type: "text",
@@ -1014,7 +1014,7 @@ function SquareAIFloat() {
                                     transition: "background 0.2s, color 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9"
+                                className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
                                 lineNumber: 403,
@@ -1035,7 +1035,7 @@ function SquareAIFloat() {
                                     transition: "opacity 0.2s"
                                 },
                                 disabled: loading,
-                                className: "jsx-7d37b0088d58e5a9",
+                                className: "jsx-1c380e0a5c273610",
                                 children: "Envoyer"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/SquareAIFloat.tsx",
@@ -1055,8 +1055,8 @@ function SquareAIFloat() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__["default"], {
-                id: "7d37b0088d58e5a9",
-                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}"
+                id: "1c380e0a5c273610",
+                children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}.vyft-markdown h1,.vyft-markdown h2,.vyft-markdown h3{color:#1a7f6b;margin:10px 0 6px;font-weight:700}.vyft-markdown ul,.vyft-markdown ol{color:#222;margin-left:18px}.vyft-markdown code{color:#c7254e;background:#f5f5f5;border-radius:4px;padding:2px 6px;font-size:14px}.vyft-markdown pre{color:#fff;background:#23272e;border-radius:8px;padding:10px;font-size:13px;overflow-x:auto}.vyft-markdown a{color:#1a7f6b;text-decoration:underline}.vyft-markdown strong{color:#1a7f6b;font-weight:700}.vyft-markdown em{color:#1a7f6b;font-style:italic}"
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
@@ -1082,12 +1082,20 @@ function TypingText({ text }) {
     }, [
         text
     ]);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
-        children: displayed
+    // Utilise un div pour appliquer la classe vyft-markdown pendant la génération
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+        className: "vyft-markdown",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__["default"], {
+            children: displayed
+        }, void 0, false, {
+            fileName: "[project]/app/components/SquareAIFloat.tsx",
+            lineNumber: 515,
+            columnNumber: 7
+        }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 475,
-        columnNumber: 10
+        lineNumber: 514,
+        columnNumber: 5
     }, this);
 }
 // Modifie Bubble pour accepter des enfants (children)
@@ -1109,15 +1117,31 @@ function Bubble({ from, text, children }) {
             wordBreak: "break-word"
         },
         children: children ? children : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__["default"], {
+            components: {
+                strong: ({ node, ...props })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                        style: {
+                            color: "#1a7f6b",
+                            fontWeight: 700,
+                            background: "rgba(26,127,107,0.08)",
+                            padding: "0 2px",
+                            borderRadius: "3px"
+                        },
+                        ...props
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SquareAIFloat.tsx",
+                        lineNumber: 552,
+                        columnNumber: 15
+                    }, void 0)
+            },
             children: text
         }, void 0, false, {
             fileName: "[project]/app/components/SquareAIFloat.tsx",
-            lineNumber: 506,
-            columnNumber: 30
+            lineNumber: 549,
+            columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 489,
+        lineNumber: 531,
         columnNumber: 5
     }, this);
 }
@@ -1145,18 +1169,18 @@ function TypingBubble() {
                 children: "Écrit..."
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 529,
+                lineNumber: 590,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 530,
+                lineNumber: 591,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 513,
+        lineNumber: 574,
         columnNumber: 5
     }, this);
 }
@@ -1171,27 +1195,27 @@ function TypingDots() {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 538,
+                lineNumber: 599,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 539,
+                lineNumber: 600,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/components/SquareAIFloat.tsx",
-                lineNumber: 540,
+                lineNumber: 601,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 537,
+        lineNumber: 598,
         columnNumber: 5
     }, this);
 }
@@ -1210,7 +1234,7 @@ function Dot({ delay }) {
         }
     }, void 0, false, {
         fileName: "[project]/app/components/SquareAIFloat.tsx",
-        lineNumber: 547,
+        lineNumber: 608,
         columnNumber: 5
     }, this);
 }
