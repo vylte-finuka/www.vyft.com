@@ -33,7 +33,6 @@ Accédez à l’application sur [http://localhost:3000](http://localhost:3000).
 - `app/` : Pages et composants principaux (Next.js)
 - `pages/api/` : API backend
 - `public/` : Fichiers statiques (images, vidéos)
-- `styles/` : Feuilles de style CSS
 
 ## Documentation
 
