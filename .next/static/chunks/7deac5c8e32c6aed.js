@@ -1,3 +1,0 @@
-(globalThis.TURBOPACK=globalThis.TURBOPACK||[]).push(["object"==typeof document?document.currentScript:void 0,{85529:a=>{var{g:c,__dirname:e}=a;a.v(c=>Promise.all(["static/chunks/01551ea3a7be1e2c.js"].map(c=>a.l(c))).then(()=>c(51194)))},15461:a=>{var{g:c,__dirname:e}=a;a.v(c=>Promise.all(["static/chunks/7ec8b6cf278c74a9.js"].map(c=>a.l(c))).then(()=>c(61034)))}}]);
-
-//# sourceMappingURL=8e877058416cc7cc.js.map

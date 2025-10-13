@@ -1,1 +1,15 @@
-{}
+{
+  "/[lang]/conditions-generales-d-utilisation": "pages/[lang]/conditions-generales-d-utilisation.html",
+  "/[lang]/ecosystem/luzia": "pages/[lang]/ecosystem/luzia.html",
+  "/[lang]/ecosystem/vyft-program": "pages/[lang]/ecosystem/vyft-program.html",
+  "/[lang]/ecosystem/vyft-slide": "pages/[lang]/ecosystem/vyft-slide.html",
+  "/[lang]/offer/cashbacks": "pages/[lang]/offer/cashbacks.html",
+  "/[lang]/offer/partenaires": "pages/[lang]/offer/partenaires.html",
+  "/[lang]/story/luzia": "pages/[lang]/story/luzia.html",
+  "/[lang]/story/vyft": "pages/[lang]/story/vyft.html",
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/api/ask-ai": "pages/api/ask-ai.js",
+  "/404": "pages/404.html"
+}

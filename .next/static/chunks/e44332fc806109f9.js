@@ -1,0 +1,3 @@
+(globalThis.TURBOPACK=globalThis.TURBOPACK||[]).push(["object"==typeof document?document.currentScript:void 0,{12597:function(e){var{g:t,__dirname:r,m:n,e:o}=e;{"use strict";e.i(22271),Object.defineProperty(o,"__esModule",{value:!0}),Object.defineProperty(o,"warnOnce",{enumerable:!0,get:function(){return t}});let t=e=>{}}},55366:function(e){var{g:t,__dirname:r,m:n,e:o}=e;n.exports=e.r(41842)}}]);
+
+//# sourceMappingURL=bc9787c56eafc710.js.map

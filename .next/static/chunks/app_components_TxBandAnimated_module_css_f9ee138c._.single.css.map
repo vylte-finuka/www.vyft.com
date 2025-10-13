@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/components/TxBandAnimated.module.css"],"sourcesContent":[".diagonalRow {\r\n  position: relative;\r\n  height: 300px;\r\n  margin-top: 32px;\r\n}\r\n.txband {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  will-change: transform;\r\n}"],"names":[],"mappings":"AAAA;;;;;;AAKA"}}]
-}

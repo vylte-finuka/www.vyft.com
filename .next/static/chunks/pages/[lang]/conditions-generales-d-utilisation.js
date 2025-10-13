@@ -1,17 +1,9 @@
 __turbopack_load_page_chunks__("/[lang]/conditions-generales-d-utilisation", [
-  "static/chunks/[root-of-the-server]__97287d9c._.js",
-  "static/chunks/node_modules_next_dist_compiled_46eb4217._.js",
-  "static/chunks/node_modules_next_dist_shared_lib_c6e9c76d._.js",
-  "static/chunks/node_modules_next_dist_client_f131196d._.js",
-  "static/chunks/node_modules_next_dist_74abe800._.js",
-  "static/chunks/node_modules_next_d42ab682._.js",
-  "static/chunks/node_modules_react_1cad9b0b._.js",
-  "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
-  "static/chunks/node_modules_react-dom_f14d0471._.js",
-  "static/chunks/node_modules_axios_lib_9aa2336a._.js",
-  "static/chunks/node_modules_micromark-core-commonmark_dev_lib_4ec537ec._.js",
-  "static/chunks/node_modules_405599d5._.js",
-  "static/chunks/app_2671e17b._.css",
-  "static/chunks/pages_[lang]_conditions-generales-d-utilisation_tsx_5771e187._.js",
-  "static/chunks/pages_[lang]_conditions-generales-d-utilisation_tsx_3f4382b2._.js"
+  "static/chunks/8c5fd6d7a3b0db89.js",
+  "static/chunks/06fdf7c952e7a924.js",
+  "static/chunks/2bb2097c6b19f68c.js",
+  "static/chunks/ceddce37bf9efe43.js",
+  "static/chunks/86f2372f33384b17.js",
+  "static/chunks/661b641a6f5f6409.css",
+  "static/chunks/6534251bae642fe3.js"
 ])

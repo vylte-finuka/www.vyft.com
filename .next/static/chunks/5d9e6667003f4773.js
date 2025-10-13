@@ -1,0 +1,3 @@
+(globalThis.TURBOPACK=globalThis.TURBOPACK||[]).push(["object"==typeof document?document.currentScript:void 0,{55366:function(e){var{g:t,__dirname:r,m:a,e:u}=e;a.exports=e.r(41842)},74753:e=>{"use strict";var{g:t,__dirname:r}=e;e.s({default:()=>n});var a=e.i(38653),u=e.i(55366);function n(){let e=(0,u.useRouter)();return(0,a.useEffect)(()=>{(navigator.language||navigator.languages[0]||"fr").startsWith("fr")?e.replace("/fr-FR"):e.replace("/en-EN")},[e]),null}}}]);
+
+//# sourceMappingURL=fb07d523b1456b15.js.map

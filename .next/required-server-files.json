@@ -100,7 +100,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "D:\\Downloads\\Vyft_product\\Vyft program",
+    "outputFileTracingRoot": "D:\\Downloads\\Vyft_product\\www.vyft.com",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -283,10 +283,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.mjs",
     "turbopack": {
-      "root": "D:\\Downloads\\Vyft_product\\Vyft program"
+      "root": "D:\\Downloads\\Vyft_product\\www.vyft.com"
     }
   },
-  "appDir": "D:\\Downloads\\Vyft_product\\Vyft program",
+  "appDir": "D:\\Downloads\\Vyft_product\\www.vyft.com",
   "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",

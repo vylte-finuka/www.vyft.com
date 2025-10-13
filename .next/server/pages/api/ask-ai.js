@@ -1,5 +1,5 @@
 const CHUNK_PUBLIC_PATH = "server/pages/api/ask-ai.js";
 const runtime = require("../../chunks/[turbopack]_runtime.js");
-runtime.loadChunk("server/chunks/[root-of-the-server]__3e6e93b6._.js");
-runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/pages-api.js { INNER_PAGE => \"[project]/pages/api/ask-ai.ts [api] (ecmascript)\" } [api] (ecmascript)", CHUNK_PUBLIC_PATH);
-module.exports = runtime.getOrInstantiateRuntimeModule("[project]/node_modules/next/dist/esm/build/templates/pages-api.js { INNER_PAGE => \"[project]/pages/api/ask-ai.ts [api] (ecmascript)\" } [api] (ecmascript)", CHUNK_PUBLIC_PATH).exports;
+runtime.loadChunk("server/chunks/[root-of-the-server]__77a935d6._.js");
+runtime.getOrInstantiateRuntimeModule(77051, CHUNK_PUBLIC_PATH);
+module.exports = runtime.getOrInstantiateRuntimeModule(77051, CHUNK_PUBLIC_PATH).exports;

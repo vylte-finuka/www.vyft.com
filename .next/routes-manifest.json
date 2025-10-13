@@ -13,7 +13,80 @@
     }
   ],
   "headers": [],
-  "dynamicRoutes": [],
+  "dynamicRoutes": [
+    {
+      "page": "/[lang]",
+      "regex": "^/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/[lang]/conditions-generales-d-utilisation",
+      "regex": "^/([^/]+?)/conditions\\-generales\\-d\\-utilisation(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/conditions\\-generales\\-d\\-utilisation(?:/)?$"
+    },
+    {
+      "page": "/[lang]/ecosystem/luzia",
+      "regex": "^/([^/]+?)/ecosystem/luzia(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/ecosystem/luzia(?:/)?$"
+    },
+    {
+      "page": "/[lang]/ecosystem/vyft-program",
+      "regex": "^/([^/]+?)/ecosystem/vyft\\-program(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/ecosystem/vyft\\-program(?:/)?$"
+    },
+    {
+      "page": "/[lang]/ecosystem/vyft-slide",
+      "regex": "^/([^/]+?)/ecosystem/vyft\\-slide(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/ecosystem/vyft\\-slide(?:/)?$"
+    },
+    {
+      "page": "/[lang]/offer/cashbacks",
+      "regex": "^/([^/]+?)/offer/cashbacks(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/offer/cashbacks(?:/)?$"
+    },
+    {
+      "page": "/[lang]/offer/partenaires",
+      "regex": "^/([^/]+?)/offer/partenaires(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/offer/partenaires(?:/)?$"
+    },
+    {
+      "page": "/[lang]/story/luzia",
+      "regex": "^/([^/]+?)/story/luzia(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/story/luzia(?:/)?$"
+    },
+    {
+      "page": "/[lang]/story/vyft",
+      "regex": "^/([^/]+?)/story/vyft(?:/)?$",
+      "routeKeys": {
+        "nxtPlang": "nxtPlang"
+      },
+      "namedRegex": "^/(?<nxtPlang>[^/]+?)/story/vyft(?:/)?$"
+    }
+  ],
   "staticRoutes": [
     {
       "page": "/",
@@ -22,124 +95,16 @@
       "namedRegex": "^/(?:/)?$"
     },
     {
-      "page": "/Resetpassword",
-      "regex": "^/Resetpassword(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/Resetpassword(?:/)?$"
-    },
-    {
       "page": "/_not-found",
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
-      "page": "/administration/main-management",
-      "regex": "^/administration/main\\-management(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/administration/main\\-management(?:/)?$"
-    },
-    {
-      "page": "/administration/reports",
-      "regex": "^/administration/reports(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/administration/reports(?:/)?$"
-    },
-    {
-      "page": "/administration/reportsList",
-      "regex": "^/administration/reportsList(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/administration/reportsList(?:/)?$"
-    },
-    {
-      "page": "/administration/settings",
-      "regex": "^/administration/settings(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/administration/settings(?:/)?$"
-    },
-    {
-      "page": "/administration/settings/connecthist",
-      "regex": "^/administration/settings/connecthist(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/administration/settings/connecthist(?:/)?$"
-    },
-    {
-      "page": "/cancel",
-      "regex": "^/cancel(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/cancel(?:/)?$"
-    },
-    {
-      "page": "/conditions-generales-de-vente",
-      "regex": "^/conditions\\-generales\\-de\\-vente(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/conditions\\-generales\\-de\\-vente(?:/)?$"
-    },
-    {
-      "page": "/events/management",
-      "regex": "^/events/management(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/events/management(?:/)?$"
-    },
-    {
-      "page": "/events/statistics",
-      "regex": "^/events/statistics(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/events/statistics(?:/)?$"
-    },
-    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
-    },
-    {
-      "page": "/login",
-      "regex": "^/login(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/login(?:/)?$"
-    },
-    {
-      "page": "/register",
-      "regex": "^/register(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/register(?:/)?$"
-    },
-    {
-      "page": "/regulations/aml",
-      "regex": "^/regulations/aml(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/regulations/aml(?:/)?$"
-    },
-    {
-      "page": "/regulations/kyc",
-      "regex": "^/regulations/kyc(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/regulations/kyc(?:/)?$"
-    },
-    {
-      "page": "/regulations/pci-dss",
-      "regex": "^/regulations/pci\\-dss(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/regulations/pci\\-dss(?:/)?$"
-    },
-    {
-      "page": "/risk-management/accounting",
-      "regex": "^/risk\\-management/accounting(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/risk\\-management/accounting(?:/)?$"
-    },
-    {
-      "page": "/risk-management/cashback",
-      "regex": "^/risk\\-management/cashback(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/risk\\-management/cashback(?:/)?$"
-    },
-    {
-      "page": "/success",
-      "regex": "^/success(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/success(?:/)?$"
     }
   ],
   "dataRoutes": [],
