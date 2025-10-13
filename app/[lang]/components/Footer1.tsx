@@ -24,7 +24,7 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.links}>
-        <Link href="/conditions-generales-d-utilisation" className={styles.fontstyle3}>{t.cgu}</Link>
+        <Link href={`/${locale}/conditions-generales-d-utilisation`} className={styles.fontstyle3}>{t.cgu}</Link>
       </div>
       <div className={styles.copyright}>
         <p className={styles.fontstyle2}>{t.copyright}</p>
