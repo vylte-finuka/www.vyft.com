@@ -1,9 +1,9 @@
 __turbopack_load_page_chunks__("/[lang]/ecosystem/vyft-program", [
-  "static/chunks/afe2e161d27378f0.js",
+  "static/chunks/fc86c6dd8be012c4.js",
   "static/chunks/06fdf7c952e7a924.js",
-  "static/chunks/86f2372f33384b17.js",
+  "static/chunks/ac263d7b19cfc237.js",
   "static/chunks/0aa5f68c699d3d53.js",
   "static/chunks/2bb2097c6b19f68c.js",
-  "static/chunks/661b641a6f5f6409.css",
-  "static/chunks/06d2bee0ec0e8666.js"
+  "static/chunks/535e0ac4e722bcd5.css",
+  "static/chunks/e0eccd9ad6cac62c.js"
 ])

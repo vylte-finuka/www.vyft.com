@@ -6,13 +6,13 @@
   "rootMainFiles": [],
   "pages": {
     "/[lang]/ecosystem/vyft-slide": [
-      "static/chunks/9f74453720351aee.js",
+      "static/chunks/b0a8fdd1bd9f16e2.js",
       "static/chunks/06fdf7c952e7a924.js",
       "static/chunks/ceddce37bf9efe43.js",
       "static/chunks/2bb2097c6b19f68c.js",
-      "static/chunks/86f2372f33384b17.js",
-      "static/chunks/661b641a6f5f6409.css",
-      "static/chunks/df9fb7ec56ddd505.js"
+      "static/chunks/ac263d7b19cfc237.js",
+      "static/chunks/535e0ac4e722bcd5.css",
+      "static/chunks/c42d6a6f4c62323e.js"
     ]
   },
   "ampFirstPages": []

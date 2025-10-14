@@ -1,9 +1,9 @@
 __turbopack_load_page_chunks__("/[lang]/conditions-generales-d-utilisation", [
-  "static/chunks/8c5fd6d7a3b0db89.js",
+  "static/chunks/8c81ec482880923d.js",
   "static/chunks/06fdf7c952e7a924.js",
   "static/chunks/2bb2097c6b19f68c.js",
   "static/chunks/ceddce37bf9efe43.js",
-  "static/chunks/86f2372f33384b17.js",
-  "static/chunks/661b641a6f5f6409.css",
-  "static/chunks/6534251bae642fe3.js"
+  "static/chunks/ac263d7b19cfc237.js",
+  "static/chunks/535e0ac4e722bcd5.css",
+  "static/chunks/b612d71124f1ee89.js"
 ])

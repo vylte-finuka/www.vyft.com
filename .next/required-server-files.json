@@ -166,7 +166,7 @@
       "imgOptSequentialRead": null,
       "isrFlushToDisk": true,
       "workerThreads": false,
-      "optimizeCss": false,
+      "optimizeCss": true,
       "nextScriptWorkers": false,
       "scrollRestoration": false,
       "externalDir": false,
@@ -303,7 +303,14 @@
     ".next\\server\\server-reference-manifest.json",
     ".next\\BUILD_ID",
     ".next\\server\\next-font-manifest.js",
-    ".next\\server\\next-font-manifest.json"
+    ".next\\server\\next-font-manifest.json",
+    ".next\\static\\chunks\\09b45deebb4e0fd3.single.css",
+    ".next\\static\\chunks\\115928ee22a51c40.single.css",
+    ".next\\static\\chunks\\535e0ac4e722bcd5.css",
+    ".next\\static\\chunks\\71da4343c9bfc87c.single.css",
+    ".next\\static\\chunks\\94dfb7c5b8ae2942.single.css",
+    ".next\\static\\chunks\\9697ad199b68afb4.css",
+    ".next\\static\\chunks\\fc12b531c6f6a685.css"
   ],
   "ignore": [
     "node_modules\\next\\dist\\compiled\\@ampproject\\toolbox-optimizer\\**\\*"

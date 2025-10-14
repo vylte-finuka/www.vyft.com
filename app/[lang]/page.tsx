@@ -13,11 +13,10 @@ export default function Home() {
   const locale = params.lang === "en-EN" ? "en-EN" : "fr-FR";
 
   const [showVideo, setShowVideo] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  // Ajout de la redirection si aucune langue n'est présente
   useEffect(() => {
-    // Si aucune langue dans l'URL, on redirige selon la langue du navigateur
     if (!params.lang) {
       const browserLang = navigator.language || navigator.languages[0] || "fr";
       if (browserLang.startsWith("fr")) {
@@ -39,6 +38,10 @@ export default function Home() {
     download: string;
     main: string;
     note: string;
+    modalTitle: string;
+    modalAndroid: string;
+    modalIos: string;
+    modalClose: string;
   };
   const content: Record<Locale, ContentType> = {
     "fr-FR": {
@@ -47,7 +50,11 @@ export default function Home() {
       download: "Télécharger l'appli",
       main: "Écrivez votre histoire avec Vyft. Nous reconnaissons lien personnel, voyage, écologie et investissement¹ comme un tout. Bientôt communiquez entre proches optionnellement par abréviation via notre IA Vyft Nérethense pour éviter les frais de réseau et problème de confidentialité, n'importe où.",
       note: "1. L'investissement étant un cas de perte foncière, cela s'applique à la néobanque.",
-      main0: "Faites les transactions avec votre carte avec des conversions en temps réel idéales pour le voyage à des taux meilleurs que la concurrence et de plus sans frais partout."
+      main0: "Faites les transactions avec votre carte avec des conversions en temps réel idéales pour le voyage à des taux meilleurs que la concurrence et de plus sans frais partout.",
+      modalTitle: "Choisissez votre plateforme",
+      modalAndroid: "Android",
+      modalIos: "iOS",
+      modalClose: "Fermer"
     },
     "en-EN": {
       title: "A choice of simplicity.",
@@ -55,7 +62,11 @@ export default function Home() {
       download: "Download the app",
       main: " Write your story with Vyft. We recognize personal connection, travel, ecology and investment¹ as a whole. Soon communicate between relatives optionally by abbreviation via our Vyft Nérethense AI to avoid network fees and privacy issues, anywhere.",
       note: "1. Investment being a case of land loss, this applies to the neobank.",
-      main0: "Make transactions with your card with real-time conversions ideal for travel at rates better than the competition and no fees anywhere."
+      main0: "Make transactions with your card with real-time conversions ideal for travel at rates better than the competition and no fees anywhere.",
+      modalTitle: "Choose your platform",
+      modalAndroid: "Android",
+      modalIos: "iOS",
+      modalClose: "Close"
     }
   };
 
@@ -101,10 +112,12 @@ export default function Home() {
             {/* Bouton d'installation app */}
             <div style={{ marginTop: 40 }}>
               <a
+                                href="#"
+                onClick={e => { e.preventDefault(); setShowModal(true); }}
                 className={styles.button}
                 style={{
-                  background: "linear-gradient(90deg, #e0dbdd 0%, #bdbdbd 100%)",
-                  color: "#cccccc",
+                  background: "#e0dbdd",
+                  color: "linear-gradient(90deg, #e0dbdd 0%, #bdbdbd 100%)",
                   fontWeight: "bold",
                   fontSize: 18,
                   border: "none",
@@ -116,15 +129,49 @@ export default function Home() {
                   display: "inline-block",
                   textDecoration: "none",
                   marginTop: "20px",
-                  cursor: "not-allowed",
-                  pointerEvents: "none",
+                  cursor: "pointer",
+                  pointerEvents: "auto",
                 }}
-                aria-disabled="true"
-                tabIndex={-1}
+                aria-disabled="false"
+                tabIndex={0}
               >
                 {t.download}
               </a>
             </div>
+            {/* Modal */}
+            {showModal && (
+              <div className={styles.modal}>
+                <div className={styles.modalContent}>
+                  <div className={styles.modalHeader}>{t.modalTitle}</div>
+                  <div className={styles.modalBody}>
+                    <a
+                      href="https://app.appsonair.com/install/0JoMpuQB"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.modalLink}
+                      style={{ display: "block", marginBottom: 18, fontSize: 18 }}
+                    >
+                      {t.modalAndroid}
+                    </a>
+                    <a
+                      href="https://app.appsonair.com/install/oKrFdRwf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.modalLink}
+                      style={{ display: "block", marginBottom: 18, fontSize: 18 }}
+                    >
+                      {t.modalIos}
+                    </a>
+                  </div>
+                  <button
+                    className={styles.modalButton}
+                    onClick={() => setShowModal(false)}
+                  >
+                    {t.modalClose}
+                  </button>
+                </div>
+              </div>
+            )}
           </main>
         </div>
       </div>
@@ -132,23 +179,23 @@ export default function Home() {
         <main className={styles.main}>
           <h1 className={styles.header}>
             {t.main0}
-          </h1>        
-            <Image
-              src="/txband.png"
-              alt="Vyft tx"
-              width={255}
-              height={80}
-              style={{ top: 56 }}
-              onContextMenu={e => e.preventDefault()}
-              onDragStart={e => e.preventDefault()}
-            />
+          </h1>
+          <Image
+            src="/txband.png"
+            alt="Vyft tx"
+            width={255}
+            height={80}
+            style={{ top: 56 }}
+            onContextMenu={e => e.preventDefault()}
+            onDragStart={e => e.preventDefault()}
+          />
         </main>
       </div>
-            <div className={styles.container5}>
+      <div className={styles.container5}>
         <main className={styles.main}>
           <h1 className={styles.header}>
             {t.main}
-          </h1>        
+          </h1>
           <h2 className={styles.bodymessage}>
             {t.note}
           </h2>

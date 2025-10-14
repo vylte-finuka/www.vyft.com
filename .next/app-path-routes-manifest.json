@@ -2,5 +2,6 @@
   "/[lang]/page": "/[lang]",
   "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
-  "/page": "/"
+  "/page": "/",
+  "/sitemap.xml/route": "/sitemap.xml"
 }
