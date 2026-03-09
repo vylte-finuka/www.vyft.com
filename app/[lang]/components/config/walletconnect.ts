@@ -28,10 +28,6 @@ export const sluraCharene: CustomCaipNetwork<'eip155'> = {
       url: 'https://explorer-testnet.slura.network'
     }
   },
-  // Logo du réseau (affiché dans la liste des chaînes du wallet)
-  iconUrls: [
-    "https://raw.githubusercontent.com/vylte-finuka/Slura/refs/heads/master/crates/vuc-platform/src/asset/Slura.png"
-  ],
   contracts: {}
 }
 
