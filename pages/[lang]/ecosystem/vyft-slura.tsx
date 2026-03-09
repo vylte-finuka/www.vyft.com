@@ -129,7 +129,7 @@ export default function Vyftslide() {
           symbol: sluraCharene.nativeCurrency.symbol,
           decimals: sluraCharene.nativeCurrency.decimals,
           name: sluraCharene.nativeCurrency.name,
-          image: '/Slura.png'
+          image: 'https://raw.githubusercontent.com/vylte-finuka/Slura/refs/heads/master/crates/vuc-platform/src/asset/Slura.png'
         }
       };
 
