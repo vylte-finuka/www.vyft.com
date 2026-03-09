@@ -1,4 +1,4 @@
-// app/layout.tsx
+// app/[lang]/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -14,24 +14,28 @@ const metadataContent = {
   "en-EN": {
     title: "Vyft: The neobank with the virtue of finance.",
     description: "The neobank with the virtue of finance.",
-  }
-};
+  },
+} as const;
 
-// Fonction SEO dynamique reconnue par Next.js
-export async function generateMetadata({ params }: { params: { lang?: string } }): Promise<Metadata> {
+// Metadata dynamique (correct, pas besoin d'await ici)
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang?: string };
+}): Promise<Metadata> {
   const locale = params.lang === "en-EN" ? "en-EN" : "fr-FR";
   return metadataContent[locale];
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params,
-}: Readonly<{
+}: {
   children: React.ReactNode;
   params: { lang?: string };
-}>) {
-  const resolvedParams = await params;
-  const locale = resolvedParams?.lang === "fr-FR" ? "fr-FR" : "en-EN";
+}) {
+  // PAS D'AWAIT ICI ! params est déjà un objet plain
+  const locale = params.lang === "en-EN" ? "en-EN" : "fr-FR";
 
   return (
     <html lang={locale}>
