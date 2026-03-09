@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/third-parties": "^14.2.13",
+    "@next/third-parties": "latest",
     "axios": "^1.12.2",
     "critters": "^0.0.25",
     "framer-motion": "^12.23.22",
     "gsap": "^3.13.0",
-    "next": "^15.3.1",
+    "next": "latest",
     "next-fonts": "^1.5.1",
     "openai": "^5.23.0",
     "react": "^18.3.1",
