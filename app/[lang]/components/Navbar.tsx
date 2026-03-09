@@ -19,7 +19,7 @@ const Navbar = () => {
     "fr-FR": {
       ecosystem: "Écosystème",
       slide: "Vyft slide",
-      program: "Vyft program",
+      slura: "Vyft slura",
       luzia: "LUZIA",
       offers: "Offres",
       cashbacks: "Cashbacks",
@@ -31,7 +31,7 @@ const Navbar = () => {
     "en-EN": {
       ecosystem: "Ecosystem",
       slide: "Vyft slide",
-      program: "Vyft program",
+      slura: "Vyft slura",
       luzia: "LUZIA",
       offers: "Offers",
       cashbacks: "Cashbacks",
@@ -65,7 +65,7 @@ const Navbar = () => {
           <span className={styles.fontstyle}>{t.ecosystem}</span>
           <ul className={`${styles.subMenu} ${isSubMenuOpen ? styles.open : ''}`}>
             <li><Link href={`/${locale}/ecosystem/vyft-slide`} className={styles.fontstyle1}>{t.slide}</Link></li>
-            <li><Link href={`/${locale}/ecosystem/vyft-program`} className={styles.fontstyle1}>{t.program}</Link></li>
+            <li><Link href={`/${locale}/ecosystem/vyft-slura`} className={styles.fontstyle1}>{t.slura}</Link></li>
             <li><Link href={`/${locale}/ecosystem/luzia`} className={styles.fontstyle1}>{t.luzia}</Link></li>
           </ul>
         </li>

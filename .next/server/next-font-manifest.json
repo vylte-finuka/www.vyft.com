@@ -3,9 +3,11 @@
     "[project]/app/[lang]/page": [
       "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
     ],
-    "[project]/app/page": []
+    "[project]/app/_not-found/page": []
   },
   "appUsingSizeAdjust": true,
-  "pages": {},
+  "pages": {
+    "/[lang]/ecosystem/vyft-slura": []
+  },
   "pagesUsingSizeAdjust": false
 }
