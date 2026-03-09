@@ -45,6 +45,7 @@ export default function Vyftslide() {
     }
   }[locale];
 
+  // ====================== UNIVERSAL CONNECTOR ======================
   useEffect(() => {
     getUniversalConnector().then(connector => {
       setUniversalConnector(connector);
@@ -56,12 +57,14 @@ export default function Vyftslide() {
     });
   }, []);
 
+  // ====================== AUTO-CONNECT (CORRIGÉ) ======================
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.ethereum) return;
-
     const tryAutoConnect = async () => {
+      if (typeof window === "undefined" || !(window as any).ethereum) return;
+
       try {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        const eth = (window as any).ethereum;
+        const accounts = await eth.request({ method: 'eth_accounts' });
         if (accounts?.length > 0) {
           setAccount(accounts[0]);
         }
@@ -71,28 +74,16 @@ export default function Vyftslide() {
     };
 
     tryAutoConnect();
-
-    const handleAccountsChanged = (accounts: string[]) => setAccount(accounts[0] || null);
-    const handleChainChanged = () => {};
-
-    window.ethereum.on('accountsChanged', handleAccountsChanged);
-    window.ethereum.on('chainChanged', handleChainChanged);
-
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
-      }
-    };
   }, []);
 
+  // ====================== CONNECT / DISCONNECT ======================
   const handleConnect = async () => {
     if (isConnecting) return;
     setIsConnecting(true);
 
     try {
-      if (typeof window !== 'undefined' && window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (typeof window !== 'undefined' && (window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
         if (accounts?.[0]) {
           setAccount(accounts[0]);
           setIsConnecting(false);
@@ -115,7 +106,7 @@ export default function Vyftslide() {
 
   const handleDisconnect = async () => {
     try {
-      if (universalConnector && session && universalConnector.provider?.session) {
+      if (universalConnector && session) {
         await universalConnector.disconnect();
         setSession(null);
       }
@@ -125,67 +116,37 @@ export default function Vyftslide() {
     }
   };
 
-  const ensureWCConnected = async () => {
-    if (!universalConnector) throw new Error("Connector non initialisé");
-
-    if (!session || !universalConnector.provider?.session) {
-      console.log("Pas de session active → appel connect()");
-      const { session: newSession } = await universalConnector.connect();
-      setSession(newSession);
-      const wcAccount = newSession?.namespaces?.eip155?.accounts?.[0]?.split(':')?.[2] || null;
-      if (wcAccount) setAccount(wcAccount);
-    }
-
-    if (!universalConnector.provider) {
-      throw new Error("Provider toujours non prêt après connect()");
-    }
-
-    return universalConnector.provider;
-  };
-
-  // Fonction dédiée : AJOUT UNIQUEMENT DU TOKEN VEZ (natif)
+  // ====================== ADD VEZ TOKEN ======================
   const addVezToken = async () => {
     if (isAddingToken) return;
     setIsAddingToken(true);
 
     try {
-      // Params pour watchAsset avec adresse officielle du natif
       const watchParams = {
         type: 'ERC20',
         options: {
-          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', // Adresse symbolique du token natif
-          symbol: sluraCharene.nativeCurrency.symbol,             // 'VEZ'
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          symbol: sluraCharene.nativeCurrency.symbol,
           decimals: sluraCharene.nativeCurrency.decimals,
           name: sluraCharene.nativeCurrency.name,
-          image: sluraCharene.iconUrls?.[0]                       // Logo du réseau (ou fallback)
-            || '/Slura.png'                                       // Fichier local public/
+          image: '/Slura.png'
         }
       };
 
-      // Flux injected (MetaMask, Rabby, etc.)
-      if (typeof window !== 'undefined' && window.ethereum && account) {
-        await window.ethereum.request({ method: 'wallet_watchAsset', params: watchParams });
+      if (typeof window !== 'undefined' && (window as any).ethereum) {
+        await (window as any).ethereum.request({ method: 'wallet_watchAsset', params: watchParams });
         alert("Token VEZ ajouté avec succès !");
         return;
       }
 
-      // Flux WalletConnect
-      if (!session && !account) {
-        alert("Connectez-vous d'abord à un portefeuille.");
-        return;
+      if (universalConnector) {
+        const provider = universalConnector.provider;
+        await provider.request({ method: 'wallet_watchAsset', params: watchParams });
+        alert("Token VEZ ajouté avec succès !");
       }
-
-      const provider = await ensureWCConnected();
-      await provider.request({ method: 'wallet_watchAsset', params: watchParams });
-
-      alert("Token VEZ ajouté avec succès !");
     } catch (error: any) {
-      if (error.code === 4001) {
-        alert("Ajout du token annulé.");
-      } else {
-        console.error("Erreur ajout token VEZ :", error);
-        alert(`Erreur : ${error.message || "Vérifiez la console"}`);
-      }
+      console.error("Erreur ajout token VEZ :", error);
+      alert(`Erreur : ${error.message || "Vérifiez la console"}`);
     } finally {
       setIsAddingToken(false);
     }
@@ -241,54 +202,16 @@ export default function Vyftslide() {
                       : "via WalletConnect"}
                   </div>
 
-                  <button
-                    onClick={handleDisconnect}
-                    style={{
-                      padding: "12px 32px",
-                      fontSize: "16px",
-                      background: "#333",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "8px",
-                      cursor: "pointer"
-                    }}
-                  >
+                  <button onClick={handleDisconnect} style={{ padding: "12px 32px", fontSize: "16px", background: "#333", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>
                     {t.disconnect}
                   </button>
 
-                  <button
-                    onClick={addVezToken}
-                    disabled={isAddingToken}
-                    style={{
-                      padding: "12px 32px",
-                      fontSize: "16px",
-                      background: "#00cc66",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "8px",
-                      cursor: isAddingToken ? "not-allowed" : "pointer",
-                      opacity: isAddingToken ? 0.7 : 1
-                    }}
-                  >
+                  <button onClick={addVezToken} disabled={isAddingToken} style={{ padding: "12px 32px", fontSize: "16px", background: "#00cc66", color: "white", border: "none", borderRadius: "8px", cursor: isAddingToken ? "not-allowed" : "pointer" }}>
                     {isAddingToken ? t.adding : t.addToken}
                   </button>
                 </>
               ) : (
-                <button
-                  onClick={handleConnect}
-                  disabled={isConnecting}
-                  style={{
-                    padding: "16px 48px",
-                    fontSize: "18px",
-                    background: "#000",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "12px",
-                    cursor: isConnecting ? "not-allowed" : "pointer",
-                    opacity: isConnecting ? 0.7 : 1,
-                    boxShadow: "0 4px 15px rgba(0,0,0,0.4)"
-                  }}
-                >
+                <button onClick={handleConnect} disabled={isConnecting} style={{ padding: "16px 48px", fontSize: "18px", background: "#000", color: "#fff", border: "none", borderRadius: "12px", cursor: isConnecting ? "not-allowed" : "pointer" }}>
                   {isConnecting ? t.connecting : t.connect}
                 </button>
               )}
