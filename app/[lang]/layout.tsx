@@ -17,7 +17,7 @@ const metadataContent = {
   },
 } as const;
 
-// Metadata dynamique (correct, pas besoin d'await ici)
+// Metadata dynamique (params est déjà un objet, pas besoin d'await)
 export async function generateMetadata({
   params,
 }: {
@@ -27,6 +27,7 @@ export async function generateMetadata({
   return metadataContent[locale];
 }
 
+// Layout : params est un objet simple (pas une Promise)
 export default function RootLayout({
   children,
   params,
@@ -34,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { lang?: string };
 }) {
-  // PAS D'AWAIT ICI ! params est déjà un objet plain
+  // PAS D'AWAIT ICI ! params est déjà résolu
   const locale = params.lang === "en-EN" ? "en-EN" : "fr-FR";
 
   return (
