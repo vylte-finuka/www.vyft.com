@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "pnpm install && next build --turbo",
-    "start": "pnpm install && next start --turbo",
+    "build": "next build --turbo",
+    "start": "next start --turbo",
     "lint": "next lint"
   },
   "dependencies": {
