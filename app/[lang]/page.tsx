@@ -145,7 +145,7 @@ export default function Home() {
                   <div className={styles.modalHeader}>{t.modalTitle}</div>
                   <div className={styles.modalBody}>
                     <a
-                      href="https://app.appsonair.com/install/0JoMpuQB"
+                      href="https://app.appsonair.com/install/mjnPIzsj"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.modalLink}
