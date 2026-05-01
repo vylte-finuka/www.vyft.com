@@ -1,468 +1,56 @@
-(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push([typeof document === "object" ? document.currentScript : undefined, {
+module.exports = {
 
-"[turbopack]/browser/dev/hmr-client/hmr-client.ts [client] (ecmascript)": ((__turbopack_context__) => {
+"[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("react/jsx-dev-runtime", () => require("react/jsx-dev-runtime"));
+
+module.exports = mod;
+}}),
+"[externals]/fs [external] (fs, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("fs", () => require("fs"));
+
+module.exports = mod;
+}}),
+"[externals]/stream [external] (stream, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("stream", () => require("stream"));
+
+module.exports = mod;
+}}),
+"[externals]/zlib [external] (zlib, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("zlib", () => require("zlib"));
+
+module.exports = mod;
+}}),
+"[externals]/react-dom [external] (react-dom, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("react-dom", () => require("react-dom"));
+
+module.exports = mod;
+}}),
+"[externals]/viem [external] (viem, esm_import)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname } = __turbopack_context__;
-{
-/// <reference path="../../../shared/runtime-types.d.ts" />
-/// <reference path="../../runtime/base/dev-globals.d.ts" />
-/// <reference path="../../runtime/base/dev-protocol.d.ts" />
-/// <reference path="../../runtime/base/dev-extensions.ts" />
-__turbopack_context__.s({
-    "connect": (()=>connect),
-    "setHooks": (()=>setHooks),
-    "subscribeToUpdate": (()=>subscribeToUpdate)
-});
-function connect({ addMessageListener, sendMessage, onUpdateError = console.error }) {
-    addMessageListener((msg)=>{
-        switch(msg.type){
-            case "turbopack-connected":
-                handleSocketConnected(sendMessage);
-                break;
-            default:
-                try {
-                    if (Array.isArray(msg.data)) {
-                        for(let i = 0; i < msg.data.length; i++){
-                            handleSocketMessage(msg.data[i]);
-                        }
-                    } else {
-                        handleSocketMessage(msg.data);
-                    }
-                    applyAggregatedUpdates();
-                } catch (e) {
-                    console.warn("[Fast Refresh] performing full reload\n\n" + "Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.\n" + "You might have a file which exports a React component but also exports a value that is imported by a non-React component file.\n" + "Consider migrating the non-React component export to a separate file and importing it into both files.\n\n" + "It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.\n" + "Fast Refresh requires at least one parent function component in your React tree.");
-                    onUpdateError(e);
-                    location.reload();
-                }
-                break;
-        }
-    });
-    const queued = globalThis.TURBOPACK_CHUNK_UPDATE_LISTENERS;
-    if (queued != null && !Array.isArray(queued)) {
-        throw new Error("A separate HMR handler was already registered");
-    }
-    globalThis.TURBOPACK_CHUNK_UPDATE_LISTENERS = {
-        push: ([chunkPath, callback])=>{
-            subscribeToChunkUpdate(chunkPath, sendMessage, callback);
-        }
-    };
-    if (Array.isArray(queued)) {
-        for (const [chunkPath, callback] of queued){
-            subscribeToChunkUpdate(chunkPath, sendMessage, callback);
-        }
-    }
-}
-const updateCallbackSets = new Map();
-function sendJSON(sendMessage, message) {
-    sendMessage(JSON.stringify(message));
-}
-function resourceKey(resource) {
-    return JSON.stringify({
-        path: resource.path,
-        headers: resource.headers || null
-    });
-}
-function subscribeToUpdates(sendMessage, resource) {
-    sendJSON(sendMessage, {
-        type: "turbopack-subscribe",
-        ...resource
-    });
-    return ()=>{
-        sendJSON(sendMessage, {
-            type: "turbopack-unsubscribe",
-            ...resource
-        });
-    };
-}
-function handleSocketConnected(sendMessage) {
-    for (const key of updateCallbackSets.keys()){
-        subscribeToUpdates(sendMessage, JSON.parse(key));
-    }
-}
-// we aggregate all pending updates until the issues are resolved
-const chunkListsWithPendingUpdates = new Map();
-function aggregateUpdates(msg) {
-    const key = resourceKey(msg.resource);
-    let aggregated = chunkListsWithPendingUpdates.get(key);
-    if (aggregated) {
-        aggregated.instruction = mergeChunkListUpdates(aggregated.instruction, msg.instruction);
-    } else {
-        chunkListsWithPendingUpdates.set(key, msg);
-    }
-}
-function applyAggregatedUpdates() {
-    if (chunkListsWithPendingUpdates.size === 0) return;
-    hooks.beforeRefresh();
-    for (const msg of chunkListsWithPendingUpdates.values()){
-        triggerUpdate(msg);
-    }
-    chunkListsWithPendingUpdates.clear();
-    finalizeUpdate();
-}
-function mergeChunkListUpdates(updateA, updateB) {
-    let chunks;
-    if (updateA.chunks != null) {
-        if (updateB.chunks == null) {
-            chunks = updateA.chunks;
-        } else {
-            chunks = mergeChunkListChunks(updateA.chunks, updateB.chunks);
-        }
-    } else if (updateB.chunks != null) {
-        chunks = updateB.chunks;
-    }
-    let merged;
-    if (updateA.merged != null) {
-        if (updateB.merged == null) {
-            merged = updateA.merged;
-        } else {
-            // Since `merged` is an array of updates, we need to merge them all into
-            // one, consistent update.
-            // Since there can only be `EcmascriptMergeUpdates` in the array, there is
-            // no need to key on the `type` field.
-            let update = updateA.merged[0];
-            for(let i = 1; i < updateA.merged.length; i++){
-                update = mergeChunkListEcmascriptMergedUpdates(update, updateA.merged[i]);
-            }
-            for(let i = 0; i < updateB.merged.length; i++){
-                update = mergeChunkListEcmascriptMergedUpdates(update, updateB.merged[i]);
-            }
-            merged = [
-                update
-            ];
-        }
-    } else if (updateB.merged != null) {
-        merged = updateB.merged;
-    }
-    return {
-        type: "ChunkListUpdate",
-        chunks,
-        merged
-    };
-}
-function mergeChunkListChunks(chunksA, chunksB) {
-    const chunks = {};
-    for (const [chunkPath, chunkUpdateA] of Object.entries(chunksA)){
-        const chunkUpdateB = chunksB[chunkPath];
-        if (chunkUpdateB != null) {
-            const mergedUpdate = mergeChunkUpdates(chunkUpdateA, chunkUpdateB);
-            if (mergedUpdate != null) {
-                chunks[chunkPath] = mergedUpdate;
-            }
-        } else {
-            chunks[chunkPath] = chunkUpdateA;
-        }
-    }
-    for (const [chunkPath, chunkUpdateB] of Object.entries(chunksB)){
-        if (chunks[chunkPath] == null) {
-            chunks[chunkPath] = chunkUpdateB;
-        }
-    }
-    return chunks;
-}
-function mergeChunkUpdates(updateA, updateB) {
-    if (updateA.type === "added" && updateB.type === "deleted" || updateA.type === "deleted" && updateB.type === "added") {
-        return undefined;
-    }
-    if (updateA.type === "partial") {
-        invariant(updateA.instruction, "Partial updates are unsupported");
-    }
-    if (updateB.type === "partial") {
-        invariant(updateB.instruction, "Partial updates are unsupported");
-    }
-    return undefined;
-}
-function mergeChunkListEcmascriptMergedUpdates(mergedA, mergedB) {
-    const entries = mergeEcmascriptChunkEntries(mergedA.entries, mergedB.entries);
-    const chunks = mergeEcmascriptChunksUpdates(mergedA.chunks, mergedB.chunks);
-    return {
-        type: "EcmascriptMergedUpdate",
-        entries,
-        chunks
-    };
-}
-function mergeEcmascriptChunkEntries(entriesA, entriesB) {
-    return {
-        ...entriesA,
-        ...entriesB
-    };
-}
-function mergeEcmascriptChunksUpdates(chunksA, chunksB) {
-    if (chunksA == null) {
-        return chunksB;
-    }
-    if (chunksB == null) {
-        return chunksA;
-    }
-    const chunks = {};
-    for (const [chunkPath, chunkUpdateA] of Object.entries(chunksA)){
-        const chunkUpdateB = chunksB[chunkPath];
-        if (chunkUpdateB != null) {
-            const mergedUpdate = mergeEcmascriptChunkUpdates(chunkUpdateA, chunkUpdateB);
-            if (mergedUpdate != null) {
-                chunks[chunkPath] = mergedUpdate;
-            }
-        } else {
-            chunks[chunkPath] = chunkUpdateA;
-        }
-    }
-    for (const [chunkPath, chunkUpdateB] of Object.entries(chunksB)){
-        if (chunks[chunkPath] == null) {
-            chunks[chunkPath] = chunkUpdateB;
-        }
-    }
-    if (Object.keys(chunks).length === 0) {
-        return undefined;
-    }
-    return chunks;
-}
-function mergeEcmascriptChunkUpdates(updateA, updateB) {
-    if (updateA.type === "added" && updateB.type === "deleted") {
-        // These two completely cancel each other out.
-        return undefined;
-    }
-    if (updateA.type === "deleted" && updateB.type === "added") {
-        const added = [];
-        const deleted = [];
-        const deletedModules = new Set(updateA.modules ?? []);
-        const addedModules = new Set(updateB.modules ?? []);
-        for (const moduleId of addedModules){
-            if (!deletedModules.has(moduleId)) {
-                added.push(moduleId);
-            }
-        }
-        for (const moduleId of deletedModules){
-            if (!addedModules.has(moduleId)) {
-                deleted.push(moduleId);
-            }
-        }
-        if (added.length === 0 && deleted.length === 0) {
-            return undefined;
-        }
-        return {
-            type: "partial",
-            added,
-            deleted
-        };
-    }
-    if (updateA.type === "partial" && updateB.type === "partial") {
-        const added = new Set([
-            ...updateA.added ?? [],
-            ...updateB.added ?? []
-        ]);
-        const deleted = new Set([
-            ...updateA.deleted ?? [],
-            ...updateB.deleted ?? []
-        ]);
-        if (updateB.added != null) {
-            for (const moduleId of updateB.added){
-                deleted.delete(moduleId);
-            }
-        }
-        if (updateB.deleted != null) {
-            for (const moduleId of updateB.deleted){
-                added.delete(moduleId);
-            }
-        }
-        return {
-            type: "partial",
-            added: [
-                ...added
-            ],
-            deleted: [
-                ...deleted
-            ]
-        };
-    }
-    if (updateA.type === "added" && updateB.type === "partial") {
-        const modules = new Set([
-            ...updateA.modules ?? [],
-            ...updateB.added ?? []
-        ]);
-        for (const moduleId of updateB.deleted ?? []){
-            modules.delete(moduleId);
-        }
-        return {
-            type: "added",
-            modules: [
-                ...modules
-            ]
-        };
-    }
-    if (updateA.type === "partial" && updateB.type === "deleted") {
-        // We could eagerly return `updateB` here, but this would potentially be
-        // incorrect if `updateA` has added modules.
-        const modules = new Set(updateB.modules ?? []);
-        if (updateA.added != null) {
-            for (const moduleId of updateA.added){
-                modules.delete(moduleId);
-            }
-        }
-        return {
-            type: "deleted",
-            modules: [
-                ...modules
-            ]
-        };
-    }
-    // Any other update combination is invalid.
-    return undefined;
-}
-function invariant(_, message) {
-    throw new Error(`Invariant: ${message}`);
-}
-const CRITICAL = [
-    "bug",
-    "error",
-    "fatal"
-];
-function compareByList(list, a, b) {
-    const aI = list.indexOf(a) + 1 || list.length;
-    const bI = list.indexOf(b) + 1 || list.length;
-    return aI - bI;
-}
-const chunksWithIssues = new Map();
-function emitIssues() {
-    const issues = [];
-    const deduplicationSet = new Set();
-    for (const [_, chunkIssues] of chunksWithIssues){
-        for (const chunkIssue of chunkIssues){
-            if (deduplicationSet.has(chunkIssue.formatted)) continue;
-            issues.push(chunkIssue);
-            deduplicationSet.add(chunkIssue.formatted);
-        }
-    }
-    sortIssues(issues);
-    hooks.issues(issues);
-}
-function handleIssues(msg) {
-    const key = resourceKey(msg.resource);
-    let hasCriticalIssues = false;
-    for (const issue of msg.issues){
-        if (CRITICAL.includes(issue.severity)) {
-            hasCriticalIssues = true;
-        }
-    }
-    if (msg.issues.length > 0) {
-        chunksWithIssues.set(key, msg.issues);
-    } else if (chunksWithIssues.has(key)) {
-        chunksWithIssues.delete(key);
-    }
-    emitIssues();
-    return hasCriticalIssues;
-}
-const SEVERITY_ORDER = [
-    "bug",
-    "fatal",
-    "error",
-    "warning",
-    "info",
-    "log"
-];
-const CATEGORY_ORDER = [
-    "parse",
-    "resolve",
-    "code generation",
-    "rendering",
-    "typescript",
-    "other"
-];
-function sortIssues(issues) {
-    issues.sort((a, b)=>{
-        const first = compareByList(SEVERITY_ORDER, a.severity, b.severity);
-        if (first !== 0) return first;
-        return compareByList(CATEGORY_ORDER, a.category, b.category);
-    });
-}
-const hooks = {
-    beforeRefresh: ()=>{},
-    refresh: ()=>{},
-    buildOk: ()=>{},
-    issues: (_issues)=>{}
-};
-function setHooks(newHooks) {
-    Object.assign(hooks, newHooks);
-}
-function handleSocketMessage(msg) {
-    sortIssues(msg.issues);
-    handleIssues(msg);
-    switch(msg.type){
-        case "issues":
-            break;
-        case "partial":
-            // aggregate updates
-            aggregateUpdates(msg);
-            break;
-        default:
-            // run single update
-            const runHooks = chunkListsWithPendingUpdates.size === 0;
-            if (runHooks) hooks.beforeRefresh();
-            triggerUpdate(msg);
-            if (runHooks) finalizeUpdate();
-            break;
-    }
-}
-function finalizeUpdate() {
-    hooks.refresh();
-    hooks.buildOk();
-    // This is used by the Next.js integration test suite to notify it when HMR
-    // updates have been completed.
-    // TODO: Only run this in test environments (gate by `process.env.__NEXT_TEST_MODE`)
-    if (globalThis.__NEXT_HMR_CB) {
-        globalThis.__NEXT_HMR_CB();
-        globalThis.__NEXT_HMR_CB = null;
-    }
-}
-function subscribeToChunkUpdate(chunkListPath, sendMessage, callback) {
-    return subscribeToUpdate({
-        path: chunkListPath
-    }, sendMessage, callback);
-}
-function subscribeToUpdate(resource, sendMessage, callback) {
-    const key = resourceKey(resource);
-    let callbackSet;
-    const existingCallbackSet = updateCallbackSets.get(key);
-    if (!existingCallbackSet) {
-        callbackSet = {
-            callbacks: new Set([
-                callback
-            ]),
-            unsubscribe: subscribeToUpdates(sendMessage, resource)
-        };
-        updateCallbackSets.set(key, callbackSet);
-    } else {
-        existingCallbackSet.callbacks.add(callback);
-        callbackSet = existingCallbackSet;
-    }
-    return ()=>{
-        callbackSet.callbacks.delete(callback);
-        if (callbackSet.callbacks.size === 0) {
-            callbackSet.unsubscribe();
-            updateCallbackSets.delete(key);
-        }
-    };
-}
-function triggerUpdate(msg) {
-    const key = resourceKey(msg.resource);
-    const callbackSet = updateCallbackSets.get(key);
-    if (!callbackSet) {
-        return;
-    }
-    for (const callback of callbackSet.callbacks){
-        callback(msg);
-    }
-    if (msg.type === "notFound") {
-        // This indicates that the resource which we subscribed to either does not exist or
-        // has been deleted. In either case, we should clear all update callbacks, so if a
-        // new subscription is created for the same resource, it will send a new "subscribe"
-        // message to the server.
-        // No need to send an "unsubscribe" message to the server, it will have already
-        // dropped the update stream before sending the "notFound" message.
-        updateCallbackSets.delete(key);
-    }
-}
-}}),
-"[project]/app/[lang]/components/Navbar.module.css [client] (css module)": ((__turbopack_context__) => {
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+const mod = await __turbopack_context__.y("viem");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
+"[project]/app/[lang]/components/Navbar.module.css [ssr] (css module)": ((__turbopack_context__) => {
 
 var { g: global, __dirname } = __turbopack_context__;
 {
@@ -483,34 +71,56 @@ __turbopack_context__.v({
   "subSubMenu": "Navbar-module__CMWTcW__subSubMenu",
 });
 }}),
-"[project]/app/[lang]/components/Navbar.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+"[externals]/next/dist/server/app-render/action-async-storage.external.js [external] (next/dist/server/app-render/action-async-storage.external.js, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("next/dist/server/app-render/action-async-storage.external.js", () => require("next/dist/server/app-render/action-async-storage.external.js"));
+
+module.exports = mod;
+}}),
+"[externals]/next/dist/server/app-render/work-unit-async-storage.external.js [external] (next/dist/server/app-render/work-unit-async-storage.external.js, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("next/dist/server/app-render/work-unit-async-storage.external.js", () => require("next/dist/server/app-render/work-unit-async-storage.external.js"));
+
+module.exports = mod;
+}}),
+"[externals]/next/dist/server/app-render/work-async-storage.external.js [external] (next/dist/server/app-render/work-async-storage.external.js, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("next/dist/server/app-render/work-async-storage.external.js", () => require("next/dist/server/app-render/work-async-storage.external.js"));
+
+module.exports = mod;
+}}),
+"[project]/app/[lang]/components/Navbar.tsx [ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+var { g: global, __dirname } = __turbopack_context__;
 {
 /* eslint-disable @next/next/no-sync-scripts */ __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.module.css [client] (css module)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.module.css [ssr] (css module)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [ssr] (ecmascript)");
 "use client";
 ;
 ;
 ;
 ;
 ;
+;
 const Navbar = ()=>{
-    _s();
-    const [isSubMenuOpen, setIsSubMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [isSubSubMenuOpen, setIsSubSubMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [isProfileMenuOpen, setIsProfileMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useParams"])();
+    const [isSubMenuOpen, setIsSubMenuOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const [isSubSubMenuOpen, setIsSubSubMenuOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useParams"])();
     const locale = params?.lang === "fr-FR" ? "fr-FR" : "en-EN";
     const t = {
         "fr-FR": {
@@ -538,21 +148,21 @@ const Navbar = ()=>{
             vyftProgram: "Vyft program"
         }
     }[locale];
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].Navbar,
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("nav", {
+        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].Navbar,
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].logo,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].logo,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                     legacyBehavior: true,
                     href: `/${locale}`,
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("a", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                             src: "/vyft.png",
                             alt: "Vyftprogram",
                             width: 166,
                             height: 112,
-                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].logo,
+                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].logo,
                             onContextMenu: (e)=>e.preventDefault(),
                             onDragStart: (e)=>e.preventDefault()
                         }, void 0, false, {
@@ -575,26 +185,26 @@ const Navbar = ()=>{
                 lineNumber: 47,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].navLinks,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
+                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].navLinks,
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle,
                                 children: t.ecosystem
                             }, void 0, false, {
                                 fileName: "[project]/app/[lang]/components/Navbar.tsx",
                                 lineNumber: 65,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].open : ''}`,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
+                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].open : ''}`,
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/ecosystem/vyft-slide`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.slide
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -606,10 +216,10 @@ const Navbar = ()=>{
                                         lineNumber: 67,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/ecosystem/vyft-slura`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.slura
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -621,10 +231,10 @@ const Navbar = ()=>{
                                         lineNumber: 68,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/ecosystem/luzia`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.luzia
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -648,23 +258,23 @@ const Navbar = ()=>{
                         lineNumber: 64,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle,
                                 children: t.offers
                             }, void 0, false, {
                                 fileName: "[project]/app/[lang]/components/Navbar.tsx",
                                 lineNumber: 75,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].open : ''}`,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
+                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].open : ''}`,
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/offer/cashbacks`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.cashbacks
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -676,10 +286,10 @@ const Navbar = ()=>{
                                         lineNumber: 77,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/offer/partenaires`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.partners
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -703,23 +313,23 @@ const Navbar = ()=>{
                         lineNumber: 74,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
+                                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle,
                                 children: t.story
                             }, void 0, false, {
                                 fileName: "[project]/app/[lang]/components/Navbar.tsx",
                                 lineNumber: 84,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].open : ''}`,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("ul", {
+                                className: `${__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].subMenu} ${isSubMenuOpen ? __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].open : ''}`,
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/story/vyft`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.vyft
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -731,10 +341,10 @@ const Navbar = ()=>{
                                         lineNumber: 86,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("li", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                                             href: `/${locale}/story/vyft-program`,
-                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle1,
+                                            className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle1,
                                             children: t.vyftProgram
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/Navbar.tsx",
@@ -771,20 +381,17 @@ const Navbar = ()=>{
         columnNumber: 5
     }, this);
 };
-_s(Navbar, "HYlOHdcJlSyTishdAjq10P9M6nA=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useParams"]
-    ];
-});
-_c = Navbar;
 const __TURBOPACK__default__export__ = Navbar;
-var _c;
-__turbopack_context__.k.register(_c, "Navbar");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
-}
 }}),
-"[project]/app/page.module.css [client] (css module)": ((__turbopack_context__) => {
+"[externals]/styled-jsx/style.js [external] (styled-jsx/style.js, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("styled-jsx/style.js", () => require("styled-jsx/style.js"));
+
+module.exports = mod;
+}}),
+"[project]/app/page.module.css [ssr] (css module)": ((__turbopack_context__) => {
 
 var { g: global, __dirname } = __turbopack_context__;
 {
@@ -847,10 +454,28 @@ __turbopack_context__.v({
   "time": "page-module__E0kJGG__time",
 });
 }}),
-"[project]/app/[lang]/components/CGU_Vyft_content_fr.ts [client] (ecmascript)": ((__turbopack_context__) => {
+"[externals]/axios [external] (axios, esm_import)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+const mod = await __turbopack_context__.y("axios");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
+"[externals]/react-secure-storage [external] (react-secure-storage, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("react-secure-storage", () => require("react-secure-storage"));
+
+module.exports = mod;
+}}),
+"[project]/app/[lang]/components/CGU_Vyft_content_fr.ts [ssr] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
@@ -966,30 +591,40 @@ Site : www.vylte-finuka.com
 En utilisant les services de Vyft, le client reconnaît avoir lu, compris et accepté ces CGU.
 `;
 const __TURBOPACK__default__export__ = CGU_Vyft_content_fr;
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
-}
 }}),
-"[project]/app/[lang]/components/SquareAIFloat.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+"[externals]/react-markdown [external] (react-markdown, esm_import)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
-{
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
+const mod = await __turbopack_context__.y("react-markdown");
+
+__turbopack_context__.n(mod);
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, true);}),
+"[project]/app/[lang]/components/SquareAIFloat.tsx [ssr] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
     "default": (()=>SquareAIFloat)
 });
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/styled-jsx/style.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [client] (css module)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-secure-storage/dist/index.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$CGU_Vyft_content_fr$2e$ts__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/CGU_Vyft_content_fr.ts [client] (ecmascript)"); // Assure-toi que ce fichier existe et est exporté
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__ = __turbopack_context__.i("[project]/node_modules/react-markdown/lib/index.js [client] (ecmascript) <export Markdown as default>");
-;
-var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/styled-jsx/style.js [external] (styled-jsx/style.js, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/page.module.css [ssr] (css module)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/axios [external] (axios, esm_import)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react-secure-storage [external] (react-secure-storage, cjs)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$CGU_Vyft_content_fr$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/CGU_Vyft_content_fr.ts [ssr] (ecmascript)"); // Assure-toi que ce fichier existe et est exporté
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/react-markdown [external] (react-markdown, esm_import)");
+var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
+    __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__,
+    __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__
+]);
+([__TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 "use client";
+;
 ;
 ;
 ;
@@ -1027,127 +662,110 @@ async function getComptaData(enseigne, squareCustomerId) {
     }
 }
 function SquareAIFloat() {
-    _s();
-    const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])([
+    const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])([
         {
             from: "ai",
             text: "Bonjour, je suis Vyft Nérethense, votre agent IA ✨. Comment pourrais-je vous aider avec Vyft ? Posez-moi votre question ou réponse !"
         }
     ]);
-    const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
     // Ajout pour stocker les infos utilisateur
-    const [userInfo, setUserInfo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [denomination, setDenomination] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [squareCustomerId, setsquareCustomerId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [comptaData, setComptaData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [cgvu, setCgvu] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const [userInfo, setUserInfo] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [denomination, setDenomination] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [squareCustomerId, setsquareCustomerId] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [comptaData, setComptaData] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(null);
+    const [cgvu, setCgvu] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(null);
     // Récupération des infos utilisateur depuis Auth0 (comme dans reports.tsx)
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "SquareAIFloat.useEffect": ()=>{
-            const fetchUserInfo = {
-                "SquareAIFloat.useEffect.fetchUserInfo": async ()=>{
-                    try {
-                        const userToken = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$secure$2d$storage$2f$dist$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].getItem("userToken");
-                        if (!userToken) return;
-                        // Récupérer les infos utilisateur depuis Auth0
-                        const userInfoResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_AUTH0_DOMAIN}/userinfo`, {
-                            headers: {
-                                Authorization: `Bearer ${userToken}`,
-                                "Content-Type": "application/json"
-                            }
-                        });
-                        const userId = userInfoResponse.data.sub;
-                        // Récupérer les métadonnées utilisateur (enseigne et squareCustomerId)
-                        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`, {
-                            headers: {
-                                Authorization: `Bearer ${userToken}`,
-                                "Content-Type": "application/json"
-                            }
-                        });
-                        setDenomination(response.data?.user_metadata?.denomination?.trim() || null);
-                        setsquareCustomerId(response.data?.user_metadata?.subid?.trim() || null);
-                        // Fusionne app_metadata dans userInfo
-                        setUserInfo({
-                            ...userInfoResponse.data,
-                            app_metadata: response.data?.app_metadata || {}
-                        });
-                    } catch (error) {
-                        setDenomination(null);
-                        setsquareCustomerId(null);
-                        setUserInfo(null);
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        const fetchUserInfo = async ()=>{
+            try {
+                const userToken = __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$secure$2d$storage__$5b$external$5d$__$28$react$2d$secure$2d$storage$2c$__cjs$29$__["default"].getItem("userToken");
+                if (!userToken) return;
+                // Récupérer les infos utilisateur depuis Auth0
+                const userInfoResponse = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/userinfo`, {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
                     }
-                }
-            }["SquareAIFloat.useEffect.fetchUserInfo"];
-            fetchUserInfo();
-        }
-    }["SquareAIFloat.useEffect"], []);
-    // Scroll automatique vers le bas uniquement lors de la génération (loading)
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "SquareAIFloat.useEffect": ()=>{
-            if (loading && messagesEndRef.current) {
-                messagesEndRef.current.scrollIntoView({
-                    behavior: "auto",
-                    block: "end"
                 });
+                const userId = userInfoResponse.data.sub;
+                // Récupérer les métadonnées utilisateur (enseigne et squareCustomerId)
+                const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/api/v2/users/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                setDenomination(response.data?.user_metadata?.denomination?.trim() || null);
+                setsquareCustomerId(response.data?.user_metadata?.subid?.trim() || null);
+                // Fusionne app_metadata dans userInfo
+                setUserInfo({
+                    ...userInfoResponse.data,
+                    app_metadata: response.data?.app_metadata || {}
+                });
+            } catch (error) {
+                setDenomination(null);
+                setsquareCustomerId(null);
+                setUserInfo(null);
             }
+        };
+        fetchUserInfo();
+    }, []);
+    // Scroll automatique vers le bas uniquement lors de la génération (loading)
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        if (loading && messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: "auto",
+                block: "end"
+            });
         }
-    }["SquareAIFloat.useEffect"], [
+    }, [
         loading
     ]);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "SquareAIFloat.useEffect": ()=>{
-            // Dès que l'utilisateur est identifié, on charge les données de marcheurs
-            if (denomination && squareCustomerId) {
-                getComptaData(denomination, squareCustomerId).then(setComptaData).catch({
-                    "SquareAIFloat.useEffect": ()=>setComptaData(null)
-                }["SquareAIFloat.useEffect"]);
-            }
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        // Dès que l'utilisateur est identifié, on charge les données de marcheurs
+        if (denomination && squareCustomerId) {
+            getComptaData(denomination, squareCustomerId).then(setComptaData).catch(()=>setComptaData(null));
         }
-    }["SquareAIFloat.useEffect"], [
+    }, [
         denomination,
         squareCustomerId
     ]);
     // Précharge le contenu CGVU depuis la page CGVU (via le script JSON du DOM)
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "SquareAIFloat.useEffect": ()=>{
-            // On tente de trouver le script JSON sur la page CGVU (si déjà chargé)
-            function tryLoadCGVUFromDOM() {
-                const script = document.getElementById("vyft-cgvu-json");
-                if (script) {
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        // On tente de trouver le script JSON sur la page CGVU (si déjà chargé)
+        function tryLoadCGVUFromDOM() {
+            const script = document.getElementById("vyft-cgvu-json");
+            if (script) {
+                try {
+                    const data = JSON.parse(script.textContent || "{}");
+                    if (data.cgvu) setCgvu(data.cgvu);
+                } catch (e) {
+                // ignore
+                }
+            }
+        }
+        // Si déjà sur la page CGVU, on charge tout de suite
+        tryLoadCGVUFromDOM();
+        // Sinon, on précharge la page CGVU en arrière-plan et on extrait le JSON
+        if (!cgvu) {
+            fetch("/conditions-generales-d-utilisation").then((res)=>res.text()).then((html)=>{
+                // Extraction du contenu du script JSON
+                const match = html.match(/<script[^>]*id=["']vyft-cgvu-json["'][^>]*>([\s\S]*?)<\/script>/);
+                if (match && match[1]) {
                     try {
-                        const data = JSON.parse(script.textContent || "{}");
+                        const data = JSON.parse(match[1]);
                         if (data.cgvu) setCgvu(data.cgvu);
                     } catch (e) {
                     // ignore
                     }
                 }
-            }
-            // Si déjà sur la page CGVU, on charge tout de suite
-            tryLoadCGVUFromDOM();
-            // Sinon, on précharge la page CGVU en arrière-plan et on extrait le JSON
-            if (!cgvu) {
-                fetch("/conditions-generales-d-utilisation").then({
-                    "SquareAIFloat.useEffect": (res)=>res.text()
-                }["SquareAIFloat.useEffect"]).then({
-                    "SquareAIFloat.useEffect": (html)=>{
-                        // Extraction du contenu du script JSON
-                        const match = html.match(/<script[^>]*id=["']vyft-cgvu-json["'][^>]*>([\s\S]*?)<\/script>/);
-                        if (match && match[1]) {
-                            try {
-                                const data = JSON.parse(match[1]);
-                                if (data.cgvu) setCgvu(data.cgvu);
-                            } catch (e) {
-                            // ignore
-                            }
-                        }
-                    }
-                }["SquareAIFloat.useEffect"]);
-            }
+            });
         }
-    }["SquareAIFloat.useEffect"], []);
+    }, []);
     async function sendMessage() {
         if (!input.trim()) return;
         const userMessage = {
@@ -1200,7 +818,7 @@ function SquareAIFloat() {
         if (cgvu) {
             context += "\n\nVoici les Conditions Générales de Vente et d’Utilisation (CGVU) de Vyft Program, à utiliser pour toute question juridique ou d’utilisation :\n" + cgvu + "\n\n";
         }
-        context += "\n\nVoici les Conditions Générales d'Utilisation (CGU) officielles de Vyft :\n" + __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$CGU_Vyft_content_fr$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["default"] + "\n\n";
+        context += "\n\nVoici les Conditions Générales d'Utilisation (CGU) officielles de Vyft :\n" + __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$CGU_Vyft_content_fr$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["default"] + "\n\n";
         if (userInfo) {
             context += `\n\nVoici les informations sur l'utilisateur actuel :\n` + `- Nom : ${userInfo.name || ""}\n` + `- Prénom : ${userInfo.given_name || ""}\n` + `- Nom de famille : ${userInfo.family_name || ""}\n` + `- Surnom : ${userInfo.nickname || ""}\n` + `- Email : ${userInfo.email || ""}\n`;
         }
@@ -1223,7 +841,7 @@ function SquareAIFloat() {
         }
         setLoading(false);
     }
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         style: {
             position: "fixed",
             bottom: 32,
@@ -1244,9 +862,9 @@ function SquareAIFloat() {
             cursor: "pointer"
         },
         onClick: ()=>setOpen((v)=>!v),
-        className: "jsx-1c380e0a5c273610" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
+        className: "jsx-1c380e0a5c273610" + " " + (__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].bodyonwhite || ""),
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 style: {
                     display: "flex",
                     alignItems: "center",
@@ -1254,7 +872,7 @@ function SquareAIFloat() {
                 },
                 className: "jsx-1c380e0a5c273610",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                         style: {
                             width: 38,
                             height: 38,
@@ -1270,7 +888,7 @@ function SquareAIFloat() {
                             letterSpacing: 1
                         },
                         className: "jsx-1c380e0a5c273610",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                             style: {
                                 fontSize: 18,
                                 color: "#1a7f6b"
@@ -1287,7 +905,7 @@ function SquareAIFloat() {
                         lineNumber: 280,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                         style: {
                             color: "#1a7f6b",
                             fontSize: 20,
@@ -1302,7 +920,7 @@ function SquareAIFloat() {
                         lineNumber: 298,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                         style: {
                             marginLeft: "auto",
                             color: "#444",
@@ -1324,7 +942,7 @@ function SquareAIFloat() {
                 lineNumber: 279,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 style: {
                     opacity: open ? 1 : 0,
                     transition: "opacity 0.5s",
@@ -1339,7 +957,7 @@ function SquareAIFloat() {
                 onClick: (e)=>e.stopPropagation(),
                 className: "jsx-1c380e0a5c273610",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                         style: {
                             display: "flex",
                             flexDirection: "column",
@@ -1354,10 +972,10 @@ function SquareAIFloat() {
                             messages.map((msg, idx)=>{
                                 // Si c'est le dernier message IA, on affiche avec l'effet d'écriture
                                 if (msg.from === "ai" && idx === messages.length - 1 && !loading) {
-                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Bubble, {
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Bubble, {
                                         from: msg.from,
                                         text: "",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingText, {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingText, {
                                             text: msg.text
                                         }, void 0, false, {
                                             fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
@@ -1370,7 +988,7 @@ function SquareAIFloat() {
                                         columnNumber: 17
                                     }, this);
                                 }
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Bubble, {
+                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Bubble, {
                                     from: msg.from,
                                     text: msg.text
                                 }, idx, false, {
@@ -1379,7 +997,7 @@ function SquareAIFloat() {
                                     columnNumber: 20
                                 }, this);
                             }),
-                            loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 style: {
                                     display: "flex",
                                     alignItems: "center",
@@ -1388,7 +1006,7 @@ function SquareAIFloat() {
                                 },
                                 className: "jsx-1c380e0a5c273610",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                         style: {
                                             width: 24,
                                             height: 24,
@@ -1404,7 +1022,7 @@ function SquareAIFloat() {
                                             letterSpacing: 1
                                         },
                                         className: "jsx-1c380e0a5c273610",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                                             style: {
                                                 fontSize: 13,
                                                 color: "#1a7f6b"
@@ -1421,7 +1039,7 @@ function SquareAIFloat() {
                                         lineNumber: 368,
                                         columnNumber: 15
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingBubble, {}, void 0, false, {
                                         fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
                                         lineNumber: 386,
                                         columnNumber: 15
@@ -1432,7 +1050,7 @@ function SquareAIFloat() {
                                 lineNumber: 360,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 ref: messagesEndRef,
                                 className: "jsx-1c380e0a5c273610"
                             }, void 0, false, {
@@ -1446,7 +1064,7 @@ function SquareAIFloat() {
                         lineNumber: 337,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("form", {
                         style: {
                             display: "flex",
                             gap: 8,
@@ -1459,7 +1077,7 @@ function SquareAIFloat() {
                         },
                         className: "jsx-1c380e0a5c273610",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("input", {
                                 type: "text",
                                 value: input,
                                 onChange: (e)=>setInput(e.target.value),
@@ -1483,7 +1101,7 @@ function SquareAIFloat() {
                                 lineNumber: 403,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                 type: "submit",
                                 style: {
                                     borderRadius: 12,
@@ -1517,7 +1135,7 @@ function SquareAIFloat() {
                 lineNumber: 322,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$styled$2d$jsx$2f$style$2e$js__$5b$external$5d$__$28$styled$2d$jsx$2f$style$2e$js$2c$__cjs$29$__["default"], {
                 id: "1c380e0a5c273610",
                 children: "@keyframes dotBounce{0%,80%,to{transform:translateY(0)}40%{transform:translateY(-8px)}}.vyft-markdown h1,.vyft-markdown h2,.vyft-markdown h3{color:#1a7f6b;margin:10px 0 6px;font-weight:700}.vyft-markdown ul,.vyft-markdown ol{color:#222;margin-left:18px}.vyft-markdown code{color:#c7254e;background:#f5f5f5;border-radius:4px;padding:2px 6px;font-size:14px}.vyft-markdown pre{color:#fff;background:#23272e;border-radius:8px;padding:10px;font-size:13px;overflow-x:auto}.vyft-markdown a{color:#1a7f6b;text-decoration:underline}.vyft-markdown strong{color:#1a7f6b;font-weight:700}.vyft-markdown em{color:#1a7f6b;font-style:italic}"
             }, void 0, false, void 0, this)
@@ -1528,38 +1146,27 @@ function SquareAIFloat() {
         columnNumber: 5
     }, this);
 }
-_s(SquareAIFloat, "HLHY4ueXgmP23VWXn5tCqlDY7hI=");
-_c = SquareAIFloat;
 // Ajoute ce composant pour l'effet d'écriture lettre par lettre
 function TypingText({ text }) {
-    _s1();
-    const [displayed, setDisplayed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const index = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRef"])(0);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "TypingText.useEffect": ()=>{
-            setDisplayed("");
-            index.current = 0;
-            if (!text) return;
-            const interval = setInterval({
-                "TypingText.useEffect.interval": ()=>{
-                    setDisplayed({
-                        "TypingText.useEffect.interval": (prev)=>prev + text[index.current]
-                    }["TypingText.useEffect.interval"]);
-                    index.current++;
-                    if (index.current >= text.length) clearInterval(interval);
-                }
-            }["TypingText.useEffect.interval"], 18); // Vitesse d'écriture (ms)
-            return ({
-                "TypingText.useEffect": ()=>clearInterval(interval)
-            })["TypingText.useEffect"];
-        }
-    }["TypingText.useEffect"], [
+    const [displayed, setDisplayed] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])("");
+    const index = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useRef"])(0);
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        setDisplayed("");
+        index.current = 0;
+        if (!text) return;
+        const interval = setInterval(()=>{
+            setDisplayed((prev)=>prev + text[index.current]);
+            index.current++;
+            if (index.current >= text.length) clearInterval(interval);
+        }, 18); // Vitesse d'écriture (ms)
+        return ()=>clearInterval(interval);
+    }, [
         text
     ]);
     // Utilise un div pour appliquer la classe vyft-markdown pendant la génération
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         className: "vyft-markdown",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__["default"], {
             children: displayed
         }, void 0, false, {
             fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
@@ -1572,11 +1179,9 @@ function TypingText({ text }) {
         columnNumber: 5
     }, this);
 }
-_s1(TypingText, "vX7roFhzDmTMSRT2IyLXRVK/bXA=");
-_c1 = TypingText;
 // Modifie Bubble pour accepter des enfants (children)
 function Bubble({ from, text, children }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         style: {
             alignSelf: from === "user" ? "flex-end" : "flex-start",
             background: from === "ai" ? "#e0dbdd" : "rgba(255,255,255,0.10)",
@@ -1592,9 +1197,9 @@ function Bubble({ from, text, children }) {
             border: from === "ai" ? "none" : "1px solid #353a40",
             wordBreak: "break-word"
         },
-        children: children ? children : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+        children: children ? children : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$markdown__$5b$external$5d$__$28$react$2d$markdown$2c$__esm_import$29$__["default"], {
             components: {
-                strong: ({ node, ...props })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                strong: ({ node, ...props })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
                         style: {
                             color: "#1a7f6b",
                             fontWeight: 700,
@@ -1621,9 +1226,8 @@ function Bubble({ from, text, children }) {
         columnNumber: 5
     }, this);
 }
-_c2 = Bubble;
 function TypingBubble() {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         style: {
             background: "rgba(0,0,0,0.07)",
             borderRadius: 12,
@@ -1639,7 +1243,7 @@ function TypingBubble() {
             letterSpacing: 0.5
         },
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                 style: {
                     marginRight: 6
                 },
@@ -1649,7 +1253,7 @@ function TypingBubble() {
                 lineNumber: 590,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(TypingDots, {}, void 0, false, {
                 fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
                 lineNumber: 591,
                 columnNumber: 7
@@ -1661,29 +1265,28 @@ function TypingBubble() {
         columnNumber: 5
     }, this);
 }
-_c3 = TypingBubble;
 function TypingDots() {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
         style: {
             display: "inline-block",
             minWidth: 24
         },
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0
             }, void 0, false, {
                 fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
                 lineNumber: 599,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.2
             }, void 0, false, {
                 fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
                 lineNumber: 600,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Dot, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Dot, {
                 delay: 0.4
             }, void 0, false, {
                 fileName: "[project]/app/[lang]/components/SquareAIFloat.tsx",
@@ -1697,9 +1300,8 @@ function TypingDots() {
         columnNumber: 5
     }, this);
 }
-_c4 = TypingDots;
 function Dot({ delay }) {
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
         style: {
             display: "inline-block",
             width: 6,
@@ -1717,41 +1319,33 @@ function Dot({ delay }) {
         columnNumber: 5
     }, this);
 }
-_c5 = Dot;
-var _c, _c1, _c2, _c3, _c4, _c5;
-__turbopack_context__.k.register(_c, "SquareAIFloat");
-__turbopack_context__.k.register(_c1, "TypingText");
-__turbopack_context__.k.register(_c2, "Bubble");
-__turbopack_context__.k.register(_c3, "TypingBubble");
-__turbopack_context__.k.register(_c4, "TypingDots");
-__turbopack_context__.k.register(_c5, "Dot");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
-}
-}}),
-"[project]/app/[lang]/components/Footer1.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, false);}),
+"[project]/app/[lang]/components/Footer1.tsx [ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
-{
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.module.css [client] (css module)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/SquareAIFloat.tsx [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.module.css [ssr] (css module)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/SquareAIFloat.tsx [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [ssr] (ecmascript)");
+var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
+    __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__
+]);
+([__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 "use client";
 ;
 ;
 ;
 ;
+;
 const Footer = ()=>{
-    _s();
-    const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useParams"])();
+    const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useParams"])();
     const locale = params?.lang === "fr-FR" ? "fr-FR" : "en-EN";
     const t = {
         "fr-FR": {
@@ -1763,14 +1357,14 @@ const Footer = ()=>{
             copyright: "© 2025 - Vylte-finuka SARL, All rights reserved."
         }
     }[locale];
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].footer,
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("footer", {
+        className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].footer,
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].links,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].links,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {
                     href: `/${locale}/conditions-generales-d-utilisation`,
-                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle3,
+                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle3,
                     children: t.cgu
                 }, void 0, false, {
                     fileName: "[project]/app/[lang]/components/Footer1.tsx",
@@ -1782,10 +1376,10 @@ const Footer = ()=>{
                 lineNumber: 26,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].copyright,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].fontstyle2,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].copyright,
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                    className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].fontstyle2,
                     children: t.copyright
                 }, void 0, false, {
                     fileName: "[project]/app/[lang]/components/Footer1.tsx",
@@ -1797,7 +1391,7 @@ const Footer = ()=>{
                 lineNumber: 29,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$SquareAIFloat$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/app/[lang]/components/Footer1.tsx",
                 lineNumber: 32,
                 columnNumber: 7
@@ -1809,36 +1403,26 @@ const Footer = ()=>{
         columnNumber: 5
     }, this);
 };
-_s(Footer, "+jVsTcECDRo3yq2d7EQxlN9Ixog=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useParams"]
-    ];
-});
-_c = Footer;
 const __TURBOPACK__default__export__ = Footer;
-var _c;
-__turbopack_context__.k.register(_c, "Footer");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
-}
-}}),
-"[project]/pages/[lang]/ecosystem/vyft-slura.tsx [client] (ecmascript)": ((__turbopack_context__) => {
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, false);}),
+"[project]/pages/[lang]/ecosystem/vyft-slura.tsx [ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
-{
+var { g: global, __dirname, a: __turbopack_async_module__ } = __turbopack_context__;
+__turbopack_async_module__(async (__turbopack_handle_async_dependencies__, __turbopack_async_result__) => { try {
 __turbopack_context__.s({
     "default": (()=>VyftFaucetPage)
 });
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [ssr] (ecmascript)");
 (()=>{
     const e = new Error("Cannot find module 'wagmi'");
     e.code = 'MODULE_NOT_FOUND';
     throw e;
 })();
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatEther$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/viem/_esm/utils/unit/formatEther.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$viem__$5b$external$5d$__$28$viem$2c$__esm_import$29$__ = __turbopack_context__.i("[externals]/viem [external] (viem, esm_import)");
 (()=>{
     const e = new Error("Cannot find module '@rainbow-me/rainbowkit'");
     e.code = 'MODULE_NOT_FOUND';
@@ -1849,11 +1433,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm
     e.code = 'MODULE_NOT_FOUND';
     throw e;
 })();
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.tsx [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Footer1.tsx [client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Navbar.tsx [ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/[lang]/components/Footer1.tsx [ssr] (ecmascript)");
+var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
+    __TURBOPACK__imported__module__$5b$externals$5d2f$viem__$5b$external$5d$__$28$viem$2c$__esm_import$29$__,
+    __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__
+]);
+([__TURBOPACK__imported__module__$5b$externals$5d2f$viem__$5b$external$5d$__$28$viem$2c$__esm_import$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__);
 "use client";
+;
 ;
 ;
 ;
@@ -1936,8 +1524,7 @@ const vezAbi = [
     }
 ];
 function VyftFaucetPage() {
-    _s();
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const { lang } = router.query;
     const locale = lang === "fr-FR" ? "fr-FR" : "en-EN";
     const t = {
@@ -2010,7 +1597,7 @@ function VyftFaucetPage() {
             enabled: !!address
         }
     });
-    const userBalance = userBalanceRaw ? Number((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$viem$2f$_esm$2f$utils$2f$unit$2f$formatEther$2e$js__$5b$client$5d$__$28$ecmascript$29$__["formatEther"])(userBalanceRaw)) : 0;
+    const userBalance = userBalanceRaw ? Number((0, __TURBOPACK__imported__module__$5b$externals$5d2f$viem__$5b$external$5d$__$28$viem$2c$__esm_import$29$__["formatEther"])(userBalanceRaw)) : 0;
     // ─── Claim action ────────────────────────────────────────────────────
     const { data: hash, writeContract, isPending: isClaiming } = useWriteContract();
     const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
@@ -2046,24 +1633,18 @@ function VyftFaucetPage() {
         }
     };
     // ─── Background video delay ──────────────────────────────────────────
-    const [showBackground, setShowBackground] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "VyftFaucetPage.useEffect": ()=>{
-            document.title = t.title;
-            const timer = setTimeout({
-                "VyftFaucetPage.useEffect.timer": ()=>setShowBackground(true)
-            }["VyftFaucetPage.useEffect.timer"], 1500);
-            return ({
-                "VyftFaucetPage.useEffect": ()=>clearTimeout(timer)
-            })["VyftFaucetPage.useEffect"];
-        }
-    }["VyftFaucetPage.useEffect"], [
+    const [showBackground, setShowBackground] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(false);
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        document.title = t.title;
+        const timer = setTimeout(()=>setShowBackground(true), 1500);
+        return ()=>clearTimeout(timer);
+    }, [
         t.title
     ]);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
         className: "relative min-h-screen overflow-hidden bg-black text-white",
         children: [
-            showBackground && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
+            showBackground && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("video", {
                 autoPlay: true,
                 muted: true,
                 loop: true,
@@ -2075,28 +1656,28 @@ function VyftFaucetPage() {
                 lineNumber: 182,
                 columnNumber: 9
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 className: "fixed inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 pointer-events-none"
             }, void 0, false, {
                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                 lineNumber: 193,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 className: "relative z-10",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                         lineNumber: 197,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("main", {
                         className: "container mx-auto px-6 py-16 md:py-24 max-w-5xl",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 className: "text-center mb-16",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
                                         className: "text-4xl md:text-6xl font-bold mb-6 tracking-tight",
                                         children: t.h1
                                     }, void 0, false, {
@@ -2104,7 +1685,7 @@ function VyftFaucetPage() {
                                         lineNumber: 201,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                         className: "text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto",
                                         children: t.subtitle
                                     }, void 0, false, {
@@ -2118,10 +1699,10 @@ function VyftFaucetPage() {
                                 lineNumber: 200,
                                 columnNumber: 11
                             }, this),
-                            !isConnected ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            !isConnected ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 className: "max-w-md mx-auto",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ConnectButton.Custom, {
-                                    children: ({ openConnectModal })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ConnectButton.Custom, {
+                                    children: ({ openConnectModal })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                             onClick: openConnectModal,
                                             className: "w-full py-5 px-8 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 rounded-2xl text-xl font-semibold shadow-xl transition-all transform hover:scale-105",
                                             children: t.connectWallet
@@ -2139,13 +1720,13 @@ function VyftFaucetPage() {
                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                                 lineNumber: 210,
                                 columnNumber: 13
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 className: "max-w-2xl mx-auto bg-black/40 backdrop-blur-lg border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                         className: "text-center mb-10",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                 className: "text-gray-400 mb-3 text-lg",
                                                 children: t.yourBalance
                                             }, void 0, false, {
@@ -2153,7 +1734,7 @@ function VyftFaucetPage() {
                                                 lineNumber: 226,
                                                 columnNumber: 17
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                 className: "text-5xl md:text-6xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent",
                                                 children: [
                                                     userBalance.toFixed(4),
@@ -2170,17 +1751,17 @@ function VyftFaucetPage() {
                                         lineNumber: 225,
                                         columnNumber: 15
                                     }, this),
-                                    isSuccess ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    isSuccess ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                         className: "text-center py-8",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CheckCircle2, {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(CheckCircle2, {
                                                 className: "w-16 h-16 mx-auto text-green-500 mb-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                                                 lineNumber: 235,
                                                 columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h3", {
                                                 className: "text-2xl font-bold mb-3",
                                                 children: t.successTitle
                                             }, void 0, false, {
@@ -2188,7 +1769,7 @@ function VyftFaucetPage() {
                                                 lineNumber: 236,
                                                 columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("a", {
                                                 href: `https://explorer.../tx/${hash}`,
                                                 target: "_blank",
                                                 rel: "noopener noreferrer",
@@ -2196,7 +1777,7 @@ function VyftFaucetPage() {
                                                 children: [
                                                     t.viewTx,
                                                     " ",
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ExternalLink, {
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(ExternalLink, {
                                                         size: 18
                                                     }, void 0, false, {
                                                         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
@@ -2214,19 +1795,19 @@ function VyftFaucetPage() {
                                         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                                         lineNumber: 234,
                                         columnNumber: 17
-                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["Fragment"], {
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                                 onClick: handleClaim,
                                                 disabled: !canClaim || isClaiming || isConfirming,
                                                 className: `
                       w-full py-6 px-10 rounded-2xl text-2xl font-bold transition-all duration-300
                       ${canClaim && !isClaiming && !isConfirming ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 shadow-lg shadow-green-900/30 hover:shadow-green-700/50 transform hover:scale-[1.02]" : "bg-gray-700 text-gray-400 cursor-not-allowed"}
                     `,
-                                                children: isClaiming || isConfirming ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                children: isClaiming || isConfirming ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                                                     className: "flex items-center justify-center gap-3",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Loader2, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Loader2, {
                                                             className: "animate-spin",
                                                             size: 28
                                                         }, void 0, false, {
@@ -2246,13 +1827,13 @@ function VyftFaucetPage() {
                                                 lineNumber: 248,
                                                 columnNumber: 19
                                             }, this),
-                                            blockedReason && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            blockedReason && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                                 className: "mt-6 text-center text-sm",
                                                 children: [
-                                                    blockedReason === "COOLDOWN" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    blockedReason === "COOLDOWN" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                         className: "text-yellow-400 flex items-center justify-center gap-2",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Clock, {
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Clock, {
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
@@ -2268,10 +1849,10 @@ function VyftFaucetPage() {
                                                         lineNumber: 274,
                                                         columnNumber: 25
                                                     }, this),
-                                                    blockedReason === "EMPTY" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    blockedReason === "EMPTY" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                         className: "text-red-400 flex items-center justify-center gap-2",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertCircle, {
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(AlertCircle, {
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
@@ -2286,10 +1867,10 @@ function VyftFaucetPage() {
                                                         lineNumber: 279,
                                                         columnNumber: 25
                                                     }, this),
-                                                    blockedReason === "PAUSED" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    blockedReason === "PAUSED" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                         className: "text-orange-400 flex items-center justify-center gap-2",
                                                         children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AlertCircle, {
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(AlertCircle, {
                                                                 size: 18
                                                             }, void 0, false, {
                                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
@@ -2312,14 +1893,14 @@ function VyftFaucetPage() {
                                             }, this)
                                         ]
                                     }, void 0, true),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                         className: "mt-10 text-center",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                             onClick: addVezToken,
                                             disabled: isAddingToken,
                                             className: "inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-colors border border-white/20",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Plus, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(Plus, {
                                                     size: 20
                                                 }, void 0, false, {
                                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
@@ -2350,7 +1931,7 @@ function VyftFaucetPage() {
                         lineNumber: 199,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
                         lineNumber: 308,
                         columnNumber: 9
@@ -2368,52 +1949,9 @@ function VyftFaucetPage() {
         columnNumber: 5
     }, this);
 }
-_s(VyftFaucetPage, "VkLWx9WzNIUVe8DTFSiQE1iNLEk=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"],
-        useAccount,
-        useReadContract,
-        useReadContract,
-        useReadContract,
-        useWriteContract,
-        useWaitForTransactionReceipt
-    ];
-});
-_c = VyftFaucetPage;
-var _c;
-__turbopack_context__.k.register(_c, "VyftFaucetPage");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
-}
-}}),
-"[next]/entry/page-loader.ts { PAGE => \"[project]/pages/[lang]/ecosystem/vyft-slura.tsx [client] (ecmascript)\" } [client] (ecmascript)": (function(__turbopack_context__) {
+__turbopack_async_result__();
+} catch(e) { __turbopack_async_result__(e); } }, false);}),
 
-var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
-{
-const PAGE_PATH = "/[lang]/ecosystem/vyft-slura";
-(window.__NEXT_P = window.__NEXT_P || []).push([
-    PAGE_PATH,
-    ()=>{
-        return __turbopack_context__.r("[project]/pages/[lang]/ecosystem/vyft-slura.tsx [client] (ecmascript)");
-    }
-]);
-// @ts-expect-error module.hot exists
-if (module.hot) {
-    // @ts-expect-error module.hot exists
-    module.hot.dispose(function() {
-        window.__NEXT_P.push([
-            PAGE_PATH
-        ]);
-    });
-}
-}}),
-"[project]/pages/[lang]/ecosystem/vyft-slura.tsx (hmr-entry)": ((__turbopack_context__) => {
-"use strict";
+};
 
-var { g: global, __dirname, m: module } = __turbopack_context__;
-{
-__turbopack_context__.r("[next]/entry/page-loader.ts { PAGE => \"[project]/pages/[lang]/ecosystem/vyft-slura.tsx [client] (ecmascript)\" } [client] (ecmascript)");
-}}),
-}]);
-
-//# sourceMappingURL=%5Broot-of-the-server%5D__73f26dba._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__a35ffa18._.js.map

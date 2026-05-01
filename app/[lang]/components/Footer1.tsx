@@ -13,11 +13,11 @@ const Footer = () => {
   const t = {
     "fr-FR": {
       cgu: "Conditions Générales d'Utilisation",
-      copyright: "© 2025 - Vylte-finuka SARL, Tous droits réservés."
+      copyright: "© 2025 - Vyft Ltd, Tous droits réservés."
     },
     "en-EN": {
       cgu: "Terms of Use",
-      copyright: "© 2025 - Vylte-finuka SARL, All rights reserved."
+      copyright: "© 2026 - Vyft Ltd, All rights reserved."
     }
   }[locale];
 

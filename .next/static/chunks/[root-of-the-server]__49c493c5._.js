@@ -1864,10 +1864,6 @@ const sluraCharene = {
             url: 'https://explorer-testnet.slura.network'
         }
     },
-    // Logo du réseau (affiché dans la liste des chaînes du wallet)
-    iconUrls: [
-        "https://raw.githubusercontent.com/vylte-finuka/Slura/refs/heads/master/crates/vuc-platform/src/asset/Slura.png"
-    ],
     contracts: {}
 };
 async function getUniversalConnector() {
@@ -1969,6 +1965,7 @@ function Vyftslide() {
             adding: "Adding token..."
         }
     }[locale];
+    // ====================== UNIVERSAL CONNECTOR ======================
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Vyftslide.useEffect": ()=>{
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$config$2f$walletconnect$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["getUniversalConnector"])().then({
@@ -1983,13 +1980,15 @@ function Vyftslide() {
             }["Vyftslide.useEffect"]);
         }
     }["Vyftslide.useEffect"], []);
+    // ====================== AUTO-CONNECT (CORRIGÉ) ======================
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Vyftslide.useEffect": ()=>{
-            if ("object" === 'undefined' || !window.ethereum) return;
             const tryAutoConnect = {
                 "Vyftslide.useEffect.tryAutoConnect": async ()=>{
+                    if ("object" === "undefined" || !window.ethereum) return;
                     try {
-                        const accounts = await window.ethereum.request({
+                        const eth = window.ethereum;
+                        const accounts = await eth.request({
                             method: 'eth_accounts'
                         });
                         if (accounts?.length > 0) {
@@ -2001,24 +2000,9 @@ function Vyftslide() {
                 }
             }["Vyftslide.useEffect.tryAutoConnect"];
             tryAutoConnect();
-            const handleAccountsChanged = {
-                "Vyftslide.useEffect.handleAccountsChanged": (accounts)=>setAccount(accounts[0] || null)
-            }["Vyftslide.useEffect.handleAccountsChanged"];
-            const handleChainChanged = {
-                "Vyftslide.useEffect.handleChainChanged": ()=>{}
-            }["Vyftslide.useEffect.handleChainChanged"];
-            window.ethereum.on('accountsChanged', handleAccountsChanged);
-            window.ethereum.on('chainChanged', handleChainChanged);
-            return ({
-                "Vyftslide.useEffect": ()=>{
-                    if (window.ethereum) {
-                        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-                        window.ethereum.removeListener('chainChanged', handleChainChanged);
-                    }
-                }
-            })["Vyftslide.useEffect"];
         }
     }["Vyftslide.useEffect"], []);
+    // ====================== CONNECT / DISCONNECT ======================
     const handleConnect = async ()=>{
         if (isConnecting) return;
         setIsConnecting(true);
@@ -2047,7 +2031,7 @@ function Vyftslide() {
     };
     const handleDisconnect = async ()=>{
         try {
-            if (universalConnector && session && universalConnector.provider?.session) {
+            if (universalConnector && session) {
                 await universalConnector.disconnect();
                 setSession(null);
             }
@@ -2056,26 +2040,11 @@ function Vyftslide() {
             console.error("Erreur déconnexion :", err);
         }
     };
-    const ensureWCConnected = async ()=>{
-        if (!universalConnector) throw new Error("Connector non initialisé");
-        if (!session || !universalConnector.provider?.session) {
-            console.log("Pas de session active → appel connect()");
-            const { session: newSession } = await universalConnector.connect();
-            setSession(newSession);
-            const wcAccount = newSession?.namespaces?.eip155?.accounts?.[0]?.split(':')?.[2] || null;
-            if (wcAccount) setAccount(wcAccount);
-        }
-        if (!universalConnector.provider) {
-            throw new Error("Provider toujours non prêt après connect()");
-        }
-        return universalConnector.provider;
-    };
-    // Fonction dédiée : AJOUT UNIQUEMENT DU TOKEN VEZ (natif)
+    // ====================== ADD VEZ TOKEN ======================
     const addVezToken = async ()=>{
         if (isAddingToken) return;
         setIsAddingToken(true);
         try {
-            // Params pour watchAsset avec adresse officielle du natif
             const watchParams = {
                 type: 'ERC20',
                 options: {
@@ -2083,12 +2052,10 @@ function Vyftslide() {
                     symbol: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$config$2f$walletconnect$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["sluraCharene"].nativeCurrency.symbol,
                     decimals: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$config$2f$walletconnect$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["sluraCharene"].nativeCurrency.decimals,
                     name: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$config$2f$walletconnect$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["sluraCharene"].nativeCurrency.name,
-                    image: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$config$2f$walletconnect$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["sluraCharene"].iconUrls?.[0] // Logo du réseau (ou fallback)
-                     || '/Slura.png' // Fichier local public/
+                    image: 'https://raw.githubusercontent.com/vylte-finuka/Slura/refs/heads/master/crates/vuc-platform/src/asset/Slura.png'
                 }
             };
-            // Flux injected (MetaMask, Rabby, etc.)
-            if ("object" !== 'undefined' && window.ethereum && account) {
+            if ("object" !== 'undefined' && window.ethereum) {
                 await window.ethereum.request({
                     method: 'wallet_watchAsset',
                     params: watchParams
@@ -2096,24 +2063,17 @@ function Vyftslide() {
                 alert("Token VEZ ajouté avec succès !");
                 return;
             }
-            // Flux WalletConnect
-            if (!session && !account) {
-                alert("Connectez-vous d'abord à un portefeuille.");
-                return;
+            if (universalConnector) {
+                const provider = universalConnector.provider;
+                await provider.request({
+                    method: 'wallet_watchAsset',
+                    params: watchParams
+                });
+                alert("Token VEZ ajouté avec succès !");
             }
-            const provider = await ensureWCConnected();
-            await provider.request({
-                method: 'wallet_watchAsset',
-                params: watchParams
-            });
-            alert("Token VEZ ajouté avec succès !");
         } catch (error) {
-            if (error.code === 4001) {
-                alert("Ajout du token annulé.");
-            } else {
-                console.error("Erreur ajout token VEZ :", error);
-                alert(`Erreur : ${error.message || "Vérifiez la console"}`);
-            }
+            console.error("Erreur ajout token VEZ :", error);
+            alert(`Erreur : ${error.message || "Vérifiez la console"}`);
         } finally{
             setIsAddingToken(false);
         }
@@ -2158,7 +2118,7 @@ function Vyftslide() {
                     }
                 }, void 0, false, {
                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                    lineNumber: 207,
+                    lineNumber: 168,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2170,7 +2130,7 @@ function Vyftslide() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Navbar$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                            lineNumber: 228,
+                            lineNumber: 189,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -2181,7 +2141,7 @@ function Vyftslide() {
                                     children: t.h1
                                 }, void 0, false, {
                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                    lineNumber: 231,
+                                    lineNumber: 192,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2189,7 +2149,7 @@ function Vyftslide() {
                                     children: t.h2a
                                 }, void 0, false, {
                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                    lineNumber: 232,
+                                    lineNumber: 193,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2197,7 +2157,7 @@ function Vyftslide() {
                                     children: t.h2b
                                 }, void 0, false, {
                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                    lineNumber: 233,
+                                    lineNumber: 194,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2222,7 +2182,7 @@ function Vyftslide() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                                lineNumber: 238,
+                                                lineNumber: 199,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2239,7 +2199,7 @@ function Vyftslide() {
                                                 children: t.disconnect
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                                lineNumber: 244,
+                                                lineNumber: 205,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2252,13 +2212,12 @@ function Vyftslide() {
                                                     color: "white",
                                                     border: "none",
                                                     borderRadius: "8px",
-                                                    cursor: isAddingToken ? "not-allowed" : "pointer",
-                                                    opacity: isAddingToken ? 0.7 : 1
+                                                    cursor: isAddingToken ? "not-allowed" : "pointer"
                                                 },
                                                 children: isAddingToken ? t.adding : t.addToken
                                             }, void 0, false, {
                                                 fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                                lineNumber: 259,
+                                                lineNumber: 209,
                                                 columnNumber: 19
                                             }, this)
                                         ]
@@ -2272,54 +2231,52 @@ function Vyftslide() {
                                             color: "#fff",
                                             border: "none",
                                             borderRadius: "12px",
-                                            cursor: isConnecting ? "not-allowed" : "pointer",
-                                            opacity: isConnecting ? 0.7 : 1,
-                                            boxShadow: "0 4px 15px rgba(0,0,0,0.4)"
+                                            cursor: isConnecting ? "not-allowed" : "pointer"
                                         },
                                         children: isConnecting ? t.connecting : t.connect
                                     }, void 0, false, {
                                         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                        lineNumber: 277,
+                                        lineNumber: 214,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                    lineNumber: 235,
+                                    lineNumber: 196,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$page$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].bodyattract
                                 }, void 0, false, {
                                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                                    lineNumber: 297,
+                                    lineNumber: 220,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                            lineNumber: 230,
+                            lineNumber: 191,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f5b$lang$5d2f$components$2f$Footer1$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                            lineNumber: 300,
+                            lineNumber: 223,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-                    lineNumber: 227,
+                    lineNumber: 188,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-            lineNumber: 205,
+            lineNumber: 166,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/pages/[lang]/ecosystem/vyft-slura.tsx",
-        lineNumber: 204,
+        lineNumber: 165,
         columnNumber: 5
     }, this);
 }
