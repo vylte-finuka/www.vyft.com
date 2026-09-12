@@ -41,6 +41,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <meta name="google-site-verification" content="FabiVmV38jYR2ba6L8_BnYb4806Mi7UmO3RKzkzcFU0" />
+      </head>
       <GoogleAnalytics gaId="G-TRM37NPSXN" />
       <body className={inter.className}>{children}</body>
     </html>

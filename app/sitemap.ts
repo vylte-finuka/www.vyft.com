@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://vylte-finuka.com';
+  const baseUrl = 'https://vyft.com';
 
   // Langues supportées
   const langs = ['fr-FR', 'en-EN'];
