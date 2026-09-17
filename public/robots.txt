@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /api/
 Allow: /
 
-Sitemap: https://vyft.com/sitemap.xml
+Sitemap: https://vyft-one.com/sitemap.xml
